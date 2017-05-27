@@ -35,20 +35,7 @@ public class TicketService {
     }
 
 
-    public List<Ticket> getCoordinatorForStudents(Integer id){
-        Session session = sessionFactory.getCurrentSession();
-        logger.debug("Get users by institute");
-        Query query = session.createQuery("FROM Ticket WHERE status.id="+id);
-
-        return query.list();
-    }
-    /**
-     * Retrieves all persons
-     * Получает лист всех персон
-     * @return a list of persons
-     */
     public List<Ticket> getAll() {
-        logger.debug("Retrieving all persons");
 
         // Retrieve session from Hibernate
         // Получаем сессию
@@ -77,10 +64,6 @@ public class TicketService {
     }
 
     public List<Ticket> getAllTicketsByUserId(Integer userId) {
-        logger.debug("Retrieving all persons");
-
-        // Retrieve session from Hibernate
-        // Получаем сессию
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
         // Создаем запрос
@@ -155,61 +138,26 @@ public class TicketService {
      */
 
     public String add(Ticket ticket) {
-        logger.debug("Adding new ticket");
-
-        // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-        logger.debug("add ticket" + session.hashCode());
-
-        // Retrieve existing person via id
-
-        // Add person to credit card
-        // Persists to db
         session.save(ticket);
         session.flush();
 
         return ticket.getId();
     }
 
-    /**
-     * Deletes an existing person
-     * Удаление существующей персоны
-     * @param id the id of the existing person
-     */
     public void delete(String id) {
-        logger.debug("Deleting existing person");
-
-        // Retrieve session from Hibernate
-        // получаем сессию
         Session session = sessionFactory.getCurrentSession();
 
-        // Retrieve existing person first
-        // получаем существующую персону
         Ticket ticket = (Ticket) session.get(Ticket.class, id);
 
-        // Delete
-        // удаляем
         session.delete(ticket);
     }
 
-    /**
-     * Edits an existing person
-     * Правка персоны
-     */
     public void edit(Ticket ticket) {
-        logger.debug("Editing existing ticket") ;
-        logger.debug("Editing existing ticket: "+ticket.getId());
-        // Retrieve session from Hibernate
-        // как всегда получаем сессию
         Session session = sessionFactory.getCurrentSession();
 
-        // Retrieve existing person via id
-        // получаем существующую персону по id
         Ticket existingTicket = (Ticket) session.get(Ticket.class, ticket.getId());
-       // Ticket existingTicket = (Ticket) session.get(Ticket.class, "V17-1");
-        // Assign updated values to this person
-        // обновляем значения
-        logger.debug(ticket.getStatus().getName());
+
         existingTicket.setTitle(ticket.getTitle());
         existingTicket.setTitleEng(ticket.getTitleEng());
         existingTicket.setAnnotation(ticket.getAnnotation());
@@ -229,52 +177,24 @@ public class TicketService {
         existingTicket.setSflNMaster(ticket.getSflNMaster());
         existingTicket.setSflNMasterEng(ticket.getSflNMasterEng());
         //-------------------------------------------------------------------
-        // Save updates
-        // сохраняем изменения
         session.save(existingTicket);
     }
     //---------------------------------------------------------
     public void editPdf(Ticket ticket) {
-        logger.debug("Editing existing ticket");
 
-        // Retrieve session from Hibernate
-        // как всегда получаем сессию
         Session session = sessionFactory.getCurrentSession();
 
-        // Retrieve existing person via id
-        // получаем существующую персону по id
         Ticket existingTicket = (Ticket) session.get(Ticket.class, ticket.getId());
 
-        // Assign updated values to this person
-        // обновляем значения
-
         existingTicket.setFilePdf(ticket.getFilePdf());
-
-        // Save updates
-        // сохраняем изменения
         session.save(existingTicket);
     }
 
     public void editRar(Ticket ticket) {
-        logger.debug("Editing existing ticket");
-
-        // Retrieve session from Hibernate
-        // как всегда получаем сессию
         Session session = sessionFactory.getCurrentSession();
 
-        // Retrieve existing person via id
-        // получаем существующую персону по id
         Ticket existingTicket = (Ticket) session.get(Ticket.class, ticket.getId());
-
-        // Assign updated values to this person
-        // обновляем значения
-
-        //existingTicket.setFilePdf(ticket.getFilePdf());
         existingTicket.setFileRar(ticket.getFileRar());
-
-        // Save updates
-        // сохраняем изменения
         session.save(existingTicket);
     }
-//---------------------------------------------------------
 }

@@ -2,7 +2,7 @@ package org.barmaley.vkr.dto;
 
 import org.barmaley.vkr.domain.Status;
 
-public class TicketAddDTO {
+public class TicketEditDTO {
     private String id;
     private String agreement;
     private String title;
@@ -15,6 +15,7 @@ public class TicketAddDTO {
     private Integer documentTypeId;
     private String filePdf;
     private Integer typeOfUseId;
+    private String typeOfUseName;
     //----------------------------------------------------
     private String institute;
     private String direction;
@@ -130,6 +131,14 @@ public class TicketAddDTO {
 
     public void setTypeOfUseId(Integer typeOfUseId) {
         this.typeOfUseId = typeOfUseId;
+    }
+
+    public String getTypeOfUseName() {
+        return typeOfUseName;
+    }
+
+    public void setTypeOfUseName(String typeOfUseName) {
+        this.typeOfUseName = typeOfUseName;
     }
 
     public String getDirOfTrain() {

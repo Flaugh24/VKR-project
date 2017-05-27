@@ -1,0 +1,17 @@
+header{
+    margin-top: 15px;
+    border-bottom: 1px solid;
+    max-height: 85px;
+}
+
+.addTicket{
+    padding: 5px;
+}
+
+.addTicket:hover{
+    border: solid 1.5px;
+}
+
+.editUrl:hover{
+    text-decoration: none;
+}

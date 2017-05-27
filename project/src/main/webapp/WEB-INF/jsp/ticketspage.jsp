@@ -48,7 +48,7 @@
         <tbody>
         <c:forEach items="${tickets}" var="ticket">
             <%i++;%>
-            <c:url var="editUrl" value="/tickets/edit?id=${ticket.id}" />
+            <c:url var="checkUrl" value="/tickets/edit?id=${ticket.id}" />
             <tr>
                 <td><%=i%></td>
                 <td>
@@ -70,7 +70,7 @@
                 <td>
                     <c:out value="${ticket.status.statusName}" />
                 </td>
-                <td><a href="${editUrl}">Просмотреть</a></td>
+                <td><a href="${checkUrl}">Просмотреть</a></td>
 
             </tr>
 

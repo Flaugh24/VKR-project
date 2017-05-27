@@ -3,11 +3,9 @@ package org.barmaley.vkr.controller;
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
-import org.barmaley.vkr.dto.FileDTO;
 import org.barmaley.vkr.service.*;
-import org.barmaley.vkr.dto.TicketAddDTO;
+import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.Tool.PermissionTool;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -202,7 +200,7 @@ public class MainController {
 
         List<DocumentType> documentTypes = documentTypeService.getAll();
 
-        TicketAddDTO dto = new TicketAddDTO();
+        TicketEditDTO dto = new TicketEditDTO();
 
         // Create new Person and add to model
         // This is the formBackingOBject
@@ -233,7 +231,7 @@ public class MainController {
      * @return  the name of the JSP page
      */
     @RequestMapping(value = "/tickets/saveTicket", method = RequestMethod.POST)
-    public String save(@ModelAttribute("ticketAttribute") TicketAddDTO dto) {
+    public String save(@ModelAttribute("ticketAttribute") TicketEditDTO dto) {
         logger.debug("Received request to add new ticket");
 
         // The "personAttribute" model has been passed to the controller from the JSP
@@ -259,7 +257,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/tickets/postTicket", method = RequestMethod.POST)
-    public String post(@ModelAttribute("ticketAttribute") TicketAddDTO dto) {
+    public String post(@ModelAttribute("ticketAttribute") TicketEditDTO dto) {
         logger.debug("Received request to add new ticket");
 
         // The "personAttribute" model has been passed to the controller from the JSP
@@ -317,7 +315,7 @@ public class MainController {
         logger.debug("Received request to show edit page");
         List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
         List<DocumentType> documentTypes = documentTypeService.getAll();
-        TicketAddDTO dto = new TicketAddDTO();
+        TicketEditDTO dto = new TicketEditDTO();
         Ticket ticket = ticketService.get(id);
 
         dto.setId(ticket.getId());
@@ -348,7 +346,7 @@ public class MainController {
      * @return  the name of the JSP page
      */
     @RequestMapping(value = "/tickets/edit", method = RequestMethod.POST)
-    public String saveEdit(@ModelAttribute("ticketAttribute") TicketAddDTO dto)
+    public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto)
                             {
         logger.debug("Received request to update ticket");
 

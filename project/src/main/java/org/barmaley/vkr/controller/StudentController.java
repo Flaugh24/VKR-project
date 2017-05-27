@@ -3,7 +3,7 @@ package org.barmaley.vkr.controller;
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
-import org.barmaley.vkr.dto.TicketAddDTO;
+import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.service.*;
 import org.barmaley.vkr.Tool.PermissionTool;
@@ -190,7 +190,7 @@ public class StudentController {
         Boolean access = false;
         Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
         Ticket ticket = ticketService.get(ticketId);
-        TicketAddDTO dto = new TicketAddDTO();
+        TicketEditDTO dto = new TicketEditDTO();
 
         for(CoordinatorRights coordinatorRights: coordinatorRightsSet){
             if(coordinatorRights.getGroupNum().equals(ticket.getGroupNum())){
@@ -246,7 +246,7 @@ public class StudentController {
 
 
     @PostMapping(value = "/ticket/edit")
-    public String saveEdit(@ModelAttribute("ticketAttribute") TicketAddDTO dto,
+    public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
                            @RequestParam(value = "button") String button) {
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());

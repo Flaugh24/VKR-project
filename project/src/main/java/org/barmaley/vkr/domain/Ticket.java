@@ -64,6 +64,8 @@ public class Ticket implements Serializable {
     @Column(name = "FILE_RAR")
     private String fileRar;
 
+    //---------------------------------------------------
+
     @Column(name = "DATE_CREATION_START")
     private Date dateCreationStart;
 

@@ -37,9 +37,9 @@
                             <div class="addTicket">
                                 Институт: <c:out value="${educProgram.institute}"/><br>
                                 Квалификация: <c:out value="${educProgram.degree}"/><br>
-                                Кафедра: <c:out value="${educProgram.direction}"/><br>
+                                Кафедра: <c:out value="${educProgram.department}"/><br>
                                 Номер группы: <c:out value="${educProgram.groupNum}"/><br>
-                                Направление: <c:out value="${educProgram.specialty}" /><br>
+                                Направление: <c:out value="${educProgram.direction}" /><br>
                             </div>
                         </a>
                         <form method="post" id="addticket${educProgram.id}" action="${addTicket}" enctype="application/x-www-form-urlencoded">

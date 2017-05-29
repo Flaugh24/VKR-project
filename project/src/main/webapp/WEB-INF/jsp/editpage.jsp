@@ -42,7 +42,7 @@
                             <input  name="ticketId" id="ticketId" value="${ticketAttribute.id}" style="display: none"/>
                             <div class="form-group">
                                 <label for="uploadFile">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
-                                <input  name="filePdf" id="uploadFile" type="file" accept=".zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compresse,application/pdf"/>
+                                <input  name="uploadFile" id="uploadFile" type="file" accept=".zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compresse,application/pdf"/>
                             </div>
                             <div class="form-group">
                                 <input id="filePdf" type="submit" name="submit" value="Загрузить PDF" class="btn btn-default" disabled="disabled"/>
@@ -59,8 +59,8 @@
                             <label for="ticketId" />
                             <input  name="ticketId" id="ticketId1" value="${ticketAttribute.id}" style="display: none"/>
                             <div class="form-group">
-                                <label for="filePdf1">Загрузите PDF-файл Вашей ВКР</label>
-                                <input  name="filePdf" id="filePdf1" type="file" accept="application/pdf"/>
+                                <label for="uploadFile1">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
+                                <input  name="uploadFile" id="uploadFile1" type="file" accept="application/pdf"/>
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="submit" value="Удалить PDF" class="btn btn-default"/>

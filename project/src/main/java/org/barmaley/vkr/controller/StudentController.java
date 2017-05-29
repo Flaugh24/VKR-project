@@ -355,7 +355,7 @@ public class StudentController {
     }
 
     @PostMapping("/ticket/deleterar")
-    public String singleFileDeleterar(@RequestParam("filePdf") MultipartFile file,
+    public String singleFileDeleterar(@RequestParam("uploadFile") MultipartFile file,
                                    @RequestParam("ticketId") String ticketId,
                                    @RequestParam("submit") String submit) {
         String fullPath, ROOT_FOLDERS;
@@ -387,7 +387,7 @@ public class StudentController {
     }
 
     @PostMapping("/ticket/deletepdf")
-    public String singleFileDelete(@RequestParam("filePdf") MultipartFile file,
+    public String singleFileDelete(@RequestParam("uploadFile") MultipartFile file,
                                    @RequestParam("ticketId") String ticketId,
                                    @RequestParam("submit") String submit) {
         String fullPath, ROOT_FOLDERS;
@@ -395,7 +395,7 @@ public class StudentController {
 
         Ticket ticket = ticketService.get(ticketId);
         try{
-            ROOT_FOLDERS = "D:\\src\\";
+            ROOT_FOLDERS = "/home/impolun/data/";
             byte[] bytes = file.getBytes();
             logger.debug(file.getOriginalFilename());
             if(submit.equals("Удалить PDF"))
@@ -419,7 +419,7 @@ public class StudentController {
     }
 
     @PostMapping("/ticket/upload")
-    public String singleFileUpload(@RequestParam("filePdf") MultipartFile file,
+    public String singleFileUpload(@RequestParam("uploadFile") MultipartFile file,
                                    @RequestParam("ticketId") String ticketId,
                                    @RequestParam("submit") String submit) {
         String fullPath, ROOT_FOLDERS;
@@ -427,7 +427,7 @@ public class StudentController {
 
         Ticket ticket = ticketService.get(ticketId);
         try{
-            ROOT_FOLDERS = "D:\\src\\";
+            ROOT_FOLDERS = "/home/impolun/data/";
             byte[] bytes = file.getBytes();
             logger.debug(file.getOriginalFilename());
             if(submit.equals("Загрузить PDF"))

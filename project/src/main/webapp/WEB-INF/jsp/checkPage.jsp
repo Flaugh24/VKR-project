@@ -41,13 +41,13 @@
                             <label for="ticketId" />
                             <input  name="ticketId" id="ticketId" value="${ticketAttribute.id}" style="display: none"/>
                             <div class="form-group">
-                                <label for="filePdf">Загрузите PDF-файл Вашей ВКР</label>
-                                <input  name="filePdf" id="filePdf" type="file" accept="application/pdf"/>
+                                <label for="uploadFile">Загрузите файлы вашей ВКР в формате pdf или zip</label>
+                                <input  name="uploadFile" id="uploadFile" type="file" accept="application/pdf"/>
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="submit" value="Загрузить PDF" class="btn btn-default"/>
+                                <input id="filePdf" type="submit" name="submit" value="Загрузить PDF" class="btn btn-default" disabled="disabled"/>
 
-                                <input type="submit" name="submit" value="Загрузить Архив" class="btn btn-default"/>
+                                <input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>
                             </div>
                         </form>
                     </div>
@@ -228,5 +228,8 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="<c:url value="/resources/js/uploadFile.js"/> "></script>
 </body>
 </html>

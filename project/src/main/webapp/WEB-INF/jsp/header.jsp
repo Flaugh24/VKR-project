@@ -18,9 +18,6 @@
 
     <title>Заявка</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -62,11 +59,11 @@
                                 <form:input path="id" cssStyle="display: none" />
                                 <div class="form-group">
                                     <form:label path="email">E-mail</form:label>
-                                    <form:input path="email" cssClass="form-control" type="email"/>
+                                    <form:input path="email" cssClass="form-control" type="email" name="email" id="email"/>
                                 </div>
                                 <div class="form-group">
                                     <form:label path="phoneNumber">Номер телефона</form:label>
-                                    <form:input path="phoneNumber" cssClass="form-control"/>
+                                    <form:input path="phoneNumber" cssClass="form-control" name="phone" id="phone"/>
                                 </div>
                                 <c:if test="${perm_add_fio_eng==true}">
                                 <form:label path="">ФИО на английском языке</form:label>
@@ -95,5 +92,9 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 </html>

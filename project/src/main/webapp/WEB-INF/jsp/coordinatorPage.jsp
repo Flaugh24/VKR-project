@@ -3,7 +3,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
-<head>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -13,12 +12,10 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css" />" />
     <link rel="stylesheet" href="<c:url value="/resources/css/studentPage.css" />" />
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
     <title>Личный кабинет координатора</title>
 </head>
 <body>
+<c:url value="/readytickets" var="ready"/>
 <c:url value="/ticket/addLazy" var="addLazy"/>
 <c:set value="${coordinator}" var="coordinator" />
 <div class="container-fluid">
@@ -31,7 +28,7 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <c:if test="${not empty ticketsNew}">
-                    <li role="presentation" class="active"><a href="#ticketsNew" aria-controls="ticketsNew" role="tab" data-toggle="tab">Новые (<c:out value="${countTicketsNew}"/>)</a></li>
+                    <li role="presentation"><a href="#ticketsNew" aria-controls="ticketsNew" role="tab" data-toggle="tab">Новые (<c:out value="${countTicketsNew}"/>)</a></li>
                 </c:if>
                 <c:if test="${not empty ticketsInCheck}">
                     <li role="presentation"><a href="#ticketsInCheck" aria-controls="ticketsInCheck" role="tab" data-toggle="tab">Просмотренные (<c:out value="${countTicketsInCheck}" />)</a></li>
@@ -48,7 +45,7 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <c:if test="${not empty ticketsNew}">
-                    <div role="tabpanel" class="tab-pane active" id="ticketsNew">
+                    <div role="tabpanel" class="tab-pane" id="ticketsNew">
                         <div class="panel panel-default" style="margin-top: 10px">
                             <div class="panel-heading">
                                 <h2 class="panel-title">Заявки доступные для проверки</h2>
@@ -121,7 +118,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <% Integer i=0; %>
+                                <% int i=0; %>
                                 <c:forEach items="${ticketsInCheck}" var="ticketInCheck">
                                     <% i++; %>
                                     <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketInCheck.id}" />
@@ -151,9 +148,10 @@
                         <div class="panel-heading">
                             <h2 class="panel-title">Заявки доступные для проверки</h2>
                         </div>
-                        <table class="table table-striped table-bordered" style="text-align: center">
+                        <table class="table table-striped table-bordered" style="text-align: center" id="tableReady">
                             <thead>
                             <tr>
+                                <th rowspan="2" style="vertical-align: middle; text-align: center"><input type="checkbox" id="all"/></th>
                                 <th rowspan="2" style="vertical-align: middle; text-align: center">№</th>
                                 <th rowspan="2" style="vertical-align: middle; text-align: center">№ Заявки</th>
                                 <th rowspan="2" style="vertical-align: middle; text-align: center">Номер группы</th>
@@ -170,12 +168,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <% Integer i=0; %>
+                            <% int i=0; %>
                             <c:forEach items="${ticketsReady}" var="ticketReady">
                                 <% i++; %>
                                 <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}" />
                                 <a href="${checkUrl}">
                                     <tr>
+                                        <td><input type="checkbox" value="${ticketReady}"/></td>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%></a></td>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.id}"/></a></td>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.groupNum}"/></a></td>
@@ -210,7 +209,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <% Integer i=0; %>
+                            <% int i=0; %>
                             <c:forEach items="${lazyStudents}" var="lazyStudent">
                                 <% i++; %>
                                 <a href="${checkUrl}">
@@ -230,9 +229,14 @@
                     </div>
                 </div>
                 </c:if>
-            </div>r
+            </div>
         </div>
+
     </main>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="<c:url value="/resources/js/checkAll.js"/> "></script>
+<script src="<c:url value="/resources/js/coordinator.js"/>"></script>
+
 </body>
 </html>

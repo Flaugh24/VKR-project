@@ -48,7 +48,19 @@ public class StudentCopyService {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("FROM StudentCopy as SC LEFT JOIN FETCH SC.educPrograms as EP where EP.groupNum = '"+groupNum +
-                "' AND SC.username NOT IN( SELECT extId FROM Users)");
+                "' AND SC.username NOT IN( SELECT extId FROM Users) ORDER BY surname");
+
+        return query.list();
+    }
+
+    public List<StudentCopy> getStudentByFIO(String like){
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM StudentCopy where surname like :fioLike or firstName like :fioLike or secondName like :fioLike " );
+
+        session.flush();
+        query.setParameter("fioLike", "%"+like+"%");
 
         return query.list();
     }

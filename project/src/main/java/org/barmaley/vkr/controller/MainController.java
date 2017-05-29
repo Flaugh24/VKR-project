@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,6 +50,9 @@ public class MainController {
     @Resource(name = "permissionTool")
     private PermissionTool permissionTool;
 
+
+    @Resource(name = "studentCopyService")
+    private StudentCopyService studentCopyService;
     /**
      * Handles and retrieves all persons and show it in a JSP page
      * Получает всех персон и показывает их на jsp
@@ -81,6 +86,20 @@ public class MainController {
             return "redirect:/coordinator";
         }
         return null;
+    }
+
+    @GetMapping(value = "/liveSearch")
+    public @ResponseBody
+    List<StudentCopy> getCharNum(@RequestParam String text, HttpServletResponse response, HttpServletRequest request) {
+
+        logger.debug("live search activated");
+
+
+        List<StudentCopy> studentCopyList = studentCopyService.getStudentByFIO(text);
+        for(StudentCopy studentCopy: studentCopyList){
+            logger.debug(studentCopy.getSurname());
+        }
+        return studentCopyList;
     }
 
     /*@RequestMapping(value = "/ticketscoordinator", method = RequestMethod.GET)

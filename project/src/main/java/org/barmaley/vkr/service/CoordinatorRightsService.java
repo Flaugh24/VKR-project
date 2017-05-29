@@ -28,7 +28,7 @@ public class CoordinatorRightsService {
 
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("FROM CoordinatorRights WHERE coordinator.id = :coordinatorId");
+        Query query = session.createQuery("FROM CoordinatorRights WHERE coordinator.id = :coordinatorId ORDER BY groupNum");
         query.setParameter("coordinatorId", coordinatorId);
 
         logger.debug("Coordinator Rights");

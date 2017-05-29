@@ -76,60 +76,12 @@
                         <form:input path="id" cssStyle="display: none" />
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Код направления подготовки</form:label><br/>
-                        <form:input cssClass="form-control" path="dirOfTrain" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Название направления подготовки</form:label><br/>
-                        <form:input cssClass="form-control" path="codeDirOfTrain" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Институт</form:label><br/>
-                        <form:input cssClass="form-control" path="institute" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Кафедра</form:label><br/>
-                        <form:input cssClass="form-control" path="direction" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">ФИО заведующего кафедрой</form:label><br/>
-                        <form:input cssClass="form-control" path="surFirstLastNameDir"/>
-                    </div>
-                    <div class="form-group">
                         <form:label path="title">Тип документа</form:label><br/>
                         <form:input cssClass="form-control" path="documentTypeName" disabled="true"/>
                     </div>
                     <div class="form-group">
                         <form:label path="title">Тип документа на английском</form:label><br/>
                         <form:input cssClass="form-control" path="documentTypeNameEng" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Группа</form:label><br/>
-                        <form:input cssClass="form-control" path="groupNum" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Заглавие работы</form:label>
-                        <form:input cssClass="form-control" path="title"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="titleEng">Заглавие работы на английском языке</form:label>
-                        <form:input cssClass="form-control" path="titleEng"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="annotation">Аннотация</form:label>
-                        <form:textarea cssClass="form-control" path="annotation" rows="5" cssStyle="max-width:100%"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="annotationEng">Аннотация на английском языке</form:label>
-                        <form:textarea cssClass="form-control" path="annotationEng" rows="5" cssStyle="max-width:100%"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="keyWords">Ключевые слова</form:label>
-                        <form:input cssClass="form-control" path="keyWords"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="keyWordsEng">Ключевые слова на английском языке</form:label>
-                        <form:input cssClass="form-control" path="keyWordsEng"/>
                     </div>
                     <div class="form-group">
                         <form:label path="title">ФИО научного руководителя</form:label><br/>
@@ -139,28 +91,128 @@
                         <form:label path="title">ФИО научного руководителя на английском</form:label><br/>
                         <form:input cssClass="form-control" path="sflNMasterEng" />
                     </div>
+                    <%--<div class="form-group">--%>
+                    <%--<form:label path="title">Ученая степень руководителя</form:label><br/>--%>
+                    <%--<form:input cssClass="form-control" path="degreeOfCurator" disabled="true"/>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                    <%--<form:label path="title">Ученая степень руководителя на английском</form:label><br/>--%>
+                    <%--<form:input cssClass="form-control" path="degreeOfCuratorEng" disabled="true"/>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                    <%--<form:label path="title">Должность руководителя</form:label><br/>--%>
+                    <%--<form:input cssClass="form-control" path="posOfCurator" disabled="true"/>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                    <%--<form:label path="title">Должность руководителя на английском</form:label><br/>--%>
+                    <%--<form:input cssClass="form-control" path="posOfCuratorEng" disabled="true"/></div>--%>
                     <div class="form-group">
-                        <form:label path="title">Ученая степень руководителя</form:label><br/>
-                        <form:input cssClass="form-control" path="degreeOfCurator" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Ученая степень руководителя на английском</form:label><br/>
-                        <form:input cssClass="form-control" path="degreeOfCuratorEng" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Должность руководителя</form:label><br/>
-                        <form:input cssClass="form-control" path="posOfCurator" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <form:label path="title">Должность руководителя на английском</form:label><br/>
-                        <form:input cssClass="form-control" path="posOfCuratorEng" disabled="true"/></div>
-                    <div class="form-group">
+                        <div class="form-group">
+                            <form:label path="title">Заглавие работы</form:label>
+                            <form:input cssClass="form-control" path="title"/>
+                        </div>
+                        <div class="form-group">
+                            <form:label path="titleEng">Заглавие работы на английском языке</form:label>
+                            <form:input cssClass="form-control" path="titleEng"/>
+                        </div>
+                        <div class="form-group">
+                            <form:label path="title">Место публикации</form:label><br/>
+                            <form:input cssClass="form-control" path="placeOfPublic" />
+                        </div>
+                        <div class="form-group">
+                            <form:label path="title">Место публикации на английском</form:label><br/>
+                            <form:input cssClass="form-control" path="placeOfPublicEng" />
+                        </div>
+                        <div class="form-group">
+                            <form:label path="title">Год публикации</form:label><br/>
+                            <form:input cssClass="form-control" path="dateOfPublic" disabled="true"/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <form:label path="annotation">Аннотация</form:label>
+                            <form:textarea cssClass="form-control" path="annotation" rows="5" cssStyle="max-width:100%"/>
+                        </div>
+                        <div class="form-group">
+                            <form:label path="annotationEng">Аннотация на английском языке</form:label>
+                            <form:textarea cssClass="form-control" path="annotationEng" rows="5" cssStyle="max-width:100%"/>
+                        </div>
+                        <div class="form-group">
+                            <form:label path="annotationEng">Ключевые слова</form:label>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="Первое слово" path="word1"/>
+                                </div>
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="Второе слово" path="word2"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="Третье слово" path="word3"/>
+                                </div>
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="Четвертое слово" path="word4"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="annotationEng">Ключевые слова на английском языке</form:label>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="The first word" path="word1Eng"/>
+                                </div>
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="The second word" path="word2Eng"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="The third word" path="word3Eng"/>
+                                </div>
+                                <div class="col-xs-6">
+                                    <form:input cssClass="form-control" placeholder="The fourth word" path="word4Eng"/>
+                                </div>
+                            </div>
+                        </div>
+
                         <form:label path="typeOfUseId">Свободный доступ из сети</form:label>
                         <form:select path="typeOfUseId" cssClass="form-control" cssStyle="width: auto">
                             <c:forEach items="${typeOfUse}" var="typeOfUse">
                                 <form:option value="${typeOfUse.id}"><c:out value="${typeOfUse.name}" /></form:option>>
                             </c:forEach>
                         </form:select>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="title">Направления подготовки</form:label><br/>
+                        <form:input cssClass="form-control" path="direction" disabled="true"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="title">Код направления подготовки</form:label><br/>
+                        <form:input cssClass="form-control" path="directionCode" disabled="true"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="title">Институт</form:label><br/>
+                        <form:input cssClass="form-control" path="institute" disabled="true"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="title">Группа</form:label><br/>
+                        <form:input cssClass="form-control" path="groupNum" disabled="true"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="title">Кафедра</form:label><br/>
+                        <form:input cssClass="form-control" path="department" disabled="true"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="title">ФИО заведующего кафедрой</form:label><br/>
+                        <form:input cssClass="form-control" path="surFirstLastNameDir"/>
                     </div>
                     <div class="form-group">
                         <input type="submit" name="button" formaction="${saveUrl}" value="Сохранить изменения" class="btn btn-default"/>

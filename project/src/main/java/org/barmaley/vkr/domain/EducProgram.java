@@ -32,28 +32,11 @@ public class EducProgram implements Serializable {
     @Column(name = "DIRECTION")
     private String direction;
 
-    @Column(name = "SPECIALTY")
-    private String specialty;
+    @Column(name = "DIRECTION_CODE")
+    private String directionCode;
 
-    //----------------------------------------------------
-    @Column(name = "DIR_OF_TRAIN")
-    private String dirOfTrain;
-
-    @Column(name = "CODE_DIR_OF_TRAIN")
-    private String codeDirOfTrain;
-
-    @Column(name = "DEGREE_OF_CURATOR")
-    private String degreeOfCurator;
-
-    @Column(name = "DEGREE_OF_CURATOR_ENG")
-    private String degreeOfCuratorEng;
-
-    @Column(name = "POS_OF_CURATOR")
-    private String posOfCurator;
-
-    @Column(name = "POS_OF_CURATOR_ENG")
-    private String posOfCuratorEng;
-    //----------------------------------------------------
+    @Column(name = "DEPARTMENT")
+    private String department;
 
     @ManyToMany(mappedBy = "educPrograms")
     private Set<StudentCopy> studentCopies;
@@ -98,12 +81,20 @@ public class EducProgram implements Serializable {
         this.direction = direction;
     }
 
-    public String getSpecialty() {
-        return specialty;
+    public String getDirectionCode() {
+        return directionCode;
     }
 
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
+    public void setDirectionCode(String directionCode) {
+        this.directionCode = directionCode;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public static long getSerialVersionUID() {
@@ -118,51 +109,4 @@ public class EducProgram implements Serializable {
         this.studentCopies = studentCopies;
     }
 
-    public String getDirOfTrain() {
-        return dirOfTrain;
-    }
-
-    public void setDirOfTrain(String dirOfTrain) {
-        this.dirOfTrain = dirOfTrain;
-    }
-
-    public String getCodeDirOfTrain() {
-        return codeDirOfTrain;
-    }
-
-    public void setCodeDirOfTrain(String codeDirOfTrain) {
-        this.codeDirOfTrain = codeDirOfTrain;
-    }
-
-    public String getDegreeOfCurator() {
-        return degreeOfCurator;
-    }
-
-    public void setDegreeOfCurator(String degreeOfCurator) {
-        this.degreeOfCurator = degreeOfCurator;
-    }
-
-    public String getDegreeOfCuratorEng() {
-        return degreeOfCuratorEng;
-    }
-
-    public void setDegreeOfCuratorEng(String degreeOfCuratorEng) {
-        this.degreeOfCuratorEng = degreeOfCuratorEng;
-    }
-
-    public String getPosOfCurator() {
-        return posOfCurator;
-    }
-
-    public void setPosOfCurator(String posOfCurator) {
-        this.posOfCurator = posOfCurator;
-    }
-
-    public String getPosOfCuratorEng() {
-        return posOfCuratorEng;
-    }
-
-    public void setPosOfCuratorEng(String posOfCuratorEng) {
-        this.posOfCuratorEng = posOfCuratorEng;
-    }
 }

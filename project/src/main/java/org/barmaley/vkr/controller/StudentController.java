@@ -445,6 +445,7 @@ public class StudentController {
                 Files.write(path, bytes);
                 ticket.setFilePdf(fullPath);
                 ticketService.editPdf(ticket);
+                logger.debug("end if");
 
             }
             else

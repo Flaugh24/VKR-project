@@ -318,7 +318,7 @@ public class StudentController {
 
         Ticket ticket = ticketService.get(ticketId);
         try{
-            ROOT_FOLDERS = "D:\\src\\";
+            ROOT_FOLDERS = "/home/gagarkin/tmp/";
             byte[] bytes = file.getBytes();
             logger.debug(file.getOriginalFilename());
             if(submit.equals("Удалить PDF"))
@@ -350,7 +350,7 @@ public class StudentController {
 
         Ticket ticket = ticketService.get(ticketId);
         try{
-            ROOT_FOLDERS = "D:\\src\\";
+            ROOT_FOLDERS = "/home/gagarkin/tmp/";
             byte[] bytes = file.getBytes();
             logger.debug(file.getOriginalFilename());
             if(submit.equals("Загрузить PDF"))

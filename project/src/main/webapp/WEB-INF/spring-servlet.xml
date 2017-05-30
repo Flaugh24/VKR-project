@@ -15,7 +15,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/"
 				   cache-period="31556926"/>
 
-	<mvc:resources mapping="/files/**" location="file:/home/gagarkin/tmp/"/>
+	<mvc:resources mapping="/files/**" location="file:/home/impolun/data/"/>
 
 
 </beans>

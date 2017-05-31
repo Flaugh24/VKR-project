@@ -307,6 +307,8 @@ public class StudentController {
             dto.setSurFirstLastNameDir(ticket.getSurFirstLastNameDir());
             dto.setSflNMaster(ticket.getSflNMaster());
             dto.setSflNMasterEng(ticket.getSflNMasterEng());
+            dto.setPosOfCurator(ticket.getPosOfCurator());
+            dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
             //-----------------------------------------------------
             model.addAttribute("user", user);
             model.addAttribute("ticketAttribute", dto);
@@ -342,6 +344,8 @@ public class StudentController {
         ticket.setSurFirstLastNameDir(dto.getSurFirstLastNameDir());
         ticket.setSflNMaster(dto.getSflNMaster());
         ticket.setSflNMasterEng(dto.getSflNMasterEng());
+        ticket.setPosOfCurator(dto.getPosOfCurator());
+        ticket.setDegreeOfCurator(dto.getDegreeOfCurator());
         //----------------------------------------------------
 
         if(button.equals("Отправить на проверку")){

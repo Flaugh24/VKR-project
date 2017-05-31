@@ -3,6 +3,7 @@ package org.barmaley.vkr.controller;
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
+import org.barmaley.vkr.dto.TagDTO;
 import org.barmaley.vkr.service.*;
 import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.Tool.PermissionTool;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -51,8 +53,8 @@ public class MainController {
     private PermissionTool permissionTool;
 
 
-    @Resource(name = "studentCopyService")
-    private StudentCopyService studentCopyService;
+    @Resource(name = "employeeCopyService")
+    private EmployeeCopyService employeeCopyService;
     /**
      * Handles and retrieves all persons and show it in a JSP page
      * Получает всех персон и показывает их на jsp
@@ -85,22 +87,24 @@ public class MainController {
         } else if (check_tickets == true){
             return "redirect:/coordinator";
         }
-        return null;
+        return "pnh";
     }
 
-    @GetMapping(value = "/liveSearch")
+    @RequestMapping(value = "/getTags", method = RequestMethod.GET)
     public @ResponseBody
-    List<StudentCopy> getCharNum(@RequestParam String text, HttpServletResponse response, HttpServletRequest request) {
+    List<EmployeeCopy> getTags(@RequestParam String tagName) {
 
-        logger.debug("live search activated");
+        return simulateSearchResult(tagName);
 
-
-        List<StudentCopy> studentCopyList = studentCopyService.getStudentByFIO(text);
-        for(StudentCopy studentCopy: studentCopyList){
-            logger.debug(studentCopy.getSurname());
-        }
-        return studentCopyList;
     }
+
+    private List<EmployeeCopy> simulateSearchResult(String tagName) {
+
+        List<EmployeeCopy> result = employeeCopyService.getEmployeeByFIO(tagName);
+
+        return result;
+    }
+
 
     /*@RequestMapping(value = "/ticketscoordinator", method = RequestMethod.GET)
     public String getTIcketsCoordinatorLK(Model model){

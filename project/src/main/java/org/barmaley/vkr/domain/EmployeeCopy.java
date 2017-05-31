@@ -31,6 +31,12 @@ public class EmployeeCopy {
     @Column(name = "SECOND_NAME")
     private String secondName;
 
+    @Column(name = "DEGREE")
+    private String degree;
+
+    @Column(name = "POSITION")
+    private String position;
+
     @Column(name = "INSTITUTE_ID")
     private String instituteId;
 
@@ -77,6 +83,22 @@ public class EmployeeCopy {
         this.secondName = secondName;
     }
 
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
     public String getInstituteId() {
         return instituteId;
     }
@@ -92,4 +114,6 @@ public class EmployeeCopy {
     public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
     }
+
+
 }

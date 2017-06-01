@@ -23,7 +23,7 @@
 <body style="overflow-y: hidden">
 
 <c:url var="uploadUrl" value="/ticket/upload" />
-<c:url var="deleteUrl" value="/ticket/deletepdf" />
+<c:url var="deleteUrl" value="/ticket/delete" />
 <c:url var="deleteUrlrar" value="/ticket/deleterar" />
 <c:url var="saveUrl" value="/ticket/edit?ticketId=${ticketAttribute.id}" />
 <c:url var="pdfDocument" value="/pdfDocument?ticketId=${ticketAttribute.id}" />
@@ -43,43 +43,78 @@
         <div class="row">
             <div class="col-md-5" style="max-height: 100vh; overflow-y: auto; padding-bottom: 100px">
                 <h2>Номер заявки <c:out value="${ticketAttribute.id}" /></h2>
-                <c:if test="${ticketAttribute.status.id == 1}">
-                    <c:if test="${ticketAttribute.filePdf == null }">
-                        <div>
-                            <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
-                                <label for="ticketId"></label>
-                                <input  name="ticketId" id="ticketId" value="${ticketAttribute.id}" style="display: none"/>
-                                <div class="form-group">
-                                    <label for="uploadFile">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
-                                    <input  class="${varclass}" name="uploadFile" id="uploadFile" type="file" accept=".zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compresse,application/pdf"/>
-                                </div>
-                                <div class="form-group">
-                                    <input id="filePdf" type="submit" name="submit" value="Загрузить PDF" class="btn btn-default" disabled="disabled"/>
 
-                                    <input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>
-                                </div>
-                            </form>
-                        </div>
-                    </c:if>
+<c:if test="${ticketAttribute.status.id == 1}">
+                <c:if test="${ticketAttribute.filePdf == null }">
+                    <div>
+                        <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
+                            <label for="ticketId" />
+                            <input  name="ticketId" id="ticketId" value="${ticketAttribute.id}" style="display: none"/>
+                            <div class="form-group">
+                                <label for="uploadFile">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
+                                <input  name="uploadFile" id="uploadFile" type="file" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" name="submit" value="Загрузить" class="btn btn-default"/>
+                               <%--<input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>--%>
+                            </div>
+                        </form>
 
-                    <c:if test="${ticketAttribute.filePdf != null }">
+                    </div>
+                    <c:if test="${ticketAttribute.fileRar != null }">
                         <div>
                             <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
-                                <title for="ticketId"></title>
-                                <input  name="ticketId" id="ticketId1" value="${ticketAttribute.id}" style="display: none"/>
-                                <div class="form-group">
-                                    <label for="uploadFile1">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
-                                    <input  name="uploadFile" id="uploadFile1" type="file" accept="application/pdf"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" name="submit" value="Удалить PDF" class="btn btn-default"/>
-
-                                    <input type="submit" name="submit" value="Загрузить Архив" class="btn btn-default"/>
-                                </div>
+                                <label for="ticketId" />
+                                <input  name="ticketId" id="ticketId2" value="${ticketAttribute.id}" style="display: none"/>
+                                <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
+                                    <%--<input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>--%>
                             </form>
                         </div>
+
                     </c:if>
                 </c:if>
+                <c:if test="${ticketAttribute.filePdf != null }">
+                    <c:if test="${ticketAttribute.fileRar != null }">
+                        <div>
+                            <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
+                                <label for="ticketId" />
+                                <input  name="ticketId" id="ticketId2" value="${ticketAttribute.id}" style="display: none"/>
+                                <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
+                                    <%--<input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>--%>
+                            </form>
+                        </div>
+
+                    </c:if>
+                    <c:if test="${ticketAttribute.fileRar == null }">
+                        <div>
+                            <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
+                                <label for="ticketId" />
+                                <input  name="ticketId" id="ticketId6" value="${ticketAttribute.id}" style="display: none"/>
+                                <div class="form-group">
+                                    <label for="uploadFile6">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
+                                    <input  name="uploadFile" id="uploadFile6" type="file" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" name="submit" value="Загрузить" class="btn btn-default"/>
+                                        <%--<input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>--%>
+                                </div>
+                            </form>
+
+                        </div>
+                    </c:if>
+                    <div>
+                        <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
+                            <label for="ticketId" />
+                            <input  name="ticketId" id="ticketId3" value="${ticketAttribute.id}" style="display: none"/>
+                            <div class="form-group">
+                                <input type="submit" name="submit" value="Удалить PDF" class="btn btn-default"/>
+                                    <%--<input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>--%>
+                            </div>
+                        </form>
+                    </div>
+                    </c:if>
+                </c:if>
+
                 <form:form commandName="ticketAttribute" method="POST">
                     <div>
                         <form:label path="id" cssStyle="display: none" />

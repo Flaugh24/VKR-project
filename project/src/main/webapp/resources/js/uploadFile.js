@@ -2,17 +2,11 @@
  * Created by gagarkin on 29.05.17.
  */
 
-var filePdf = ['pdf']; // массив расширений
-var fileZip = ['zip'];
+var file = ['pdf', 'zip']; // массив расширений
 $('input[type=file]').change(function(){
     var parts = $(this).val().split('.');
-    if(filePdf.join().search(parts[parts.length - 1]) !== -1) {
-        $("#filePdf").prop("disabled", false);
-        $("#fileZip").prop("disabled", true);
-    }
-    else if(fileZip.join().search(parts[parts.length - 1]) !== -1){
-        $("#fileZip").prop("disabled", false);
-        $("#filePdf").prop("disabled", true);
+    if(file.join().search(parts[parts.length - 1]) !== -1) {
+        $("#upload").prop("disabled", false);
     }
     else {
         alert('Выберите файл в формате PDF или ZIP');

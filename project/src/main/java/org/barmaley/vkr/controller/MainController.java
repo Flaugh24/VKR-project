@@ -93,7 +93,7 @@ public class MainController {
     @RequestMapping(value = "/getTags", method = RequestMethod.GET)
     public @ResponseBody
     List<EmployeeCopy> getTags(@RequestParam String tagName) {
-
+        logger.debug("get tags");
         return simulateSearchResult(tagName);
 
     }

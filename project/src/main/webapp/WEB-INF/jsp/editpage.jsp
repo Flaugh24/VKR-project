@@ -54,7 +54,7 @@
                                 <input  name="uploadFile" id="uploadFile" type="file" />
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="submit" value="Загрузить" class="btn btn-default"/>
+                                <input id="upload" type="submit" name="submit" value="Загрузить" class="btn btn-default" disabled/>
                                <%--<input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>--%>
                             </div>
                         </form>
@@ -279,16 +279,34 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/uploadFile.js"/> "></script>
 <script src="<c:url value="/resources/js/jquery.autocomplete.min.js"/> "></script>
-<script src="<c:url value="/resources/libs/jquery-validation/dist/jquery.validate.min.js" />"></script>
-<script src="<c:url value="/resources/libs/jquery-validation/src/localization/messages_ru.js"/> "></script>
+<script src="<c:url value="/resources/js/jquery.validate.min.js" />"></script>
+<script src="<c:url value="/resources/js/messages_ru.js"/> "></script>
+
 <script>
-$(document).ready(
+    $(document).ready(function(){
+        $('#send').click(function () {
+            $("#ticketform").validate({
+                lang: 'ru',
+
+                rules:{
+
+                    title:{
+                        required: true,
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(
         function ($) {
             $('.disabledEdit').prop("disabled", true);
         }
     );
 
-    $(form).keydown(function(event){
+    $('#ticketform').keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
             return false;
@@ -323,23 +341,5 @@ $(document).ready(
     });
 
 </script>
-
-<script>
-    $(document).ready(function(){
-        $('#send').click(function () {
-            $("#ticketform").validate({
-                lang: 'ru',
-
-                rules:{
-
-                    title:{
-                        required: true,
-                    }
-                }
-            });
-        });
-    });
-</script>
-
 </body>
 </html>

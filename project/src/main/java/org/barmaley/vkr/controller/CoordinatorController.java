@@ -288,6 +288,13 @@ public class CoordinatorController {
         ticket.setSflNMasterEng(dto.getSflNMasterEng());
         //----------------------------------------------------
 
+        if(button.equals("Загрузить регистрационный лист")){
+            return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
+        };
+        if(button.equals("Загрузить лицензионный договор")){
+            return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
+        }
+
         if(button.equals("save")){
             logger.debug("Status 3");
             ticket.setStatus(statusService.get(3));
@@ -296,6 +303,7 @@ public class CoordinatorController {
             ticket.setStatus(statusService.get(4));
             ticket.setDateCheckCoordinatorFinish(new Date());
         }
+
         ticketService.edit(ticket);
 
 

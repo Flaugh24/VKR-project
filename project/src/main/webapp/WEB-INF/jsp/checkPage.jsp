@@ -251,6 +251,8 @@
                     <div class="form-group">
                         <button type="submit" name="button" formaction="${saveUrl}" value="save" class="btn btn-default">Сохранить изменения</button>
                         <button type="submit" name="button" formaction="${saveUrl}" value="ready" class="btn btn-default">Готова к передаче в ИБК</button>
+                        <input type="submit" name="button" formaction="${saveUrl}" value="Загрузить регистрационный лист" class="btn btn-default"/>
+                        <input type="submit" name="button" formaction="${saveUrl}" value="Загрузить лицензионный договор" class="btn btn-default"/>
                     </div>
                 </form:form>
             </div>

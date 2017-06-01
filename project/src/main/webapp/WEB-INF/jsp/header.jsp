@@ -53,39 +53,39 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="myModalLabel">Настройки профиля</h4>
                         </div>
+                        <form:form commandName="user" action="${saveUrl}" method="post" id="profileform">
                         <div class="modal-body">
-                            <form:form commandName="user" action="${saveUrl}" method="post" id="profile">
                                 <form:label path="id" cssStyle="display: none" />
                                 <form:input path="id" cssStyle="display: none" />
                                 <div class="form-group">
                                     <form:label path="email">E-mail</form:label>
-                                    <form:input path="email" cssClass="form-control" type="email" name="email" id="email"/>
+                                    <form:input path="email" cssClass="form-control" type="email" name="email" id="email" required="required"/>
                                 </div>
                                 <div class="form-group">
                                     <form:label path="phoneNumber">Номер телефона</form:label>
-                                    <form:input path="phoneNumber" cssClass="form-control" name="phone" id="phone"/>
+                                    <form:input path="phoneNumber" cssClass="form-control" name="phone" id="phone" required="required"/>
                                 </div>
                                 <c:if test="${perm_add_fio_eng==true}">
                                 <form:label path="">ФИО на английском языке</form:label>
                                     <div class="form-group">
                                         <form:label path="firstNameEng"/>
-                                        <form:input path="firstNameEng" cssClass="form-control" placeholder="Фамилия"/>
+                                        <form:input path="firstNameEng" cssClass="form-control" placeholder="Фамилия" required="required"/>
                                     </div>
                                     <div class="form-group">
                                         <form:label path="surnameEng"/>
-                                        <form:input path="surnameEng" cssClass="form-control" placeholder="Имя"/>
+                                        <form:input path="surnameEng" cssClass="form-control" placeholder="Имя" required="required"/>
                                     </div>
                                     <div class="form-group">
                                         <form:label path="secondNameEng"/>
-                                        <form:input path="secondNameEng" cssClass="form-control" placeholder="Отчество"/>
+                                        <form:input path="secondNameEng" cssClass="form-control" placeholder="Отчество" required="required"/>
                                     </div>
                                 </c:if>
-                            </form:form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                            <button type="button" class="btn btn-primary" onclick="document.forms['profile'].submit()">Сохранить изменения</button>
+                            <input type="submit" class="btn btn-primary" value="Сохранить изменения"/>
                         </div>
+                        </form:form>
                     </div>
                 </div>
             </div>
@@ -95,6 +95,26 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="<c:url value="/resources/libs/jquery-validation/dist/jquery.validate.min.js"/> "></script>
+<script src="<c:url value="/resources/libs/jquery-validation/src/localization/messages_ru.js"/> "></script>
+<script>
+    $(document).ready(function(){
+        console.log("validate");
+        $("#profileform").validate({
+            rules:{
+                email:{
+                    required: true,
+                },
+                phone:{
+                    required: true,
+                },
+                onkeyup: false,
+                onclick: false,
+                onfocusout: false
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

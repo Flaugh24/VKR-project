@@ -80,9 +80,9 @@ public class MainController {
         CustomUser principal = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Users user = usersService.getById(principal.getId());
         Set<Roles> roles = user.getRoles();
-        Boolean add_tciket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
+        Boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
         Boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
-        if(add_tciket_for_educ_program == true){
+        if(add_ticket_for_educ_program == true){
             return "redirect:/student";
         } else if (check_tickets == true){
             return "redirect:/coordinator";

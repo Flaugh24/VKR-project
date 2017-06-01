@@ -20,7 +20,6 @@
     <title>Заявка <c:out value="${ticketAttribute.id}" /></title>
 
 </head>
-<body style="overflow-y: hidden">
 
 <c:url var="uploadUrl" value="/ticket/upload" />
 <c:url var="deleteUrl" value="/ticket/deletepdf" />
@@ -80,7 +79,7 @@
                         </div>
                     </c:if>
                 </c:if>
-                <form:form commandName="ticketAttribute" method="POST">
+                <form:form commandName="ticketAttribute" method="POST" id="ticketform">
                     <div>
                         <form:label path="id" cssStyle="display: none" />
                         <form:input path="id" cssStyle="display: none" />
@@ -95,43 +94,44 @@
                     </div>
                     <div class="form-group">
                         <form:label path="title">ФИО научного руководителя</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="sflNMaster" id="w-input-search"/>
+                        <form:input cssClass="form-control ${varclass}" path="sflNMaster" id="w-input-search" required="required"/>
                     </div>
                     <div class="form-group">
                         <form:label path="title">ФИО научного руководителя на английском</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="sflNMasterEng" />
+                        <form:input cssClass="form-control ${varclass}" path="sflNMasterEng" required="required"/>
                     </div>
                     <div class="form-group">
                     <form:label path="title">Ученая степень руководителя</form:label><br/>
-                    <form:input cssClass="form-control ${varclass}" path="degreeOfCurator" id="degree"/>
+                    <form:input cssClass="form-control ${varclass}" path="degreeOfCurator" id="degree" required="required"/>
                     </div>
                     <div class="form-group">
                     <form:label path="title">Ученая степень руководителя на английском</form:label><br/>
-                    <form:input cssClass="form-control ${varclass}" path="degreeOfCuratorEng" disabled="true"/>
+                    <form:input cssClass="form-control ${varclass}" path="degreeOfCuratorEng" required="required"/>
                     </div>
                     <div class="form-group">
                     <form:label path="title">Должность руководителя</form:label><br/>
-                    <form:input cssClass="form-control ${varclass}" path="posOfCurator" id="position"/>
+                    <form:input cssClass="form-control ${varclass}" path="posOfCurator" id="position" required="required"/>
                     </div>
                     <div class="form-group">
                     <form:label path="title">Должность руководителя на английском</form:label><br/>
-                    <form:input cssClass="form-control ${varclass}" path="posOfCuratorEng" disabled="true"/></div>
+                    <form:input cssClass="form-control ${varclass}" path="posOfCuratorEng" required="required"/>
+                    </div>
                     <div class="form-group">
                         <div class="form-group">
                             <form:label path="title">Заглавие работы</form:label>
-                            <form:input cssClass="form-control ${varclass}" path="title"/>
+                            <form:input cssClass="form-control ${varclass}" path="title" name="title" required="required"/>
                         </div>
                         <div class="form-group">
                             <form:label path="titleEng">Заглавие работы на английском языке</form:label>
-                            <form:input cssClass="form-control ${varclass}" path="titleEng"/>
+                            <form:input cssClass="form-control ${varclass}" path="titleEng" required="required"/>
                         </div>
                         <div class="form-group">
                             <form:label path="title">Место публикации</form:label><br/>
-                            <form:input cssClass="form-control ${varclass}" path="placeOfPublic" />
+                            <form:input cssClass="form-control ${varclass}" path="placeOfPublic" required="required"/>
                         </div>
                         <div class="form-group">
                             <form:label path="title">Место публикации на английском</form:label><br/>
-                            <form:input cssClass="form-control ${varclass}" path="placeOfPublicEng" />
+                            <form:input cssClass="form-control ${varclass}" path="placeOfPublicEng" required="required"/>
                         </div>
                         <div class="form-group">
                             <form:label path="title">Год публикации</form:label><br/>
@@ -141,20 +141,20 @@
 
                         <div class="form-group">
                             <form:label path="annotation">Аннотация</form:label>
-                            <form:textarea cssClass="form-control ${varclass}" path="annotation" rows="5" cssStyle="max-width:100%"/>
+                            <form:textarea cssClass="form-control ${varclass}" path="annotation" rows="5" cssStyle="max-width:100%" required="required"/>
                         </div>
                         <div class="form-group">
                             <form:label path="annotationEng">Аннотация на английском языке</form:label>
-                            <form:textarea cssClass="form-control ${varclass}" path="annotationEng" rows="5" cssStyle="max-width:100%"/>
+                            <form:textarea cssClass="form-control ${varclass}" path="annotationEng" rows="5" cssStyle="max-width:100%" required="required"/>
                         </div>
                         <div class="form-group">
                             <form:label path="annotationEng">Ключевые слова</form:label>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Первое слово" path="word1"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Первое слово" path="word1" required="required"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Второе слово" path="word2"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Второе слово" path="word2" required="required"/>
                                 </div>
                             </div>
 
@@ -162,10 +162,10 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Третье слово" path="word3"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Третье слово" path="word3" required="required"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Четвертое слово" path="word4"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Четвертое слово" path="word4" required="required"/>
                                 </div>
                             </div>
                         </div>
@@ -174,10 +174,10 @@
                             <form:label path="annotationEng">Ключевые слова на английском языке</form:label>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The first word" path="word1Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The first word" path="word1Eng" required="required"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The second word" path="word2Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The second word" path="word2Eng" required="required"/>
                                 </div>
                             </div>
 
@@ -185,10 +185,10 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The third word" path="word3Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The third word" path="word3Eng" required="required"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The fourth word" path="word4Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The fourth word" path="word4Eng" required="required"/>
                                 </div>
                             </div>
                         </div>
@@ -222,12 +222,12 @@
                     </div>
                     <div class="form-group">
                         <form:label path="title">ФИО заведующего кафедрой</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="surFirstLastNameDir"/>
+                        <form:input cssClass="form-control ${varclass}" path="surFirstLastNameDir" required="required"/>
                     </div>
                     <c:if test="${ticketAttribute.status.id == 1}">
                     <div class="form-group">
-                        <input type="submit" name="button" formaction="${saveUrl}" value="Сохранить изменения" class="btn btn-default"/>
-                        <input type="submit" name="button" formaction="${saveUrl}" value="Отправить на проверку" class="btn btn-default"/>
+                        <a href="#" onclick="document.getElementById('ticketform').submit()"><button name="button" value="Сохранить изменения" class="btn btn-default">Сохранить изменения</button></a>
+                        <input id="send" type="submit" name="button" formaction="${saveUrl}" value="Отправить на проверку" class="btn btn-default"/>
                     </div>
                     </c:if>
                 </form:form>
@@ -244,12 +244,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/uploadFile.js"/> "></script>
 <script src="<c:url value="/resources/js/jquery.autocomplete.min.js"/> "></script>
+<script src="<c:url value="/resources/libs/jquery-validation/dist/jquery.validate.min.js" />"></script>
+<script src="<c:url value="/resources/libs/jquery-validation/src/localization/messages_ru.js"/> "></script>
 <script>
-    $(document).ready(
+$(document).ready(
         function ($) {
             $('.disabledEdit').prop("disabled", true);
         }
     );
+
+    $(form).keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
 
 
     $('#w-input-search').autocomplete({
@@ -278,6 +287,23 @@
         }
     });
 
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('#send').click(function () {
+            $("#ticketform").validate({
+                lang: 'ru',
+
+                rules:{
+
+                    title:{
+                        required: true,
+                    }
+                }
+            });
+        });
+    });
 </script>
 
 </body>

@@ -14,6 +14,7 @@ public class TicketEditDTO {
     private Status status;
     private Integer documentTypeId;
     private String filePdf;
+    private String fileRar;
     private Integer typeOfUseId;
     private String typeOfUseName;
     //----------------------------------------------------
@@ -375,5 +376,13 @@ public class TicketEditDTO {
 
     public void setDateOfPublic(String dateOfPublic) {
         this.dateOfPublic = dateOfPublic;
+    }
+
+    public String getFileRar() {
+        return fileRar;
+    }
+
+    public void setFileRar(String fileRar) {
+        this.fileRar = fileRar;
     }
 }

@@ -176,6 +176,8 @@ public class TicketService {
         existingTicket.setSurFirstLastNameDir(ticket.getSurFirstLastNameDir());
         existingTicket.setSflNMaster(ticket.getSflNMaster());
         existingTicket.setSflNMasterEng(ticket.getSflNMasterEng());
+        existingTicket.setPosOfCurator(ticket.getPosOfCurator());
+        existingTicket.setDegreeOfCurator(ticket.getDegreeOfCurator());
         //-------------------------------------------------------------------
         session.save(existingTicket);
     }

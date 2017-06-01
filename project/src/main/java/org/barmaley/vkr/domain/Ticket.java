@@ -107,6 +107,12 @@ public class Ticket implements Serializable {
 
     @Column(name = "SFL_N_MASTER_ENG")
     private String sflNMasterEng;
+
+    @Column(name = "POSITION_OF_CURATOR")
+    private String posOfCurator;
+
+    @Column(name = "DEGREE_OF_CURATOR")
+    private String degreeOfCurator;
     //----------------------------------------------------
 
     public static long getSerialVersionUID() {
@@ -341,6 +347,22 @@ public class Ticket implements Serializable {
 
     public void setSflNMasterEng(String sflNMasterEng) {
         this.sflNMasterEng = sflNMasterEng;
+    }
+
+    public String getPosOfCurator() {
+        return posOfCurator;
+    }
+
+    public void setPosOfCurator(String posOfCurator) {
+        this.posOfCurator = posOfCurator;
+    }
+
+    public String getDegreeOfCurator() {
+        return degreeOfCurator;
+    }
+
+    public void setDegreeOfCurator(String degreeOfCurator) {
+        this.degreeOfCurator = degreeOfCurator;
     }
 }
 

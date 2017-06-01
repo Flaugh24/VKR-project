@@ -53,16 +53,5 @@ public class StudentCopyService {
         return query.list();
     }
 
-    public List<StudentCopy> getStudentByFIO(String like){
-
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery("FROM StudentCopy where surname like :fioLike or firstName like :fioLike or secondName like :fioLike " );
-
-        session.flush();
-        query.setParameter("fioLike", "%"+like+"%");
-
-        return query.list();
-    }
 }
 

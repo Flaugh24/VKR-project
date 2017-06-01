@@ -40,14 +40,42 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <script src="<c:url value="/resources/js/search.js"/> "></script>
+    <script src="<c:url value="/resources/js/jquery.autocomplete.min.js"/> "></script>
 </head>
 <body>
 
+<div>
+    <input type="text"  id="w-input-search" value="">
+    <span>
+        <button id="w-button-search" type="button">Search</button>
+    </span>
+</div>
 
-<input type="text" name="referal" placeholder="Живой поиск" value="" class="who"  autocomplete="off">
-<ul class="search_result"></ul>
+<script>
+    $(document).ready(function() {
 
+        $('#w-input-search').autocomplete({
+            serviceUrl: '${pageContext.request.contextPath}/getTags',
+            paramName: "fio",
+            delimiter: ",",
+            transformResult: function(response) {
+
+                return {
+
+                    suggestions: $.map($.parseJSON(response), function(item) {
+
+                        return { value: item.fio, data: item.id };
+                    })
+
+                };
+
+            }
+
+        });
+
+
+    });
+</script>
 
 
 </body>

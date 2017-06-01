@@ -17,6 +17,7 @@
 <body>
 <c:url value="/readytickets" var="ready"/>
 <c:url value="/ticket/addLazy" var="addLazy"/>
+<c:url value="/createAct" var="createAct"/>
 <c:set value="${coordinator}" var="coordinator" />
 <div class="container-fluid">
     <header>
@@ -144,53 +145,57 @@
                 </c:if>
                 <c:if test="${not empty ticketsReady}">
                 <div role="tabpanel" class="tab-pane" id="ticketsReady">
-                    <div class="panel panel-default" style="margin-top: 10px">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">Заявки доступные для проверки</h2>
-                        </div>
-                        <table class="table table-striped table-bordered" style="text-align: center" id="tableReady">
-                            <thead>
-                            <tr>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center"><input type="checkbox" id="all"/></th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">№</th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">№ Заявки</th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">Номер группы</th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">ФИО соискателя</th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">Заглавие работы</th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">Тип документа</th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">Вид использования</th>
-                                <th colspan="2" style="vertical-align: middle; text-align: center">Лицензионный договор</th>
-                                <th rowspan="2" style="vertical-align: middle; text-align: center">Статус</th>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: middle; text-align: center">Дата</th>
-                                <th style="vertical-align: middle; text-align: center">Номер</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% int i=0; %>
-                            <c:forEach items="${ticketsReady}" var="ticketReady">
-                                <% i++; %>
-                                <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}" />
-                                <a href="${checkUrl}">
-                                    <tr>
-                                        <td><input type="checkbox" value="${ticketReady}"/></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.id}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.groupNum}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.surname}"/> <c:out value="${ticketReady.firstName}"/> <c:out value="${ticketReady.secondName}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.title}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.documentType}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.typeOfUse}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.status}"/></a></td>
-                                    </tr>
-                                </a>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+                    <form:form method="post" commandName="checkBox" action="${createAct}">
+                            <div class="panel panel-default" style="margin-top: 10px">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">Заявки доступные для проверки</h2>
+                            </div>
+                            <table class="table table-striped table-bordered" style="text-align: center" id="tableReady">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center"><input type="checkbox" id="all"/></th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">№</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">№ Заявки</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Номер группы</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">ФИО соискателя</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Заглавие работы</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Тип документа</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Вид использования</th>
+                                    <th colspan="2" style="vertical-align: middle; text-align: center">Лицензионный договор</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Статус</th>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: middle; text-align: center">Дата</th>
+                                    <th style="vertical-align: middle; text-align: center">Номер</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% int i=0; %>
+                                <c:forEach items="${ticketsReady}" var="ticketReady">
+                                    <% i++; %>
+                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}" />
+                                    <a href="${checkUrl}">
+                                        <tr>
+                                            <td><form:checkbox value="${ticketReady.id}" path="id"/></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%></a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.id}"/></a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.groupNum}"/></a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.surname}"/> <c:out value="${ticketReady.firstName}"/> <c:out value="${ticketReady.secondName}"/></a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.title}"/></a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.documentType}"/></a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.typeOfUse}"/></a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a></td>
+                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketReady.status}"/></a></td>
+                                        </tr>
+
+                                    </a>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                            </div>
+                        <button>Создать акт</button>
+                    </form:form>
                 </div>
                 </c:if>
                     <div role="tabpanel" class="tab-pane" id="ticketsInvalid">...</div>

@@ -37,11 +37,11 @@ public class EmployeeCopy {
     @Column(name = "POSITION")
     private String position;
 
-    @Column(name = "INSTITUTE_ID")
-    private String instituteId;
+    @Column(name = "INSTITUTE")
+    private String institute;
 
-    @Column(name = "DEPARTMENT_ID")
-    private String departmentId;
+    @Column(name = "DEPARTMENT")
+    private String department;
 
     public String getUsername() {
         return username;
@@ -99,21 +99,19 @@ public class EmployeeCopy {
         this.position = position;
     }
 
-    public String getInstituteId() {
-        return instituteId;
+    public String getInstitute() {
+        return institute;
     }
 
-    public void setInstituteId(String instituteId) {
-        this.instituteId = instituteId;
+    public void setInstitute(String institute) {
+        this.institute = institute;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(String department) {
+        this.department = department;
     }
-
-
 }

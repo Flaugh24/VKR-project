@@ -4,6 +4,7 @@ package org.barmaley.vkr.controller;
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
+import org.barmaley.vkr.dto.CheckBoxDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
 import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.dto.TicketDTO;
@@ -12,9 +13,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.naming.Binding;
 import java.util.*;
 
 @Controller
@@ -71,6 +74,8 @@ public class CoordinatorController {
         Integer countTicketsReady;
         Integer countLazyStudents;
 
+        CheckBoxDTO checkBoxDTO = new CheckBoxDTO();
+
         if(!coordinatorRightsList.isEmpty()){
             for(CoordinatorRights coordinatorRights: coordinatorRightsList){
                 List<Ticket> ticketsNewList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 2);
@@ -126,6 +131,7 @@ public class CoordinatorController {
         model.addAttribute("ticketsReady", ticketsReadyDTOList);
         model.addAttribute("countTicketsReady", countTicketsReady);
         model.addAttribute("user", user);
+        model.addAttribute("checkBox", checkBoxDTO);
         return ("coordinatorPage");
     }
 
@@ -358,10 +364,16 @@ public class CoordinatorController {
         return "redirect:/ticket/edit?ticketId=" + ticket.getId();
     }
 
-    @PostMapping(value = "/readytickets")
-    public String ticketsReady(@RequestAttribute("id") String id){
-        logger.debug("asdasdasdasdas----------------------------------");
-        logger.debug(id);
+    @PostMapping(value = "/createAct")
+    public String ticketsReady(CheckBoxDTO checkBoxDTO, BindingResult result){
+
+        List<Ticket> ticketList = new ArrayList<>();
+        List<String> ticketsId = checkBoxDTO.getId();
+
+        for(String ticketId: ticketsId){
+            Ticket ticket = ticketService.get(ticketId);
+            ticketList.add(ticket);
+        }
 
         return "redirect:/";
     }

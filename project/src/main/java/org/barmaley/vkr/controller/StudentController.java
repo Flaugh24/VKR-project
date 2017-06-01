@@ -7,6 +7,7 @@ import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.service.*;
 import org.barmaley.vkr.Tool.PermissionTool;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -331,10 +332,9 @@ public class StudentController {
 
     @PostMapping(value = "/ticket/edit")
     public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
-                           @RequestParam(value = "button") String button) {
+                           @RequestParam(value = "button", required = false) String button) {
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
-        ticket.setAnnotation(dto.getAnnotation());
         ticket.setAnnotationEng(dto.getAnnotationEng());
         ticket.setTitle(dto.getTitle());
         ticket.setTitleEng(dto.getTitleEng());
@@ -347,7 +347,6 @@ public class StudentController {
         //----------------------------------------------------
         ticket.setPlaceOfPublic(dto.getPlaceOfPublic());
         ticket.setPlaceOfPublicEng(dto.getPlaceOfPublicEng());
-        logger.debug("dateofmpublic= "+dto.getDateOfPublic());
         ticket.setYearOfPublic(dto.getDateOfPublic());
         ticket.setSurFirstLastNameDir(dto.getSurFirstLastNameDir());
         ticket.setSflNMaster(dto.getSflNMaster());
@@ -355,12 +354,12 @@ public class StudentController {
         ticket.setPosOfCurator(dto.getPosOfCurator());
         ticket.setDegreeOfCurator(dto.getDegreeOfCurator());
         //----------------------------------------------------
-
-        if(button.equals("Отправить на проверку")){
+        if(button != null){
             logger.debug("Status 2");
             ticket.setStatus(statusService.get(2));
             ticket.setDateCreationFinish(new Date());
         }
+
         ticketService.edit(ticket);
 
         return "redirect:/user";

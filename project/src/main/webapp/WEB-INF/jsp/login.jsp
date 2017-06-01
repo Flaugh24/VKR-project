@@ -28,11 +28,11 @@
                     <span>${message}</span>
                     <label class="sr-only" for="username">Имя пользователя</label>
                     <input name="username" id="username" type="text" class="form-control" placeholder="Username"
-                           autofocus="true"/>
+                           autofocus="true" required/>
                 </div>
                 <div class="form-group">
                     <label class="sr-only" for="password">Пароль</label>
-                    <input name="password" id="password" type="password" class="form-control" placeholder="Password"/>
+                    <input name="password" id="password" type="password" class="form-control" placeholder="Password" required/>
                     <span>${error}</span>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </div>

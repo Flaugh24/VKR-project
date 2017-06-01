@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "TICKET")
@@ -113,6 +112,10 @@ public class Ticket implements Serializable {
 
     @Column(name = "DEGREE_OF_CURATOR")
     private String degreeOfCurator;
+
+    @ManyToOne
+    @JoinColumn(name="ACT")
+    private Act act;
     //----------------------------------------------------
 
     public static long getSerialVersionUID() {
@@ -363,6 +366,14 @@ public class Ticket implements Serializable {
 
     public void setDegreeOfCurator(String degreeOfCurator) {
         this.degreeOfCurator = degreeOfCurator;
+    }
+
+    public Act getAct() {
+        return act;
+    }
+
+    public void setAct(Act act) {
+        this.act = act;
     }
 }
 

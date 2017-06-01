@@ -361,7 +361,7 @@ public class CoordinatorController {
         model.addAttribute("ticket", ticket);
 
 
-        return "redirect:/ticket/edit?ticketId=" + ticket.getId();
+        return "redirect:/ticket/check?ticketId=" + ticket.getId();
     }
 
     @PostMapping(value = "/createAct")
@@ -375,7 +375,7 @@ public class CoordinatorController {
             ticketList.add(ticket);
         }
 
-        return "redirect:/";
+        return "redirect:/coordinator";
     }
 
 }

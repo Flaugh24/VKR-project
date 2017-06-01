@@ -229,7 +229,16 @@
       <artifactId>spring-security-ldap</artifactId>
       <version>RELEASE</version>
     </dependency>
-
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>RELEASE</version>
+    </dependency>
 
 
   </dependencies>

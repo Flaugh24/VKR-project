@@ -43,7 +43,7 @@
             <div class="col-md-5" style="max-height: 100vh; overflow-y: auto; padding-bottom: 100px">
                 <h2>Номер заявки <c:out value="${ticketAttribute.id}" /></h2>
 
-<c:if test="${ticketAttribute.status.id == 1}">
+                <c:if test="${ticketAttribute.status.id == 1}">
                 <c:if test="${ticketAttribute.filePdf == null }">
                     <div>
                         <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
@@ -112,7 +112,7 @@
                         </form>
                     </div>
                     </c:if>
-             
+                </c:if>
                 <form:form commandName="ticketAttribute" method="POST" id="ticketform">
 
                     <div>

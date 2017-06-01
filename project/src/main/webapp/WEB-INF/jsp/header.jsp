@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="form-group">
                                     <form:label path="phoneNumber">Номер телефона</form:label>
-                                    <form:input path="phoneNumber" cssClass="form-control" name="phone" id="phone" required="required"/>
+                                    <form:input path="phoneNumber" cssClass="form-control" type="tel" name="phone" id="phone" required="required"/>
                                 </div>
                                 <c:if test="${perm_add_fio_eng==true}">
                                 <form:label path="">ФИО на английском языке</form:label>
@@ -95,8 +95,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="<c:url value="/resources/libs/jquery-validation/dist/jquery.validate.min.js"/> "></script>
-<script src="<c:url value="/resources/libs/jquery-validation/src/localization/messages_ru.js"/> "></script>
+<script src="<c:url value="/resources/js/jquery.validate.min.js"/> "></script>
+<script src="<c:url value="/resources/js/messages_ru.js"/> "></script>
 <script>
     $(document).ready(function(){
         console.log("validate");

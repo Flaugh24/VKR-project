@@ -401,7 +401,7 @@ public class StudentController {
     public String singleFileDelete(/*@RequestParam("uploadFile") MultipartFile file*/
                                    @RequestParam("ticketId") String ticketId,
                                    @RequestParam("submit") String submit) throws MalformedURLException {
-        String ROOT_FOLDERS="/home/impolun/data/";
+        String ROOT_FOLDERS="/home/gagarkin/tmp/";
         logger.debug("Upload PDF File");
 
         Ticket ticket = ticketService.get(ticketId);
@@ -432,7 +432,7 @@ public class StudentController {
         logger.debug("Upload PDF File");
 
         String fullPath,
-               ROOT_FOLDERS="/home/impolun/data/",
+               ROOT_FOLDERS="/home/gagarkin/tmp/",
                EXPDF = ".pdf",
                EXZIP = ".zip";
         Ticket ticket = ticketService.get(ticketId);

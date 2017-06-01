@@ -383,7 +383,7 @@ public class CoordinatorController {
             ticketList.add(ticket);
         }
 
-        return "redirect:/";
+        return "redirect:/coordinator";
     }
 
 }

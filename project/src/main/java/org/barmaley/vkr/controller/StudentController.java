@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -25,6 +29,8 @@ import java.util.*;
 public class StudentController {
 
     protected static Logger logger = Logger.getLogger("controller");
+
+
 
     @Resource(name = "studentCopyService")
     private StudentCopyService studentCopyService;
@@ -124,6 +130,7 @@ public class StudentController {
                 }
             }
         }
+
         model.addAttribute("educPrograms", educProgramsDTO);
         model.addAttribute("user", user);
         model.addAttribute("ticketsDTO", ticketsDTO);
@@ -217,6 +224,7 @@ public class StudentController {
 
             dto.setKeyWordsEng(ticket.getKeyWordsEng());
             dto.setFilePdf(ticket.getFilePdf());
+            dto.setFileRar(ticket.getFileRar());
             dto.setStatus(statusService.get(ticketService.getStatusId(ticket.getId())));
             dto.setDocumentTypeId(ticketService.getDocumentTypeId(ticket.getId()));
             dto.setTypeOfUseId(ticketService.getTypeOfUse(ticket.getId()));
@@ -386,35 +394,30 @@ public class StudentController {
         return "redirect:/ticket/edit?ticketId=" + ticket.getId();
     }
 
-    @PostMapping("/ticket/deletepdf")
-    public String singleFileDelete(@RequestParam("uploadFile") MultipartFile file,
+    @PostMapping("/ticket/delete")
+    public String singleFileDelete(/*@RequestParam("uploadFile") MultipartFile file*/
                                    @RequestParam("ticketId") String ticketId,
-                                   @RequestParam("submit") String submit) {
-        String fullPath, ROOT_FOLDERS;
+                                   @RequestParam("submit") String submit) throws MalformedURLException {
+        String ROOT_FOLDERS="/home/impolun/data/";
         logger.debug("Upload PDF File");
 
         Ticket ticket = ticketService.get(ticketId);
-        try{
-            ROOT_FOLDERS = "/home/impolun/data/";
-            byte[] bytes = file.getBytes();
-            logger.debug(file.getOriginalFilename());
-            if(submit.equals("Удалить PDF"))
-            {
-                logger.debug("SUBMIT= "+submit);
-                fullPath = ROOT_FOLDERS + ticket.getId() + ".pdf";
-
-                Path path = Paths.get(fullPath);
-                logger.debug("Path delete!");
-                Files.delete(path);
-
-                ticket.setFilePdf(null);
-                ticketService.editPdf(ticket);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(submit.equals("Удалить PDF")){
+            File file = new File(ticket.getFilePdf());
+            if(file.delete()){
+                logger.debug(ticket.getFilePdf()+" файл удален");
+            }else logger.debug("Файла"+ticket.getFilePdf()+" не обнаружено");
+            ticket.setFilePdf(null);
+            ticketService.editPdf(ticket);
         }
-
-
+        if(submit.equals("Удалить архив")){
+            File file = new File(ticket.getFileRar());
+            if(file.delete()){
+                logger.debug(ticket.getFileRar()+" файл удален");
+            }else logger.debug("Файла"+ticket.getFileRar()+" не обнаружено");
+            ticket.setFileRar(null);
+            ticketService.editRar(ticket);
+        }
         return "redirect:/ticket/edit?ticketId=" + ticket.getId();
     }
 
@@ -422,40 +425,42 @@ public class StudentController {
     public String singleFileUpload(@RequestParam("uploadFile") MultipartFile file,
                                    @RequestParam("ticketId") String ticketId,
                                    @RequestParam("submit") String submit) {
-        String fullPath, ROOT_FOLDERS;
+
         logger.debug("Upload PDF File");
 
+        String fullPath,
+               ROOT_FOLDERS="/home/impolun/data/",
+               EXPDF = ".pdf",
+               EXZIP = ".zip";
         Ticket ticket = ticketService.get(ticketId);
+
         try{
-            ROOT_FOLDERS = "/home/impolun/data/";
+
             byte[] bytes = file.getBytes();
-            logger.debug(file.getOriginalFilename());
-            if(submit.equals("Загрузить PDF"))
+
+            //Определяем расширешие файла(будет храниться в expansion)
+            logger.debug("Original file name:"+file.getOriginalFilename());
+            String expansion = file.getOriginalFilename().substring(file.getOriginalFilename().length()-4,file.getOriginalFilename().length());
+            logger.debug(expansion);
+
+            if(submit.equals("Загрузить"))
             {
-                logger.debug("SUBMIT= "+submit);
-                fullPath = ROOT_FOLDERS + ticket.getId() + ".pdf";
-
-                Path path = Paths.get(fullPath);
-
-                if (Files.exists(path)){
-                    logger.debug("Path delete!");
-                    Files.delete(path);
+                if(expansion.equals(EXPDF)) {
+                    fullPath = ROOT_FOLDERS + ticket.getId() + EXPDF;
+                    logger.debug("Конечный путь файла pdf= "+fullPath);
+                    Path path = Paths.get(fullPath);
+                    Files.write(path, bytes);
+                    ticket.setFilePdf(fullPath);
+                    ticketService.editPdf(ticket);
                 }
-                logger.debug("Path update!");
-                Files.write(path, bytes);
-                ticket.setFilePdf(fullPath);
-                ticketService.editPdf(ticket);
-                logger.debug("end if");
-
-            }
-            else
-            {
-                logger.debug("SUBMIT= "+submit);
-                fullPath = ROOT_FOLDERS + ticket.getId() + ".rar";
-                Path path = Paths.get(fullPath);
-                Files.write(path, bytes);
-                ticket.setFileRar(fullPath);
-                ticketService.editRar(ticket);
+                else {
+                    fullPath = ROOT_FOLDERS + ticket.getId() + EXZIP;
+                    logger.debug("Конечный путь файла zip = "+fullPath);
+                    Path path = Paths.get(fullPath);
+                    Files.write(path, bytes);
+                    ticket.setFileRar(fullPath);
+                    ticketService.editRar(ticket);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

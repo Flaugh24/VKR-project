@@ -1,7 +1,6 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.domain.CoordinatorRights;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,7 +23,7 @@ public class CoordinatorRightsService {
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
-    public List<CoordinatorRights> getCoordinatorRights(Integer coordinatorId){
+    public List getCoordinatorRights(Integer coordinatorId) {
 
         Session session = sessionFactory.getCurrentSession();
 

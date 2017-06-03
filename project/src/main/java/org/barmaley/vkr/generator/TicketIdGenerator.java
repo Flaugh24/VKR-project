@@ -1,15 +1,16 @@
 package org.barmaley.vkr.generator;
 
-/**
- * Created by Flugh on 16.04.2017.
- */
-import java.io.Serializable;
-import java.sql.*;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
-public class TicketIdGenerator implements IdentifierGenerator{
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class TicketIdGenerator implements IdentifierGenerator {
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
         Connection connection = session.connection();
@@ -19,14 +20,13 @@ public class TicketIdGenerator implements IdentifierGenerator{
             calendar.setTime(new java.util.Date());
             Integer year = calendar.get(java.util.Calendar.YEAR);
 
-            Statement statement=connection.createStatement();
-            ResultSet rs=statement.executeQuery("select count(*) from Ticket");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM Ticket");
 
 
-            if(rs.next())
-            {
-                int id=rs.getInt(1)+1;
-                String generatedId = "V" + year%100 + "-" + new Integer(id).toString();
+            if (rs.next()) {
+                int id = rs.getInt(1) + 1;
+                String generatedId = "V" + year % 100 + "-" + Integer.toString(id);
                 System.out.println("Generated Id: " + generatedId);
                 return generatedId;
             }
@@ -38,4 +38,4 @@ public class TicketIdGenerator implements IdentifierGenerator{
 
         return null;
     }
- }
+}

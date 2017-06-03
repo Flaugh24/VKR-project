@@ -1,11 +1,14 @@
 package org.barmaley.vkr.dto;
 
-/**
- * Created by gagarkin on 30.05.17.
- */
+
 public class TagDTO {
-    public String id;
-    public String fio;
+    private String id;
+    private String fio;
+
+    public TagDTO(String id, String tagName) {
+        this.id = id;
+        this.fio = tagName;
+    }
 
     public String getId() {
         return id;
@@ -21,11 +24,6 @@ public class TagDTO {
 
     public void setFio(String fio) {
         this.fio = fio;
-    }
-
-    public TagDTO(String id, String tagName) {
-        this.id = id;
-        this.fio = tagName;
     }
 
 }

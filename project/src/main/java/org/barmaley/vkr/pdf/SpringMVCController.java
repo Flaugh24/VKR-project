@@ -16,120 +16,120 @@ import java.io.*;
 @Controller
 public class SpringMVCController {
 
-	@Resource(name = "ticketService")
-	private TicketService ticketService;
+    @Resource(name = "ticketService")
+    private TicketService ticketService;
 
-	@PostMapping (value = "/downloadPDF")
-	public void downloadPDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping(value = "/downloadPDF")
+    public void downloadPDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		final ServletContext servletContext = request.getSession().getServletContext();
-	    final File tempDirectory = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-	    final String temperotyFilePath = tempDirectory.getAbsolutePath();
+        final ServletContext servletContext = request.getSession().getServletContext();
+        final File tempDirectory = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+        final String temperotyFilePath = tempDirectory.getAbsolutePath();
 
-	    String fileName = "AKT_PP_KVAL.pdf";
-	    response.setContentType("application/pdf");
-	    response.setHeader("Content-disposition", "attachment; filename="+ fileName);
+        String fileName = "AKT_PP_KVAL.pdf";
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
-	    try {
+        try {
 
-	        CreatePDF.createPDF(temperotyFilePath+"\\"+fileName);
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        baos = convertPDFToByteArrayOutputStream(temperotyFilePath+"\\"+fileName);
-	        OutputStream os = response.getOutputStream();
-	        baos.writeTo(os);
-	        os.flush();
-	    } catch (Exception e1) {
-	        e1.printStackTrace();
-	    }
+            CreatePDF.createPDF(temperotyFilePath + "\\" + fileName);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            baos = convertPDFToByteArrayOutputStream(temperotyFilePath + "\\" + fileName);
+            OutputStream os = response.getOutputStream();
+            baos.writeTo(os);
+            os.flush();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
 
-	}
+    }
 
-	@RequestMapping(value = "/downloadPDF1")
-	public void downloadPDF1 (@RequestParam(value = "ticketId") String ticketId, HttpServletRequest request1, HttpServletResponse response1) throws IOException {
+    @RequestMapping(value = "/downloadPDF1")
+    public void downloadPDF1(@RequestParam(value = "ticketId") String ticketId, HttpServletRequest request1, HttpServletResponse response1) throws IOException {
 
-		final ServletContext servletContext1 = request1.getSession().getServletContext();
-		final File tempDirectory = (File) servletContext1.getAttribute("javax.servlet.context.tempdir");
-		final String temperotyFilePath = tempDirectory.getAbsolutePath();
-
-
-		Ticket ticket = ticketService.get(ticketId);
-
-		String fileName = "REG_L_KVAL.pdf";
-		response1.setContentType("application/pdf");
-		response1.setHeader("Content-disposition", "attachment; filename="+ fileName);
-
-		try {
-
-			CreatePDF1.createPDF1(temperotyFilePath+"\\"+fileName, ticket);
-			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-			baos1 = convertPDFToByteArrayOutputStream(temperotyFilePath+"\\"+fileName);
-			OutputStream os1 = response1.getOutputStream();
-			baos1.writeTo(os1);
-			os1.flush();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-
-	}
+        final ServletContext servletContext1 = request1.getSession().getServletContext();
+        final File tempDirectory = (File) servletContext1.getAttribute("javax.servlet.context.tempdir");
+        final String temperotyFilePath = tempDirectory.getAbsolutePath();
 
 
-	@RequestMapping(value = "/downloadPDF2")
-	public void downloadPDF2(@RequestParam(value = "ticketId") String ticketId, HttpServletRequest request2, HttpServletResponse response2) throws IOException {
+        Ticket ticket = ticketService.get(ticketId);
 
-		final ServletContext servletContext1 = request2.getSession().getServletContext();
-		final File tempDirectory = (File) servletContext1.getAttribute("javax.servlet.context.tempdir");
-		final String temperotyFilePath = tempDirectory.getAbsolutePath();
+        String fileName = "REG_L_KVAL.pdf";
+        response1.setContentType("application/pdf");
+        response1.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
-		Ticket ticket = ticketService.get(ticketId);
+        try {
 
-		String fileName = "DOG_KVAL_230117.pdf";
-		response2.setContentType("application/pdf");
-		response2.setHeader("Content-disposition", "attachment; filename="+ fileName);
+            CreatePDF1.createPDF1(temperotyFilePath + "\\" + fileName, ticket);
+            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+            baos1 = convertPDFToByteArrayOutputStream(temperotyFilePath + "\\" + fileName);
+            OutputStream os1 = response1.getOutputStream();
+            baos1.writeTo(os1);
+            os1.flush();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
 
-		try {
+    }
 
-			CreatePDF2.createPDF2(temperotyFilePath+"\\"+fileName, ticket);
-			ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-			baos2 = convertPDFToByteArrayOutputStream(temperotyFilePath+"\\"+fileName);
-			OutputStream os2 = response2.getOutputStream();
-			baos2.writeTo(os2);
-			os2.flush();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
 
-	}
+    @RequestMapping(value = "/downloadPDF2")
+    public void downloadPDF2(@RequestParam(value = "ticketId") String ticketId, HttpServletRequest request2, HttpServletResponse response2) throws IOException {
 
-	
-	private ByteArrayOutputStream convertPDFToByteArrayOutputStream(String fileName) {
+        final ServletContext servletContext1 = request2.getSession().getServletContext();
+        final File tempDirectory = (File) servletContext1.getAttribute("javax.servlet.context.tempdir");
+        final String temperotyFilePath = tempDirectory.getAbsolutePath();
 
-		InputStream inputStream = null;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
+        Ticket ticket = ticketService.get(ticketId);
 
-			inputStream = new FileInputStream(fileName);
-			byte[] buffer = new byte[1024];
-			baos = new ByteArrayOutputStream();
+        String fileName = "DOG_KVAL_230117.pdf";
+        response2.setContentType("application/pdf");
+        response2.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
-			int bytesRead;
-			while ((bytesRead = inputStream.read(buffer)) != -1) {
-				baos.write(buffer, 0, bytesRead);
-			}
+        try {
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return baos;
-	}
+            CreatePDF2.createPDF2(temperotyFilePath + "\\" + fileName, ticket);
+            ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+            baos2 = convertPDFToByteArrayOutputStream(temperotyFilePath + "\\" + fileName);
+            OutputStream os2 = response2.getOutputStream();
+            baos2.writeTo(os2);
+            os2.flush();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+
+    }
+
+
+    private ByteArrayOutputStream convertPDFToByteArrayOutputStream(String fileName) {
+
+        InputStream inputStream = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+
+            inputStream = new FileInputStream(fileName);
+            byte[] buffer = new byte[1024];
+            baos = new ByteArrayOutputStream();
+
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return baos;
+    }
 
 }

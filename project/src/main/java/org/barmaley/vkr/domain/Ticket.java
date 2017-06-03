@@ -1,4 +1,5 @@
 package org.barmaley.vkr.domain;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Ticket implements Serializable {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name="USER_ID", nullable=false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private Users user;
 
     @Column(name = "GROUP_NUM")
@@ -47,15 +48,15 @@ public class Ticket implements Serializable {
     private String keyWordsEng;
 
     @ManyToOne
-    @JoinColumn(name="STATUS", nullable=false)
+    @JoinColumn(name = "STATUS", nullable = false)
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name="DOCUMENT_TYPE")
+    @JoinColumn(name = "DOCUMENT_TYPE")
     private DocumentType documentType;
 
     @ManyToOne
-    @JoinColumn(name="TYPE_OF_USE")
+    @JoinColumn(name = "TYPE_OF_USE")
     private TypeOfUse typeOfUse;
 
     @Column(name = "FILE_PDF")
@@ -122,7 +123,7 @@ public class Ticket implements Serializable {
     private String degreeOfCuratorEng;
 
     @ManyToOne
-    @JoinColumn(name="ACT")
+    @JoinColumn(name = "ACT")
     private Act act;
     //----------------------------------------------------
 
@@ -218,7 +219,9 @@ public class Ticket implements Serializable {
         this.status = status;
     }
 
-    public DocumentType getDocumentType() { return documentType; }
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
 
     public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;

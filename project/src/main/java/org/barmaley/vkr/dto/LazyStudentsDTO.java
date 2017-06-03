@@ -3,10 +3,8 @@ package org.barmaley.vkr.dto;
 import org.barmaley.vkr.domain.EducProgram;
 import org.barmaley.vkr.domain.StudentCopy;
 
-/**
- * Created by gagarkin on 25.05.17.
- */
 public class LazyStudentsDTO {
+
     private StudentCopy studentCopy;
     private EducProgram educProgram;
 

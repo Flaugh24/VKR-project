@@ -1,25 +1,19 @@
 package org.barmaley.vkr.domain;
 
-import org.springframework.scheduling.annotation.EnableScheduling;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Created by gagar on 20.05.2017.
- */
-
 @Entity
-@Table(name="EMPLOYEE_COPY")
+@Table(name = "EMPLOYEE_COPY")
 public class EmployeeCopy {
 
     @Id
-    @Column(name ="USERNAME")
+    @Column(name = "USERNAME")
     private String username;
 
-    @Column(name ="PASSWORD")
+    @Column(name = "PASSWORD")
     private String password;
 
     @Column(name = "SURNAME")

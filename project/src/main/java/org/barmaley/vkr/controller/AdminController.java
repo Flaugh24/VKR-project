@@ -1,25 +1,18 @@
 package org.barmaley.vkr.controller;
 
-import org.barmaley.vkr.autentication.CustomUser;
-import org.barmaley.vkr.domain.*;
-import org.barmaley.vkr.dto.LazyStudentsDTO;
-import org.barmaley.vkr.dto.TicketDTO;
+import org.barmaley.vkr.domain.Permissions;
 import org.barmaley.vkr.service.CoordinatorRightsService;
 import org.barmaley.vkr.service.PermissionsService;
 import org.barmaley.vkr.service.RolesService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
 
-/**
- * Created by impolun on 31.05.17.
- */
+
 //Контроллер для назначения прав координаторам и назначение координаторам групп
 @Controller
 public class AdminController {
@@ -39,7 +32,7 @@ public class AdminController {
 
 
         List<Permissions> listPermission = permissionsService.getAll();
-        model.addAttribute("listPermission"+listPermission);
+        model.addAttribute("listPermission" + listPermission);
 //        /*test*/
 //        Roles role = rolesService.getRole(2);
 //

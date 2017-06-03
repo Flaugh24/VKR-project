@@ -1,8 +1,6 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.domain.EmployeeCopy;
-import org.barmaley.vkr.domain.StudentCopy;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -12,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * Created by gagarkin on 30.05.17.
- */
+
 @Service("employeeCopyService")
 @Transactional
 public class EmployeeCopyService {
@@ -23,14 +19,14 @@ public class EmployeeCopyService {
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
-    public List<EmployeeCopy> getEmployeeByFIO(String like){
+    public List getEmployeeByFIO(String like) {
 
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("FROM EmployeeCopy where concat(surname,' ', firstName,' ', secondName) like :fioLike" );
+        Query query = session.createQuery("FROM EmployeeCopy where concat(surname,' ', firstName,' ', secondName) like :fioLike");
 
         session.flush();
-        query.setParameter("fioLike", "%"+like+"%");
+        query.setParameter("fioLike", "%" + like + "%");
 
         return query.list();
     }

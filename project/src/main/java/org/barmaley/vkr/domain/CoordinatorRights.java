@@ -2,10 +2,6 @@ package org.barmaley.vkr.domain;
 
 import javax.persistence.*;
 
-/**
- * Created by gagar on 18.05.2017.
- */
-
 @Entity
 @Table(name = "COORDINATOR_RIGHTS")
 public class CoordinatorRights {
@@ -15,7 +11,7 @@ public class CoordinatorRights {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="COORDINATOR_ID", nullable=false)
+    @JoinColumn(name = "COORDINATOR_ID", nullable = false)
     private Users coordinator;
 
     @Column(name = "GROUP_NUM")

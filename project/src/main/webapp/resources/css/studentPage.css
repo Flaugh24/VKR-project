@@ -1,17 +1,17 @@
-header{
+header {
     margin-top: 15px;
     border-bottom: 1px solid;
     max-height: 85px;
 }
 
-.addTicket{
+.addTicket {
     padding: 5px;
 }
 
-.addTicket:hover{
+.addTicket:hover {
     border: solid 1.5px;
 }
 
-.editUrl:hover{
+.editUrl:hover {
     text-decoration: none;
 }

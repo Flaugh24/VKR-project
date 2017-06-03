@@ -1,5 +1,5 @@
-jQuery.noConflict()
+jQuery.noConflict();
 
-jQuery(function($){
+jQuery(function ($) {
     $(".tab-pane:first, .nav li:first").addClass("active");
 });

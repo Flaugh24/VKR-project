@@ -83,8 +83,8 @@ public class CreatePDF1 {
         String Number_dog="96745654";
         String Document_type= ticket.getDocumentType().getName();
         String Document_type_eng=ticket.getDocumentType().getNameEng();
-        String Boss=ticket.getSflNMaster();
-        String Boss_eng=ticket.getSflNMasterEng();
+        String Boss=ticket.getFullNameCurator();
+        String Boss_eng=ticket.getFullNameCuratorEng();
         String Author=ticket.getUser().getSurname() + " " + ticket.getUser().getFirstName() +  " " +
                 ticket.getUser().getSecondName();
         String Author_eng=ticket.getUser().getSecondNameEng() +  " " + ticket.getUser().getFirstNameEng() +  " " +

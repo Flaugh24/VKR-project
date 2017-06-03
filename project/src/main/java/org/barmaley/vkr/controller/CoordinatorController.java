@@ -17,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.naming.Binding;
 import java.util.*;
 
 @Controller
@@ -228,6 +227,7 @@ public class CoordinatorController {
                 }
                 dto.setKeyWordsEng(ticket.getKeyWordsEng());
                 dto.setFilePdf(ticket.getFilePdf());
+                dto.setFileZip(ticket.getFileZip());
                 dto.setStatus(statusService.get(ticketService.getStatusId(ticket.getId())));
                 dto.setDocumentTypeId(ticketService.getDocumentTypeId(ticket.getId()));
                 dto.setTypeOfUseId(ticketService.getTypeOfUse(ticket.getId()));
@@ -247,9 +247,9 @@ public class CoordinatorController {
                 dto.setYearOfPublic(ticket.getYearOfPublic());
                 dto.setDocumentTypeName(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getName());
                 dto.setDocumentTypeNameEng(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getNameEng());
-                dto.setSurFirstLastNameDir(ticket.getSurFirstLastNameDir());
-                dto.setSflNMaster(ticket.getSflNMaster());
-                dto.setSflNMasterEng(ticket.getSflNMasterEng());
+                dto.setHeadOfDepartment(ticket.getHeadOfDepartment());
+                dto.setFullNameCurator(ticket.getFullNameCurator());
+                dto.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
 
                 model.addAttribute("user", user);
                 model.addAttribute("ticketAttribute", dto);
@@ -283,29 +283,28 @@ public class CoordinatorController {
         ticket.setPlaceOfPublic(dto.getPlaceOfPublic());
         ticket.setPlaceOfPublicEng(dto.getPlaceOfPublicEng());
         ticket.setYearOfPublic(dto.getYearOfPublic());
-        ticket.setSurFirstLastNameDir(dto.getSurFirstLastNameDir());
-        ticket.setSflNMaster(dto.getSflNMaster());
-        ticket.setSflNMasterEng(dto.getSflNMasterEng());
+        ticket.setHeadOfDepartment(dto.getHeadOfDepartment());
+        ticket.setFullNameCurator(dto.getFullNameCurator());
+        ticket.setFullNameCuratorEng(dto.getFullNameCuratorEng());
         //----------------------------------------------------
 
-        if(button.equals("Загрузить регистрационный лист")){
-            return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
-        };
-        if(button.equals("Загрузить лицензионный договор")){
-            return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
-        }
-
-        if(button.equals("save")){
-            logger.debug("Status 3");
-            ticket.setStatus(statusService.get(3));
-        }
         if(button.equals("ready")){
             ticket.setStatus(statusService.get(4));
             ticket.setDateCheckCoordinatorFinish(new Date());
+        }else {
+            ticket.setStatus(statusService.get(3));
         }
 
         ticketService.edit(ticket);
 
+
+        if(button.equals("recordSheet")){
+
+            return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
+        };
+        if(button.equals("licenseAgreement")){
+            return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
+        }
 
         return "redirect:/coordinator";
     }

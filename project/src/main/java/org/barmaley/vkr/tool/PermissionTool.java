@@ -1,4 +1,4 @@
-package org.barmaley.vkr.Tool;
+package org.barmaley.vkr.tool;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +17,6 @@ public class PermissionTool {
         Boolean existence;
 
         List<SimpleGrantedAuthority> permissions = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        logger.debug(permissions);
         SimpleGrantedAuthority result = permissions.stream()// Преобразуем в поток
                 .filter(x -> x.toString().equals(permission))    // Фильтруем
                 .findAny()                                    // Если 'findAny', то возвращаем найденное

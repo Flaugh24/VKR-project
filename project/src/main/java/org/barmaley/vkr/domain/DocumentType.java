@@ -3,9 +3,6 @@ package org.barmaley.vkr.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by Ivan on 02.04.2017.
- */
 @Entity
 @Table(name = "DOCUMENT_TYPE")
 public class DocumentType implements Serializable {

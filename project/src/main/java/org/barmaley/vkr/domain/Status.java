@@ -5,9 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Ivan on 02.04.2017.
- */
+
 @Entity
 @Table(name = "STATUS")
 public class Status implements Serializable {

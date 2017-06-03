@@ -22,10 +22,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 
-/**
- * Handles and retrieves person request
- * Управляет и возвращает запрос
- */
 @Controller
 public class MainController {
 

@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="vkr:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="vkr.war">
-      <element id="artifact" artifact-name="vkr:war exploded" />
-    </root>
-  </artifact>
-</component>

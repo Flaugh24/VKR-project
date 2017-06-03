@@ -21,8 +21,8 @@
 
 </head>
 
-<c:url var="uploadUrl" value="/ticket/upload" />
-<c:url var="deleteUrl" value="/ticket/delete" />
+<c:url var="uploadUrl" value="/ticket/fileupload" />
+<c:url var="deleteUrl" value="/ticket/filedelete" />
 <c:url var="saveUrl" value="/ticket/check?ticketId=${ticketAttribute.id}" />
 <c:url var="pdfDocument" value="/pdfDocument?ticketId=${ticketAttribute.id}" />
 

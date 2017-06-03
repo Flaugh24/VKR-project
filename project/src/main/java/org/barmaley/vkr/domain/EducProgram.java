@@ -5,9 +5,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-/**
- * Created by gagar on 28.04.2017.
- */
 
 @Entity
 @Table(name = "EDUC_PROGRAM")
@@ -41,6 +38,10 @@ public class EducProgram implements Serializable {
     @ManyToMany(mappedBy = "educPrograms")
     private Set<StudentCopy> studentCopies;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -61,16 +62,16 @@ public class EducProgram implements Serializable {
         return groupNum;
     }
 
+    public void setGroupNum(String groupNum) {
+        this.groupNum = groupNum;
+    }
+
     public String getDegree() {
         return degree;
     }
 
     public void setDegree(String degree) {
         this.degree = degree;
-    }
-
-    public void setGroupNum(String groupNum) {
-        this.groupNum = groupNum;
     }
 
     public String getDirection() {
@@ -95,10 +96,6 @@ public class EducProgram implements Serializable {
 
     public void setDepartment(String department) {
         this.department = department;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public Set<StudentCopy> getStudentCopies() {

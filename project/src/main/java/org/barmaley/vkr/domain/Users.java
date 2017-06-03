@@ -5,9 +5,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Flugh on 22.04.2017.
- */
 
 @Entity
 @Table(name = "USERS")
@@ -61,6 +58,10 @@ public class Users implements Serializable {
     @OneToMany(mappedBy = "coordinator", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CoordinatorRights> coordinatorRights = new HashSet<CoordinatorRights>();
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -93,12 +94,12 @@ public class Users implements Serializable {
         this.roles = roles;
     }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public Boolean getEnabled() {
         return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getSurname() {
@@ -164,11 +165,6 @@ public class Users implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
 
     public Set<CoordinatorRights> getCoordinatorRights() {
         return coordinatorRights;

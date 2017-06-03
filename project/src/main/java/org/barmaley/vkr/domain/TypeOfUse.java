@@ -2,9 +2,6 @@ package org.barmaley.vkr.domain;
 
 import javax.persistence.*;
 
-/**
- * Created by Flugh on 16.04.2017.
- */
 
 @Entity
 @Table(name = "TYPE_OF_USE")

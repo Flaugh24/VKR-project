@@ -3,10 +3,6 @@ package org.barmaley.vkr.domain;
 import javax.persistence.*;
 import java.util.Set;
 
-/**
- * Created by Flugh on 22.04.2017.
- */
-
 
 @Entity
 @Table(name = "PERMISSIONS")

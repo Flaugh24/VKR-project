@@ -4,10 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-/**
- * Created by Flugh on 22.04.2017.
- */
-
 @Entity
 @Table(name = "ROLES")
 public class Roles implements Serializable {

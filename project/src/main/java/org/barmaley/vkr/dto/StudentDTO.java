@@ -1,12 +1,17 @@
 package org.barmaley.vkr.dto;
 
-/**
- * Created by gagar on 18.05.2017.
- */
+
 public class StudentDTO {
+
     private String firstName;
     private String secondName;
     private String surname;
+
+    public StudentDTO(String firstName, String secondName, String surname) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.surname = surname;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -22,12 +27,6 @@ public class StudentDTO {
 
     public void setSecondName(String lastName) {
         this.secondName = lastName;
-    }
-
-    public StudentDTO(String firstName, String secondName, String surname) {
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.surname = surname;
     }
 
     public String getSurname() {

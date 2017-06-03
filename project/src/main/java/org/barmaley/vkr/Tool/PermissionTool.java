@@ -7,10 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by gagar on 21.05.2017.
- */
-
 @Service("permissionTool")
 public class PermissionTool {
 
@@ -26,11 +22,7 @@ public class PermissionTool {
                 .filter(x -> x.toString().equals(permission))    // Фильтруем
                 .findAny()                                    // Если 'findAny', то возвращаем найденное
                 .orElse(null);
-        if (result != null) {
-            existence = true;
-        } else {
-            existence = false;
-        }
+        existence = result != null;
         return existence;
     }
 }

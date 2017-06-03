@@ -2,9 +2,6 @@ package org.barmaley.vkr.dto;
 
 import java.util.List;
 
-/**
- * Created by gagarkin on 31.05.17.
- */
 public class CheckBoxDTO {
     private List<String> id;
 

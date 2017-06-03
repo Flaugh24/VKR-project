@@ -1,7 +1,5 @@
 package org.barmaley.vkr.autentication;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -12,15 +10,21 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
-public class CustomProvider implements AuthenticationProvider{
+public class CustomProvider implements AuthenticationProvider {
 
     protected static Logger logger = Logger.getLogger("controller");
 
 
+    private final CustomUserService userService;
+
     @Autowired
-    private CustomUserService userService;
+    public CustomProvider(CustomUserService userService) {
+        this.userService = userService;
+    }
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();

@@ -1,10 +1,10 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
+import org.barmaley.vkr.domain.TypeOfUse;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.barmaley.vkr.domain.TypeOfUse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +17,7 @@ public class TypeOfUseService {
 
     protected static Logger logger = Logger.getLogger("service");
 
-    @Resource(name="sessionFactory")
+    @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
     /**
@@ -25,7 +25,7 @@ public class TypeOfUseService {
      *
      * @return a list of persons
      */
-    public List<TypeOfUse> getAll() {
+    public List getAll() {
         logger.debug("Retrieving all persons");
 
         // Retrieve session from Hibernate
@@ -35,21 +35,17 @@ public class TypeOfUseService {
         Query query = session.createQuery("FROM  TypeOfUse");
 
         // Retrieve all
-        return  query.list();
+        return query.list();
     }
 
-    /**
-     * Retrieves a single person
-     * @param id
-     */
-    public TypeOfUse get(Integer id ) {
+
+    public TypeOfUse get(Integer id) {
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
 
         // Retrieve existing person
-        TypeOfUse typeOfUse = (TypeOfUse) session.get(TypeOfUse.class, id);
 
-        return typeOfUse;
+        return session.get(TypeOfUse.class, id);
     }
 
     /**
@@ -67,6 +63,7 @@ public class TypeOfUseService {
 
     /**
      * Deletes an existing person
+     *
      * @param id the id of the existing person
      */
     public void delete(Integer id) {
@@ -76,7 +73,7 @@ public class TypeOfUseService {
         Session session = sessionFactory.getCurrentSession();
 
         // Retrieve existing person
-        TypeOfUse typeOfUse = (TypeOfUse) session.get(TypeOfUse.class, id);
+        TypeOfUse typeOfUse = session.get(TypeOfUse.class, id);
 
         // Delete
         session.delete(typeOfUse);

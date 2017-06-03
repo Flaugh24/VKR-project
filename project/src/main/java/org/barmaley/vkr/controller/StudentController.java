@@ -1,25 +1,19 @@
 package org.barmaley.vkr.controller;
 
 import org.apache.log4j.Logger;
+import org.barmaley.vkr.Tool.PermissionTool;
 import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
-import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.dto.TicketDTO;
+import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.service.*;
-import org.barmaley.vkr.Tool.PermissionTool;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -27,7 +21,6 @@ import java.util.*;
 public class StudentController {
 
     protected static Logger logger = Logger.getLogger("controller");
-
 
 
     @Resource(name = "studentCopyService")
@@ -65,19 +58,18 @@ public class StudentController {
         List<Ticket> tickets = ticketService.getAllTicketsByUserId(principal.getId());
         List<TicketDTO> ticketsDTO = new ArrayList<>();
         Boolean perm_add_fio_eng = permissionTool.checkPermission("PERM_ADD_FIO_ENG");
-        if(!tickets.isEmpty()){
-            for (Ticket ticket: tickets){
+        if (!tickets.isEmpty()) {
+            for (Ticket ticket : tickets) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
                 TicketDTO ticketDTO = new TicketDTO();
                 ticketDTO.setId(ticket.getId());
-                try{
+                try {
                     ticketDTO.setDateCreationStart(dateFormat.format(ticket.getDateCreationStart()));
                     ticketDTO.setDateCreationFinish(dateFormat.format(ticket.getDateCreationFinish()));
                     ticketDTO.setDateCheckCoordinatorStart(dateFormat.format(ticket.getDateCheckCoordinatorStart()));
                     ticketDTO.setDateReturn(dateFormat.format(ticket.getDateReturn()));
                     ticketDTO.setDateCheckCoordinatorFinish(dateFormat.format(ticket.getDateCheckCoordinatorFinish()));
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 ticketsDTO.add(ticketDTO);
@@ -88,10 +80,10 @@ public class StudentController {
                     || (educProgram.getGroupNum().charAt(0) == '6' && educProgram.getDegree().equals("Магистр"))
                     || (educProgram.getGroupNum().charAt(0) == '5' && educProgram.getDegree().equals("Специалист"))) {
                 Ticket result = tickets.stream()// Преобразуем в поток
-                        .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))	// Фильтруем
-                        .findAny()									// Если 'findAny', то возвращаем найденное
+                        .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))    // Фильтруем
+                        .findAny()                                    // Если 'findAny', то возвращаем найденное
                         .orElse(null);
-                if (tickets.isEmpty()){
+                if (tickets.isEmpty()) {
                     EducProgram dto = new EducProgram();
                     dto.setId(educProgram.getId());
                     dto.setInstitute(educProgram.getInstitute());
@@ -103,8 +95,7 @@ public class StudentController {
                     dto.setDirectionCode(educProgram.getDirectionCode());
                     //-----------------------------------------------------
                     educProgramsDTO.add(dto);
-                }
-                else if (result == null) {
+                } else if (result == null) {
                     EducProgram dto = new EducProgram();
                     dto.setId(educProgram.getId());
                     dto.setInstitute(educProgram.getInstitute());
@@ -116,8 +107,6 @@ public class StudentController {
                     dto.setDirectionCode(educProgram.getDirectionCode());
                     //----------------------------------------------------
                     educProgramsDTO.add(dto);
-
-                    result = null;
                 }
             }
         }
@@ -136,10 +125,10 @@ public class StudentController {
         EducProgram educProgram = educProgramService.get(educId);
         List<Ticket> tickets = ticketService.getAllTicketsByUserId(userId);
         Ticket result = tickets.stream()// Преобразуем в поток
-            .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))	// Фильтруем
-            .findAny()									// Если 'findAny', то возвращаем найденное
-            .orElse(null);
-        if(result == null) {
+                .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))    // Фильтруем
+                .findAny()                                    // Если 'findAny', то возвращаем найденное
+                .orElse(null);
+        if (result == null) {
 
             Ticket ticket = new Ticket();
             String degree = educProgram.getDegree();
@@ -163,7 +152,7 @@ public class StudentController {
             ticket.setGroupNum(educProgram.getGroupNum());
             ticket.setInstitute(educProgram.getInstitute());
             ticket.setDepartment(educProgram.getDepartment());
-            logger.debug("getDepartment "+ticket.getDepartment());
+            logger.debug("getDepartment " + ticket.getDepartment());
             ticket.setDirection(educProgram.getDirection());
             ticket.setDirectionCode(educProgram.getDirectionCode());
             //-----------------------------------------------------------------
@@ -187,10 +176,10 @@ public class StudentController {
         Ticket ticket = ticketService.get(ticketId);
         TicketEditDTO dto = new TicketEditDTO();
         SimpleDateFormat dateFormat = new SimpleDateFormat("y");
-        logger.debug("dateofmpublic= "+dto.getDateOfPublic());
+        logger.debug("dateofmpublic= " + dto.getDateOfPublic());
 
-        for(CoordinatorRights coordinatorRights: coordinatorRightsSet){
-            if(coordinatorRights.getGroupNum().equals(ticket.getGroupNum())){
+        for (CoordinatorRights coordinatorRights : coordinatorRightsSet) {
+            if (coordinatorRights.getGroupNum().equals(ticket.getGroupNum())) {
                 access = true;
                 ticket.setStatus(statusService.get(3));
                 ticket.setDateCheckCoordinatorStart(new Date());
@@ -198,7 +187,7 @@ public class StudentController {
             }
         }
 
-        if (principal.getId().equals(ticket.getUser().getId())  || access) {
+        if (principal.getId().equals(ticket.getUser().getId()) || access) {
             List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());
@@ -218,35 +207,32 @@ public class StudentController {
             dto.setInstitute(ticket.getInstitute());
             String str = dto.getKeyWords();
             logger.debug(str);
-            List list = new ArrayList();
-            if(str!=null) {
+            List<String> list = new ArrayList<>();
+            if (str != null) {
                 for (String retval : str.split(", ")) {
                     logger.debug(retval);
                     list.add(retval);
                 }
             }
-            try{
-                dto.setWord1((String) list.get(0));
-                dto.setWord2((String) list.get(1));
-                dto.setWord3((String) list.get(2));
-                dto.setWord4((String) list.get(3));
-                }catch (Exception e){
+            try {
+                dto.setWord1(list.get(0));
+                dto.setWord2(list.get(1));
+                dto.setWord3(list.get(2));
+                dto.setWord4(list.get(3));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             str = dto.getKeyWordsEng();
             list.clear();
-            if(str!=null) {
-                for (String retval : str.split(", ")) {
-                    list.add(retval);
-                }
+            if (str != null) {
+                Collections.addAll(list, str.split(", "));
             }
-            try{
-                dto.setWord1Eng((String) list.get(0));
-                dto.setWord2Eng((String) list.get(1));
-                dto.setWord3Eng((String) list.get(2));
-                dto.setWord4Eng((String) list.get(3));
-            }
-            catch (Exception e){
+            try {
+                dto.setWord1Eng(list.get(0));
+                dto.setWord2Eng(list.get(1));
+                dto.setWord3Eng(list.get(2));
+                dto.setWord4Eng(list.get(3));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -279,7 +265,6 @@ public class StudentController {
     }
 
 
-
     @PostMapping(value = "/ticket/edit")
     public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
                            @RequestParam(value = "button") String button) {
@@ -289,9 +274,9 @@ public class StudentController {
         ticket.setAnnotationEng(dto.getAnnotationEng());
         ticket.setTitle(dto.getTitle());
         ticket.setTitleEng(dto.getTitleEng());
-        String str = dto.getWord1()+", "+dto.getWord2()+", "+dto.getWord3()+", "+dto.getWord4();
+        String str = dto.getWord1() + ", " + dto.getWord2() + ", " + dto.getWord3() + ", " + dto.getWord4();
         ticket.setKeyWords(str);
-        str = dto.getWord1Eng()+", "+dto.getWord2Eng()+", "+dto.getWord3Eng()+", "+dto.getWord4Eng();
+        str = dto.getWord1Eng() + ", " + dto.getWord2Eng() + ", " + dto.getWord3Eng() + ", " + dto.getWord4Eng();
         ticket.setKeyWordsEng(str);
         ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUseId()));
         //----------------------------------------------------
@@ -308,10 +293,10 @@ public class StudentController {
 
         //----------------------------------------------------
         logger.debug("button: " + button);
-        if(button.equals("save")){
+        if (button.equals("save")) {
             ticket.setStatus(statusService.get(1));
         }
-        if(button.equals("send")){
+        if (button.equals("send")) {
             ticket.setStatus(statusService.get(2));
             ticket.setDateCreationFinish(new Date());
         }
@@ -323,7 +308,7 @@ public class StudentController {
 
     @ResponseBody
     @GetMapping("/pdfDocument")
-    public String getPdf(@RequestParam(value = "ticketId") String ticketId){
+    public String getPdf(@RequestParam(value = "ticketId") String ticketId) {
         Ticket ticket = ticketService.get(ticketId);
         return ticket.getFilePdf();
     }

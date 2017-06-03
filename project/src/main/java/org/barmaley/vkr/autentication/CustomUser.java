@@ -1,7 +1,9 @@
 package org.barmaley.vkr.autentication;
+
 import org.barmaley.vkr.domain.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.List;
 
 public class CustomUser extends Users implements UserDetails {

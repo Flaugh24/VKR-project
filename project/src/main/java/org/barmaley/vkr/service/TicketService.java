@@ -1,11 +1,10 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
-
+import org.barmaley.vkr.domain.Ticket;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.barmaley.vkr.domain.Ticket;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,20 +21,20 @@ public class TicketService {
 
     protected static Logger logger = Logger.getLogger("service");
 
-    @Resource(name="sessionFactory")
+    @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
-    public Integer getCountTicketsWithStatus(Integer statusId){
+    public Integer getCountTicketsWithStatus(Integer statusId) {
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("COUNT FROM Ticket WHERE status.id="+statusId);
+        Query query = session.createQuery("COUNT FROM Ticket WHERE status.id=" + statusId);
 
-        return (Integer)query.uniqueResult();
+        return (Integer) query.uniqueResult();
 
     }
 
 
-    public List<Ticket> getAll() {
+    public List getAll() {
 
         // Retrieve session from Hibernate
         // Получаем сессию
@@ -47,15 +46,15 @@ public class TicketService {
 
         // Retrieve all
         // получаем всех
-        return  query.list();
+        return query.list();
     }
 
-    public List<Ticket> getAllTicketForCoordinator(String groupNum, Integer statusId){
+    public List getAllTicketForCoordinator(String groupNum, Integer statusId) {
 
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("FROM  Ticket WHERE groupNum = :groupNum AND status.id = :statusId" +
-                    " ORDER BY Id"
+                " ORDER BY Id"
         );
         query.setParameter("groupNum", groupNum);
         query.setParameter("statusId", statusId);
@@ -63,7 +62,7 @@ public class TicketService {
         return query.list();
     }
 
-    public List<Ticket> getAllTicketsByUserId(Integer userId) {
+    public List getAllTicketsByUserId(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
         // Создаем запрос
@@ -72,23 +71,22 @@ public class TicketService {
 
         // Retrieve all
         // получаем всех
-        return  query.list();
+        return query.list();
     }
 
     /**
      * Retrieves a single person
      * Получение одной персоны
      */
-    public Ticket get( String id ) {
+    public Ticket get(String id) {
         // Retrieve session from Hibernate
         // получаем сессию
         Session session = sessionFactory.getCurrentSession();
 
         // Retrieve existing person first
         // получаем персону по id
-        Ticket ticket = (Ticket) session.get(Ticket.class, id);
 
-        return ticket;
+        return session.get(Ticket.class, id);
     }
 
     public Integer getStatusId(String id) {
@@ -100,7 +98,7 @@ public class TicketService {
         // Delete reference to foreign key credit card first
         // We need a SQL query instead of HQL query here to access the third table
         Query query = session.createSQLQuery("SELECT STATUS FROM TICKET " +
-                "WHERE ID='"+id+"'");
+                "WHERE ID='" + id + "'");
 
         return (Integer) query.uniqueResult();
     }
@@ -114,7 +112,7 @@ public class TicketService {
         // Delete reference to foreign key credit card first
         // We need a SQL query instead of HQL query here to access the third table
         Query query = session.createSQLQuery("SELECT DOCUMENT_TYPE FROM TICKET " +
-                "WHERE ID='"+id+"'");
+                "WHERE ID='" + id + "'");
 
         return (Integer) query.uniqueResult();
     }
@@ -128,13 +126,14 @@ public class TicketService {
         // Delete reference to foreign key credit card first
         // We need a SQL query instead of HQL query here to access the third table
         Query query = session.createSQLQuery("SELECT TYPE_OF_USE FROM TICKET " +
-                "WHERE ID='"+id+"'");
+                "WHERE ID='" + id + "'");
 
         return (Integer) query.uniqueResult();
     }
+
     /**
      * Adds a new person
-     *  Добавление персоны
+     * Добавление персоны
      */
 
     public String add(Ticket ticket) {
@@ -148,7 +147,7 @@ public class TicketService {
     public void delete(String id) {
         Session session = sessionFactory.getCurrentSession();
 
-        Ticket ticket = (Ticket) session.get(Ticket.class, id);
+        Ticket ticket = session.get(Ticket.class, id);
 
         session.delete(ticket);
     }
@@ -156,7 +155,7 @@ public class TicketService {
     public void edit(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 
-        Ticket existingTicket = (Ticket) session.get(Ticket.class, ticket.getId());
+        Ticket existingTicket = session.get(Ticket.class, ticket.getId());
 
         existingTicket.setTitle(ticket.getTitle());
         existingTicket.setTitleEng(ticket.getTitleEng());
@@ -166,16 +165,16 @@ public class TicketService {
         existingTicket.setKeyWordsEng(ticket.getKeyWordsEng());
         existingTicket.setTypeOfUse(ticket.getTypeOfUse());
         existingTicket.setStatus(ticket.getStatus());
-        if(ticket.getDateCreationFinish() != null){
+        if (ticket.getDateCreationFinish() != null) {
             existingTicket.setDateCreationFinish(ticket.getDateCreationFinish());
         }
-        if(ticket.getDateCheckCoordinatorStart() != null){
+        if (ticket.getDateCheckCoordinatorStart() != null) {
             existingTicket.setDateCheckCoordinatorStart(ticket.getDateCheckCoordinatorStart());
         }
-        if(ticket.getDateCheckCoordinatorFinish() != null){
+        if (ticket.getDateCheckCoordinatorFinish() != null) {
             existingTicket.setDateCheckCoordinatorFinish(ticket.getDateCheckCoordinatorFinish());
         }
-        if(ticket.getDateReturn() != null){
+        if (ticket.getDateReturn() != null) {
             existingTicket.setDateReturn(ticket.getDateReturn());
         }
         //-------------------------------------------------------------------
@@ -192,12 +191,13 @@ public class TicketService {
         //-------------------------------------------------------------------
         session.save(existingTicket);
     }
+
     //---------------------------------------------------------
     public void editPdf(Ticket ticket) {
 
         Session session = sessionFactory.getCurrentSession();
 
-        Ticket existingTicket = (Ticket) session.get(Ticket.class, ticket.getId());
+        Ticket existingTicket = session.get(Ticket.class, ticket.getId());
 
         existingTicket.setFilePdf(ticket.getFilePdf());
         session.save(existingTicket);
@@ -206,7 +206,7 @@ public class TicketService {
     public void editZip(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 
-        Ticket existingTicket = (Ticket) session.get(Ticket.class, ticket.getId());
+        Ticket existingTicket = session.get(Ticket.class, ticket.getId());
         existingTicket.setFileZip(ticket.getFileZip());
         session.save(existingTicket);
     }

@@ -38,7 +38,7 @@ public class TicketEditDTO {
     private String fullNameCuratorEng;
     private String department;
     private String directionCode;
-    private String word1,word2,word3,word4,word1Eng,word2Eng,word3Eng,word4Eng;
+    private String word1, word2, word3, word4, word1Eng, word2Eng, word3Eng, word4Eng;
     private String dateOfPublic;
 
     //----------------------------------------------------
@@ -151,6 +151,10 @@ public class TicketEditDTO {
         return dirOfTrain;
     }
 
+    public void setDirOfTrain(String dirOfTrain) {
+        this.dirOfTrain = dirOfTrain;
+    }
+
     public String getInstitute() {
         return institute;
     }
@@ -181,10 +185,6 @@ public class TicketEditDTO {
 
     public void setGroupNum(String groupNum) {
         this.groupNum = groupNum;
-    }
-
-    public void setDirOfTrain(String dirOfTrain) {
-        this.dirOfTrain = dirOfTrain;
     }
 
     public String getCodeDirOfTrain() {

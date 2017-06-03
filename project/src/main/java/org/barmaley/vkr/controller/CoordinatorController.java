@@ -6,15 +6,18 @@ import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.dto.CheckBoxDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
-import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.dto.TicketDTO;
+import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -75,18 +78,18 @@ public class CoordinatorController {
 
         CheckBoxDTO checkBoxDTO = new CheckBoxDTO();
 
-        if(!coordinatorRightsList.isEmpty()){
-            for(CoordinatorRights coordinatorRights: coordinatorRightsList){
+        if (!coordinatorRightsList.isEmpty()) {
+            for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
                 List<Ticket> ticketsNewList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 2);
                 List<Ticket> ticketsCheckList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 3);
                 List<Ticket> ticketsReadyList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 4);
                 List<StudentCopy> studentCopyList = studentCopyService.getStudentByEducProgram(coordinatorRights.getGroupNum());
-                for(StudentCopy studentCopy: studentCopyList){
+                for (StudentCopy studentCopy : studentCopyList) {
                     LazyStudentsDTO dto = new LazyStudentsDTO();
                     dto.setStudentCopy(studentCopy);
                     Set<EducProgram> educProgramSet = studentCopy.getEducPrograms();
-                    for(EducProgram educProgram: educProgramSet){
-                        if(educProgram.getGroupNum().equals(coordinatorRights.getGroupNum())){
+                    for (EducProgram educProgram : educProgramSet) {
+                        if (educProgram.getGroupNum().equals(coordinatorRights.getGroupNum())) {
                             dto.setEducProgram(educProgram);
                         }
                     }
@@ -98,20 +101,20 @@ public class CoordinatorController {
                 ticketsReady.addAll(ticketsReadyList);
             }
         }
-        for (Ticket ticket: ticketsNew){
+        for (Ticket ticket : ticketsNew) {
             TicketDTO dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
                     ticket.getUser().getSecondName(), ticket.getUser().getSurname(), ticket.getTitle(), ticket.getDocumentType().getName(),
                     ticket.getTypeOfUse().getName(), ticket.getStatus().getName());
             ticketsNewDTOList.add(dto);
         }
-        for (Ticket ticket: ticketsCheck){
-            TicketDTO  dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
+        for (Ticket ticket : ticketsCheck) {
+            TicketDTO dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
                     ticket.getUser().getSecondName(), ticket.getUser().getSurname(), ticket.getTitle(), ticket.getDocumentType().getName(),
                     ticket.getTypeOfUse().getName(), ticket.getStatus().getName());
             ticketsInCheckDTOList.add(dto);
         }
-        for (Ticket ticket: ticketsReady){
-            TicketDTO  dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
+        for (Ticket ticket : ticketsReady) {
+            TicketDTO dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
                     ticket.getUser().getSecondName(), ticket.getUser().getSurname(), ticket.getTitle(), ticket.getDocumentType().getName(),
                     ticket.getTypeOfUse().getName(), ticket.getStatus().getName());
             ticketsReadyDTOList.add(dto);
@@ -137,15 +140,15 @@ public class CoordinatorController {
 
     @GetMapping(value = "/ticket/check")
     public String getCheckTicket(@RequestParam(value = "ticketId") String ticketId,
-                                 ModelMap model){
+                                 ModelMap model) {
         CustomUser principal = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Users user = usersService.getById(principal.getId());
         Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
         Ticket ticket = ticketService.get(ticketId);
         TicketEditDTO dto = new TicketEditDTO();
 
-        for(CoordinatorRights coordinatorRights: coordinatorRightsSet){
-            if(coordinatorRights.getGroupNum().equals(ticket.getGroupNum())){
+        for (CoordinatorRights coordinatorRights : coordinatorRightsSet) {
+            if (coordinatorRights.getGroupNum().equals(ticket.getGroupNum())) {
                 ticket.setStatus(statusService.get(3));
                 ticket.setDateCheckCoordinatorStart(new Date());
                 ticketService.edit(ticket);
@@ -162,34 +165,29 @@ public class CoordinatorController {
                 dto.setDirectionCode(ticket.getDirectionCode());
                 String str = dto.getKeyWords();
                 logger.debug(str);
-                List list = new ArrayList();
-                if(str!=null) {
-                    for (String retval : str.split(", ")) {
-                        list.add(retval);
-                    }
+                List<String> list = new ArrayList<>();
+                if (str != null) {
+                    Collections.addAll(list, str.split(", "));
                 }
-                try{
-                    dto.setWord1((String) list.get(0));
-                    dto.setWord2((String) list.get(1));
-                    dto.setWord3((String) list.get(2));
-                    dto.setWord4((String) list.get(3));
-                }catch (Exception e){
+                try {
+                    dto.setWord1(list.get(0));
+                    dto.setWord2(list.get(1));
+                    dto.setWord3(list.get(2));
+                    dto.setWord4(list.get(3));
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 str = dto.getKeyWordsEng();
                 list.clear();
-                if(str!=null) {
-                    for (String retval : str.split(", ")) {
-                        list.add(retval);
-                    }
+                if (str != null) {
+                    Collections.addAll(list, str.split(", "));
                 }
-                try{
-                    dto.setWord1Eng((String) list.get(0));
-                    dto.setWord2Eng((String) list.get(1));
-                    dto.setWord3Eng((String) list.get(2));
-                    dto.setWord4Eng((String) list.get(3));
-                }
-                catch (Exception e){
+                try {
+                    dto.setWord1Eng(list.get(0));
+                    dto.setWord2Eng(list.get(1));
+                    dto.setWord3Eng(list.get(2));
+                    dto.setWord4Eng(list.get(3));
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 dto.setKeyWordsEng(ticket.getKeyWordsEng());
@@ -226,9 +224,9 @@ public class CoordinatorController {
         return "pnh";
     }
 
-    @PostMapping(value = "ticket/check" )
+    @PostMapping(value = "ticket/check")
     public String saveCheck(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
-                            @RequestParam(value = "button") String button){
+                            @RequestParam(value = "button") String button) {
 
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
@@ -239,9 +237,9 @@ public class CoordinatorController {
         ticket.setKeyWords(dto.getKeyWords());
         ticket.setKeyWordsEng(dto.getKeyWordsEng());
         ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUseId()));
-        String str = dto.getWord1()+", "+dto.getWord2()+", "+dto.getWord3()+", "+dto.getWord4();
+        String str = dto.getWord1() + ", " + dto.getWord2() + ", " + dto.getWord3() + ", " + dto.getWord4();
         ticket.setKeyWords(str);
-        str = dto.getWord1Eng()+", "+dto.getWord2Eng()+", "+dto.getWord3Eng()+", "+dto.getWord4Eng();
+        str = dto.getWord1Eng() + ", " + dto.getWord2Eng() + ", " + dto.getWord3Eng() + ", " + dto.getWord4Eng();
         ticket.setKeyWordsEng(str);
         //----------------------------------------------------
         ticket.setPlaceOfPublic(dto.getPlaceOfPublic());
@@ -256,7 +254,7 @@ public class CoordinatorController {
         ticket.setDegreeOfCuratorEng(dto.getDegreeOfCuratorEng());
 
         //----------------------------------------------------
-        switch (button){
+        switch (button) {
             case "return":
                 ticket.setStatus(statusService.get(5));
                 ticket.setDateReturn(new Date());
@@ -272,7 +270,7 @@ public class CoordinatorController {
 
         ticketService.edit(ticket);
 
-        switch (button){
+        switch (button) {
             case "recordSheet":
                 return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
             case "licenseAgreement":
@@ -286,12 +284,12 @@ public class CoordinatorController {
     @PostMapping(value = "/ticket/addLazy")
     public String getAddTicket(@RequestParam(value = "lazyStudentId") String username,
                                @RequestParam(value = "educId") Integer educId,
-                               Model model){
+                               Model model) {
 
         StudentCopy studentCopy = studentCopyService.get(username);
         EducProgram educProgram = educProgramService.get(educId);
         Users user = new Users();
-        Set<Roles> roles= new HashSet<>();
+        Set<Roles> roles = new HashSet<>();
 
         roles.add(rolesService.getRole(1));
         user.setExtId(studentCopy.getUsername());
@@ -338,12 +336,12 @@ public class CoordinatorController {
     }
 
     @PostMapping(value = "/createAct")
-    public String ticketsReady(CheckBoxDTO checkBoxDTO, BindingResult result){
+    public String ticketsReady(CheckBoxDTO checkBoxDTO, BindingResult result) {
 
         List<Ticket> ticketList = new ArrayList<>();
         List<String> ticketsId = checkBoxDTO.getId();
 
-        for(String ticketId: ticketsId){
+        for (String ticketId : ticketsId) {
             Ticket ticket = ticketService.get(ticketId);
             ticketList.add(ticket);
         }

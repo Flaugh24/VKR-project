@@ -1,8 +1,5 @@
 package org.barmaley.vkr.service;
 
-import java.util.List;
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.Status;
 import org.hibernate.Query;
@@ -10,6 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Service for processing Persons
@@ -22,7 +22,7 @@ public class StatusService {
 
     protected static Logger logger = Logger.getLogger("service");
 
-    @Resource(name="sessionFactory")
+    @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
     /**
@@ -40,19 +40,20 @@ public class StatusService {
         Query query = session.createQuery("FROM  Status");
 
         // Retrieve all
-        return  query.list();
+        return query.list();
     }
 
     /**
      * Retrieves a single person
+     *
      * @param id
      */
-    public Status get(Integer id ) {
+    public Status get(Integer id) {
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
 
         // Retrieve existing person
-        Status status = (Status) session.get(Status.class, id);
+        Status status = session.get(Status.class, id);
 
         return status;
     }
@@ -72,6 +73,7 @@ public class StatusService {
 
     /**
      * Deletes an existing person
+     *
      * @param id the id of the existing person
      */
     public void delete(Integer id) {
@@ -81,7 +83,7 @@ public class StatusService {
         Session session = sessionFactory.getCurrentSession();
 
         // Retrieve existing person
-        Status status = (Status) session.get(Status.class, id);
+        Status status = session.get(Status.class, id);
 
         // Delete
         session.delete(status);

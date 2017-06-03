@@ -1,12 +1,6 @@
 package org.barmaley.vkr.dto;
 
-
-
-/**
- * Created by SUN_SUN on 06.05.2017.
- */
 public class StudentCopyDTO {
-
 
     private Integer id;
 
@@ -20,6 +14,10 @@ public class StudentCopyDTO {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getGroups() {
@@ -44,11 +42,6 @@ public class StudentCopyDTO {
 
     public void setDirection(String direction) {
         this.direction = direction;
-    }
-
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getSurname() {

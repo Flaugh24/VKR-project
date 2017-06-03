@@ -1,20 +1,13 @@
 package org.barmaley.vkr.dto;
 
 
-/**
- * Created by gagar on 28.04.2017.
- */
 public class EducProgramDTO {
 
     private Integer id;
-
     private String institute;
-
     private String degree;
     private String groupNum;
-
     private String direction;
-
     private String specialty;
 
     public Integer getId() {

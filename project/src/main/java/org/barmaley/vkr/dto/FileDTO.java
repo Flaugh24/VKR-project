@@ -2,10 +2,9 @@ package org.barmaley.vkr.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Created by gagar on 22.05.2017.
- */
+
 public class FileDTO {
+
     private String ticketId;
     private MultipartFile file;
     private String action;

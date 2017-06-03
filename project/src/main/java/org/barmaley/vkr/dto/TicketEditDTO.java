@@ -14,7 +14,7 @@ public class TicketEditDTO {
     private Status status;
     private Integer documentTypeId;
     private String filePdf;
-    private String fileRar;
+    private String fileZip;
     private Integer typeOfUseId;
     private String typeOfUseName;
     //----------------------------------------------------
@@ -33,9 +33,9 @@ public class TicketEditDTO {
     private String yearOfPublic;
     private String documentTypeName;
     private String documentTypeNameEng;
-    private String surFirstLastNameDir;
-    private String sflNMaster;
-    private String sflNMasterEng;
+    private String headOfDepartment;
+    private String fullNameCurator;
+    private String fullNameCuratorEng;
     private String department;
     private String directionCode;
     private String word1,word2,word3,word4,word1Eng,word2Eng,word3Eng,word4Eng;
@@ -266,28 +266,28 @@ public class TicketEditDTO {
         this.documentTypeNameEng = documentTypeNameEng;
     }
 
-    public String getSurFirstLastNameDir() {
-        return surFirstLastNameDir;
+    public String getHeadOfDepartment() {
+        return headOfDepartment;
     }
 
-    public void setSurFirstLastNameDir(String surFirstLastNameDir) {
-        this.surFirstLastNameDir = surFirstLastNameDir;
+    public void setHeadOfDepartment(String headOfDepartment) {
+        this.headOfDepartment = headOfDepartment;
     }
 
-    public String getSflNMaster() {
-        return sflNMaster;
+    public String getFullNameCurator() {
+        return fullNameCurator;
     }
 
-    public void setSflNMaster(String sflNMaster) {
-        this.sflNMaster = sflNMaster;
+    public void setFullNameCurator(String fullNameCurator) {
+        this.fullNameCurator = fullNameCurator;
     }
 
-    public String getSflNMasterEng() {
-        return sflNMasterEng;
+    public String getFullNameCuratorEng() {
+        return fullNameCuratorEng;
     }
 
-    public void setSflNMasterEng(String sflNMasterEng) {
-        this.sflNMasterEng = sflNMasterEng;
+    public void setFullNameCuratorEng(String fullNameCuratorEng) {
+        this.fullNameCuratorEng = fullNameCuratorEng;
     }
 
     public String getDepartment() {
@@ -378,11 +378,11 @@ public class TicketEditDTO {
         this.dateOfPublic = dateOfPublic;
     }
 
-    public String getFileRar() {
-        return fileRar;
+    public String getFileZip() {
+        return fileZip;
     }
 
-    public void setFileRar(String fileRar) {
-        this.fileRar = fileRar;
+    public void setFileZip(String fileZip) {
+        this.fileZip = fileZip;
     }
 }

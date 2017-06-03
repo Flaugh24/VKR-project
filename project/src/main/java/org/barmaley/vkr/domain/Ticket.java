@@ -34,10 +34,10 @@ public class Ticket implements Serializable {
     @Column(name = "TITLE_ENG")
     private String titleEng;
 
-    @Column(name = "ANNOTATION")
+    @Column(name = "ANNOTATION", length = 1024)
     private String annotation;
 
-    @Column(name = "ANNOTATION_ENG")
+    @Column(name = "ANNOTATION_ENG", length = 1024)
     private String annotationEng;
 
     @Column(name = "KEY_WORDS")
@@ -61,8 +61,8 @@ public class Ticket implements Serializable {
     @Column(name = "FILE_PDF")
     private String filePdf;
 
-    @Column(name = "FILE_RAR")
-    private String fileRar;
+    @Column(name = "FILE_ZIP")
+    private String fileZip;
 
     @Column(name = "DATE_CREATION_START")
     private Date dateCreationStart;
@@ -98,14 +98,14 @@ public class Ticket implements Serializable {
     @Column(name = "YEAR_OF_PUBLIC")
     private String yearOfPublic;
 
-    @Column(name = "NAME_DIRECTION")
-    private String surFirstLastNameDir;
+    @Column(name = "HEAD_OF_DEPARTMENT")
+    private String headOfDepartment;
 
-    @Column(name = "SFL_N_MASTER")
-    private String sflNMaster;
+    @Column(name = "FULL_NAME_CURATOR")
+    private String fullNameCurator;
 
-    @Column(name = "SFL_N_MASTER_ENG")
-    private String sflNMasterEng;
+    @Column(name = "FULL_NAME_CURATOR_ENG")
+    private String fullNameCuratorEng;
 
     @Column(name = "POSITION_OF_CURATOR")
     private String posOfCurator;
@@ -224,12 +224,12 @@ public class Ticket implements Serializable {
         this.filePdf = filePdf;
     }
 
-    public String getFileRar() {
-        return fileRar;
+    public String getFileZip() {
+        return fileZip;
     }
 
-    public void setFileRar(String fileRar) {
-        this.fileRar = fileRar;
+    public void setFileZip(String fileZip) {
+        this.fileZip = fileZip;
     }
 
     public TypeOfUse getTypeOfUse() {
@@ -328,28 +328,28 @@ public class Ticket implements Serializable {
         this.yearOfPublic = yearOfPublic;
     }
 
-    public String getSurFirstLastNameDir() {
-        return surFirstLastNameDir;
+    public String getHeadOfDepartment() {
+        return headOfDepartment;
     }
 
-    public void setSurFirstLastNameDir(String surFirstLastNameDir) {
-        this.surFirstLastNameDir = surFirstLastNameDir;
+    public void setHeadOfDepartment(String headOfDepartment) {
+        this.headOfDepartment = headOfDepartment;
     }
 
-    public String getSflNMaster() {
-        return sflNMaster;
+    public String getFullNameCurator() {
+        return fullNameCurator;
     }
 
-    public void setSflNMaster(String sflNMaster) {
-        this.sflNMaster = sflNMaster;
+    public void setFullNameCurator(String fullNameCurator) {
+        this.fullNameCurator = fullNameCurator;
     }
 
-    public String getSflNMasterEng() {
-        return sflNMasterEng;
+    public String getFullNameCuratorEng() {
+        return fullNameCuratorEng;
     }
 
-    public void setSflNMasterEng(String sflNMasterEng) {
-        this.sflNMasterEng = sflNMasterEng;
+    public void setFullNameCuratorEng(String fullNameCuratorEng) {
+        this.fullNameCuratorEng = fullNameCuratorEng;
     }
 
     public String getPosOfCurator() {

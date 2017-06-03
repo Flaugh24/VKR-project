@@ -15,17 +15,22 @@
     <!-- Latest compiled and minified JavaScript -->
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css" />" />
 
+    <link rel="stylesheet" href="<c:url value="/resources/css/liveSearch.css"/>"/>
+
     <title>Заявка <c:out value="${ticketAttribute.id}" /></title>
 
 </head>
-<body style="overflow-y: hidden">
 
 <c:url var="uploadUrl" value="/ticket/upload" />
-<c:url var="deleteUrl" value="/ticket/deletepdf" />
-<c:url var="deleteUrlrar" value="/ticket/deleterar" />
+<c:url var="deleteUrl" value="/ticket/delete" />
 <c:url var="saveUrl" value="/ticket/check?ticketId=${ticketAttribute.id}" />
 <c:url var="pdfDocument" value="/pdfDocument?ticketId=${ticketAttribute.id}" />
-<c:set var="coordinator" value="${coordinator}" />
+
+<c:choose>
+    <c:when test="${ticketAttribute.status.id != '3'}">
+        <c:set var="varclass" value="disabledEdit"/>
+    </c:when>
+</c:choose>
 
 <div class="container-fluid">
     <header>
@@ -35,116 +40,150 @@
         <div class="row">
             <div class="col-md-5" style="max-height: 100vh; overflow-y: auto; padding-bottom: 100px">
                 <h2>Номер заявки <c:out value="${ticketAttribute.id}" /></h2>
-                <c:if test="${ticketAttribute.filePdf == null }">
-                    <div>
-                        <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
-                            <label for="ticketId" />
-                            <input  name="ticketId" id="ticketId" value="${ticketAttribute.id}" style="display: none"/>
-                            <div class="form-group">
-                                <label for="uploadFile">Загрузите файлы вашей ВКР в формате pdf или zip</label>
-                                <input  name="uploadFile" id="uploadFile" type="file" accept="application/pdf"/>
-                            </div>
-                            <div class="form-group">
-                                <input id="filePdf" type="submit" name="submit" value="Загрузить PDF" class="btn btn-default" disabled="disabled"/>
 
-                                <input id="fileZip" type="submit" name="submit" value="Загрузить Архив" class="btn btn-default" disabled="disabled"/>
+                <c:if test="${ticketAttribute.status.id == 3}">
+                    <c:if test="${ticketAttribute.filePdf == null }">
+                        <div>
+                            <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
+                                <label for="ticketId">
+                                    <input  name="ticketId" id="ticketId" value="${ticketAttribute.id}" style="display: none"/>
+                                </label>
+                                <div class="form-group">
+                                    <label>Загрузите файлы Вашей ВКР в формате PDF или ZIP<br/>
+                                        <input  name="uploadFile" id="uploadFile" type="file" />
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <input id="upload" type="submit" name="submit" value="Загрузить" class="btn btn-default" disabled/>
+                                </div>
+                            </form>
+
+                        </div>
+                        <c:if test="${ticketAttribute.fileZip != null }">
+                            <div>
+                                <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
+                                    <label>
+                                        <input  name="ticketId" value="${ticketAttribute.id}" style="display: none"/>
+                                    </label>
+                                    <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
+                                </form>
                             </div>
-                        </form>
-                    </div>
+
+                        </c:if>
+                    </c:if>
+                    <c:if test="${ticketAttribute.filePdf != null }">
+                        <c:if test="${ticketAttribute.fileZip != null }">
+                            <div>
+                                <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
+                                    <label for="ticketId"></label>
+                                    <input  name="ticketId" value="${ticketAttribute.id}" style="display: none"/>
+                                    <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
+                                </form>
+                            </div>
+
+                        </c:if>
+                        <c:if test="${ticketAttribute.fileZip == null }">
+                            <div>
+                                <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
+                                    <label for="ticketId" />
+                                    <input  name="ticketId" id="ticketId6" value="${ticketAttribute.id}" style="display: none"/>
+                                    <div class="form-group">
+                                        <label for="uploadFile6">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
+                                        <input  name="uploadFile" id="uploadFile6" type="file" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" name="submit" value="Загрузить" class="btn btn-default"/>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </c:if>
+                        <div>
+                            <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
+                                <label for="ticketId" />
+                                <input  name="ticketId" id="ticketId3" value="${ticketAttribute.id}" style="display: none"/>
+                                <div class="form-group">
+                                    <input type="submit" name="submit" value="Удалить PDF" class="btn btn-default"/>
+                                </div>
+                            </form>
+                        </div>
+                    </c:if>
                 </c:if>
+                <form:form commandName="ticketAttribute" method="POST" id="ticketform" action="${saveUrl}">
 
-                <c:if test="${ticketAttribute.filePdf != null }">
-                    <div>
-                        <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
-                            <label for="ticketId" />
-                            <input  name="ticketId" id="ticketId1" value="${ticketAttribute.id}" style="display: none"/>
-                            <div class="form-group">
-                                <label for="filePdf1">Загрузите PDF-файл Вашей ВКР</label>
-                                <input  name="filePdf" id="filePdf1" type="file" accept="application/pdf"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" name="submit" value="Удалить PDF" class="btn btn-default"/>
-
-                                <input type="submit" name="submit" value="Загрузить Архив" class="btn btn-default"/>
-                            </div>
-                        </form>
-                    </div>
-                </c:if>
-                <form:form commandName="ticketAttribute" method="POST">
                     <div>
                         <form:label path="id" cssStyle="display: none" />
                         <form:input path="id" cssStyle="display: none" />
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Тип документа</form:label><br/>
-                        <form:input cssClass="form-control" path="documentTypeName" disabled="true"/>
+                        <form:label path="documentTypeName">Тип документа</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="documentTypeName" disabled="true"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Тип документа на английском</form:label><br/>
-                        <form:input cssClass="form-control" path="documentTypeNameEng" disabled="true"/>
+                        <form:label path="documentTypeNameEng" >Тип документа на английском</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="documentTypeNameEng" disabled="true"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">ФИО научного руководителя</form:label><br/>
-                        <form:input cssClass="form-control" path="sflNMaster" />
+                        <form:label path="fullNameCurator">ФИО научного руководителя</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="fullNameCurator" id="w-input-search" maxlength="256"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">ФИО научного руководителя на английском</form:label><br/>
-                        <form:input cssClass="form-control" path="sflNMasterEng" />
+                        <form:label path="fullNameCuratorEng">ФИО научного руководителя на английском</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="fullNameCuratorEng" maxlength="256"/>
                     </div>
-                    <%--<div class="form-group">--%>
-                    <%--<form:label path="title">Ученая степень руководителя</form:label><br/>--%>
-                    <%--<form:input cssClass="form-control" path="degreeOfCurator" disabled="true"/>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                    <%--<form:label path="title">Ученая степень руководителя на английском</form:label><br/>--%>
-                    <%--<form:input cssClass="form-control" path="degreeOfCuratorEng" disabled="true"/>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                    <%--<form:label path="title">Должность руководителя</form:label><br/>--%>
-                    <%--<form:input cssClass="form-control" path="posOfCurator" disabled="true"/>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                    <%--<form:label path="title">Должность руководителя на английском</form:label><br/>--%>
-                    <%--<form:input cssClass="form-control" path="posOfCuratorEng" disabled="true"/></div>--%>
+                    <div class="form-group">
+                        <form:label path="degreeOfCurator">Ученая степень руководителя</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="degreeOfCurator" id="degree" maxlength="256"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="degreeOfCuratorEng">Ученая степень руководителя на английском</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="degreeOfCuratorEng" maxlength="256"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="posOfCurator">Должность руководителя</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="posOfCurator" id="position" maxlength="256"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="posOfCuratorEng">Должность руководителя на английском</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="posOfCuratorEng" maxlength="256"/>
+                    </div>
                     <div class="form-group">
                         <div class="form-group">
                             <form:label path="title">Заглавие работы</form:label>
-                            <form:input cssClass="form-control" path="title"/>
+                            <form:input cssClass="form-control ${varclass}" path="title" name="title" maxlength="256"/>
                         </div>
                         <div class="form-group">
                             <form:label path="titleEng">Заглавие работы на английском языке</form:label>
-                            <form:input cssClass="form-control" path="titleEng"/>
+                            <form:input cssClass="form-control ${varclass}" path="titleEng" maxlength="256"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="title">Место публикации</form:label><br/>
-                            <form:input cssClass="form-control" path="placeOfPublic" />
+                            <form:label path="placeOfPublic">Место публикации</form:label><br/>
+                            <form:input cssClass="form-control ${varclass}" path="placeOfPublic" maxlength="256"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="title">Место публикации на английском</form:label><br/>
-                            <form:input cssClass="form-control" path="placeOfPublicEng" />
+                            <form:label path="placeOfPublicEng">Место публикации на английском</form:label><br/>
+                            <form:input cssClass="form-control ${varclass}" path="placeOfPublicEng" maxlength="256"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="title">Год публикации</form:label><br/>
-                            <form:input cssClass="form-control" path="dateOfPublic" disabled="true"/>
+                            <form:label path="dateOfPublic">Год публикации</form:label><br/>
+                            <form:input cssClass="form-control ${varclass}" path="dateOfPublic" disabled="true" maxlength="4"/>
                         </div>
-
-
                         <div class="form-group">
                             <form:label path="annotation">Аннотация</form:label>
-                            <form:textarea cssClass="form-control" path="annotation" rows="5" cssStyle="max-width:100%"/>
+                            <form:textarea path="annotation" rows="5" maxlength="1024" cssClass="form-control ${varclass}" cssStyle="max-width:100%" />
                         </div>
                         <div class="form-group">
                             <form:label path="annotationEng">Аннотация на английском языке</form:label>
-                            <form:textarea cssClass="form-control" path="annotationEng" rows="5" cssStyle="max-width:100%"/>
+                            <form:textarea path="annotationEng" rows="5" maxlength="1024" cssClass="form-control ${varclass}" cssStyle="max-width:100%"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="annotationEng">Ключевые слова</form:label>
+                            <form:label path="word1">Ключевые слова</form:label>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="Первое слово" path="word1"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Первое слово" path="word1" maxlength="64"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="Второе слово" path="word2"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Второе слово" path="word2" maxlength="64"/>
                                 </div>
                             </div>
 
@@ -152,22 +191,22 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="Третье слово" path="word3"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Третье слово" path="word3" maxlength="64"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="Четвертое слово" path="word4"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="Четвертое слово" path="word4" maxlength="64"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <form:label path="annotationEng">Ключевые слова на английском языке</form:label>
+                            <form:label path="word1Eng">Ключевые слова на английском языке</form:label>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="The first word" path="word1Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The first word" path="word1Eng" maxlength="64"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="The second word" path="word2Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The second word" path="word2Eng" maxlength="64"/>
                                 </div>
                             </div>
 
@@ -175,51 +214,53 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="The third word" path="word3Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The third word" path="word3Eng" maxlength="64"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <form:input cssClass="form-control" placeholder="The fourth word" path="word4Eng"/>
+                                    <form:input cssClass="form-control ${varclass}" placeholder="The fourth word" path="word4Eng" maxlength="64"/>
                                 </div>
                             </div>
                         </div>
 
                         <form:label path="typeOfUseId">Свободный доступ из сети</form:label>
-                        <form:select path="typeOfUseId" cssClass="form-control" cssStyle="width: auto">
+                        <form:select path="typeOfUseId" cssClass="form-control ${varclass}" cssStyle="width: auto">
                             <c:forEach items="${typeOfUse}" var="typeOfUse">
                                 <form:option value="${typeOfUse.id}"><c:out value="${typeOfUse.name}" /></form:option>>
                             </c:forEach>
                         </form:select>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Направления подготовки</form:label><br/>
-                        <form:input cssClass="form-control" path="direction" disabled="true"/>
+                        <form:label path="direction">Направлениe подготовки</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="direction" disabled="true" maxlength="256"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Код направления подготовки</form:label><br/>
-                        <form:input cssClass="form-control" path="directionCode" disabled="true"/>
+                        <form:label path="directionCode">Код направления подготовки</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="directionCode" disabled="true" maxlength="256"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Институт</form:label><br/>
-                        <form:input cssClass="form-control" path="institute" disabled="true"/>
+                        <form:label path="institute">Институт</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="institute" disabled="true" maxlength="256"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Группа</form:label><br/>
-                        <form:input cssClass="form-control" path="groupNum" disabled="true"/>
+                        <form:label path="groupNum">Группа</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="groupNum" disabled="true" maxlength="256"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">Кафедра</form:label><br/>
-                        <form:input cssClass="form-control" path="department" disabled="true"/>
+                        <form:label path="department">Кафедра</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="department" disabled="true" maxlength="256"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="title">ФИО заведующего кафедрой</form:label><br/>
-                        <form:input cssClass="form-control" path="surFirstLastNameDir"/>
+                        <form:label path="headOfDepartment">ФИО заведующего кафедрой</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="headOfDepartment" maxlength="256"/>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" name="button" formaction="${saveUrl}" value="save" class="btn btn-default">Сохранить изменения</button>
-                        <button type="submit" name="button" formaction="${saveUrl}" value="ready" class="btn btn-default">Готова к передаче в ИБК</button>
-                        <input type="submit" name="button" formaction="${saveUrl}" value="Загрузить регистрационный лист" class="btn btn-default"/>
-                        <input type="submit" name="button" formaction="${saveUrl}" value="Загрузить лицензионный договор" class="btn btn-default"/>
-                    </div>
+                    <c:if test="${ticketAttribute.status.id == 3}">
+                        <div class="form-group">
+                            <button type="submit" name="button" value="recordSheet" class="btn btn-default">Регистрационный лист</button>
+                            <button type="submit" name="button" value="licenseAgreement" class="btn btn-default">Лицензионный договор</button><br/>
+                            <button type="submit" name="button" value="save" class="btn btn-default">Сохранить изменения</button>
+                            <button type="submit" name="button" value="ready" class="btn btn-default">Готова для передачи в ИБК</button>
+                        </div>
+                    </c:if>
                 </form:form>
             </div>
             <div class="col-md-7" style="padding-top: 10px">
@@ -233,5 +274,49 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/uploadFile.js"/> "></script>
+<script src="<c:url value="/resources/js/jquery.autocomplete.min.js"/> "></script>
+
+<script>
+    $(document).ready(
+        function ($) {
+            $('.disabledEdit').prop("disabled", true);
+        }
+    );
+
+    $('#ticketform').keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+
+    $('#w-input-search').autocomplete({
+        serviceUrl: '${pageContext.request.contextPath}/getTags', // Страница для обработки запросов автозаполнения
+        paramName: "tagName",
+        minChars: 3, // Минимальная длина запроса для срабатывания автозаполнения
+        delimiter: ",", // Разделитель для нескольких запросов, символ или регулярное выражение
+        maxHeight: 400, // Максимальная высота списка подсказок, в пикселях
+        width: 300, // Ширина списка
+        zIndex: 9999, // z-index списка
+        deferRequestBy: 300, // Задержка запроса (мсек), на случай, если мы не хотим слать миллион запросов, пока пользователь печатает. Я обычно ставлю 300.
+        transformResult: function(response) {
+            return {
+
+                suggestions: $.map($.parseJSON(response), function(item) {
+
+                    return { value: (item.surname + ' ' + item.firstName + ' ' + item.secondName), position: item.position, degree: item.degree };
+
+                })
+            };
+
+        },
+        onSelect: function (suggestion) {
+            $('#position').val(suggestion.position);
+            $('#degree').val(suggestion.degree);
+        }
+    });
+
+</script>
 </body>
 </html>

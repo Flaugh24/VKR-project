@@ -173,9 +173,9 @@ public class TicketService {
         existingTicket.setPlaceOfPublic(ticket.getPlaceOfPublic());
         existingTicket.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
         existingTicket.setYearOfPublic(ticket.getYearOfPublic());
-        existingTicket.setSurFirstLastNameDir(ticket.getSurFirstLastNameDir());
-        existingTicket.setSflNMaster(ticket.getSflNMaster());
-        existingTicket.setSflNMasterEng(ticket.getSflNMasterEng());
+        existingTicket.setHeadOfDepartment(ticket.getHeadOfDepartment());
+        existingTicket.setFullNameCurator(ticket.getFullNameCurator());
+        existingTicket.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
         existingTicket.setPosOfCurator(ticket.getPosOfCurator());
         existingTicket.setDegreeOfCurator(ticket.getDegreeOfCurator());
         //-------------------------------------------------------------------
@@ -192,11 +192,11 @@ public class TicketService {
         session.save(existingTicket);
     }
 
-    public void editRar(Ticket ticket) {
+    public void editZip(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 
         Ticket existingTicket = (Ticket) session.get(Ticket.class, ticket.getId());
-        existingTicket.setFileRar(ticket.getFileRar());
+        existingTicket.setFileZip(ticket.getFileZip());
         session.save(existingTicket);
     }
 }

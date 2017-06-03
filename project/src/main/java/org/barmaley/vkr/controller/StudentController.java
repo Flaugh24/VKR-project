@@ -7,7 +7,6 @@ import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.service.*;
 import org.barmaley.vkr.Tool.PermissionTool;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -225,7 +222,7 @@ public class StudentController {
 
             dto.setKeyWordsEng(ticket.getKeyWordsEng());
             dto.setFilePdf(ticket.getFilePdf());
-            dto.setFileRar(ticket.getFileRar());
+            dto.setFileZip(ticket.getFileZip());
             dto.setStatus(statusService.get(ticketService.getStatusId(ticket.getId())));
             dto.setDocumentTypeId(ticketService.getDocumentTypeId(ticket.getId()));
             dto.setTypeOfUseId(ticketService.getTypeOfUse(ticket.getId()));
@@ -313,9 +310,9 @@ public class StudentController {
             dto.setYearOfPublic(ticket.getYearOfPublic());
             dto.setDocumentTypeName(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getName());
             dto.setDocumentTypeNameEng(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getNameEng());
-            dto.setSurFirstLastNameDir(ticket.getSurFirstLastNameDir());
-            dto.setSflNMaster(ticket.getSflNMaster());
-            dto.setSflNMasterEng(ticket.getSflNMasterEng());
+            dto.setHeadOfDepartment(ticket.getHeadOfDepartment());
+            dto.setFullNameCurator(ticket.getFullNameCurator());
+            dto.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
             dto.setPosOfCurator(ticket.getPosOfCurator());
             dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
             //-----------------------------------------------------
@@ -332,9 +329,10 @@ public class StudentController {
 
     @PostMapping(value = "/ticket/edit")
     public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
-                           @RequestParam(value = "button", required = false) String button) {
+                           @RequestParam(value = "button") String button) {
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
+        ticket.setAnnotation(dto.getAnnotation());
         ticket.setAnnotationEng(dto.getAnnotationEng());
         ticket.setTitle(dto.getTitle());
         ticket.setTitleEng(dto.getTitleEng());
@@ -343,19 +341,21 @@ public class StudentController {
         str = dto.getWord1Eng()+", "+dto.getWord2Eng()+", "+dto.getWord3Eng()+", "+dto.getWord4Eng();
         ticket.setKeyWordsEng(str);
         ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUseId()));
-        ticket.setStatus(statusService.get(1));
         //----------------------------------------------------
         ticket.setPlaceOfPublic(dto.getPlaceOfPublic());
         ticket.setPlaceOfPublicEng(dto.getPlaceOfPublicEng());
         ticket.setYearOfPublic(dto.getDateOfPublic());
-        ticket.setSurFirstLastNameDir(dto.getSurFirstLastNameDir());
-        ticket.setSflNMaster(dto.getSflNMaster());
-        ticket.setSflNMasterEng(dto.getSflNMasterEng());
+        ticket.setHeadOfDepartment(dto.getHeadOfDepartment());
+        ticket.setFullNameCurator(dto.getFullNameCurator());
+        ticket.setFullNameCuratorEng(dto.getFullNameCuratorEng());
         ticket.setPosOfCurator(dto.getPosOfCurator());
         ticket.setDegreeOfCurator(dto.getDegreeOfCurator());
         //----------------------------------------------------
-        if(button != null){
-            logger.debug("Status 2");
+        logger.debug("button: " + button);
+        if(button.equals("save")){
+            ticket.setStatus(statusService.get(1));
+        }
+        if(button.equals("send")){
             ticket.setStatus(statusService.get(2));
             ticket.setDateCreationFinish(new Date());
         }
@@ -363,38 +363,6 @@ public class StudentController {
         ticketService.edit(ticket);
 
         return "redirect:/user";
-    }
-
-    @PostMapping("/ticket/deleterar")
-    public String singleFileDeleterar(@RequestParam("uploadFile") MultipartFile file,
-                                   @RequestParam("ticketId") String ticketId,
-                                   @RequestParam("submit") String submit) {
-        String fullPath, ROOT_FOLDERS;
-        logger.debug("Upload PDF File");
-
-        Ticket ticket = ticketService.get(ticketId);
-        try{
-            ROOT_FOLDERS = "D:\\src\\";
-            byte[] bytes = file.getBytes();
-            logger.debug(file.getOriginalFilename());
-            if(submit.equals("Удалить PDF"))
-            {
-                logger.debug("SUBMIT= "+submit);
-                fullPath = ROOT_FOLDERS + ticket.getId() + ".pdf";
-
-                Path path = Paths.get(fullPath);
-                logger.debug("Path delete!");
-                Files.delete(path);
-
-                ticket.setFilePdf(null);
-                ticketService.editPdf(ticket);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return "redirect:/ticket/edit?ticketId=" + ticket.getId();
     }
 
     @PostMapping("/ticket/delete")
@@ -414,12 +382,12 @@ public class StudentController {
             ticketService.editPdf(ticket);
         }
         if(submit.equals("Удалить архив")){
-            File file = new File(ticket.getFileRar());
+            File file = new File(ticket.getFileZip());
             if(file.delete()){
-                logger.debug(ticket.getFileRar()+" файл удален");
-            }else logger.debug("Файла"+ticket.getFileRar()+" не обнаружено");
-            ticket.setFileRar(null);
-            ticketService.editRar(ticket);
+                logger.debug(ticket.getFileZip()+" файл удален");
+            }else logger.debug("Файла"+ticket.getFileZip()+" не обнаружено");
+            ticket.setFileZip(null);
+            ticketService.editZip(ticket);
         }
         return "redirect:/ticket/edit?ticketId=" + ticket.getId();
     }
@@ -461,8 +429,8 @@ public class StudentController {
                     logger.debug("Конечный путь файла zip = "+fullPath);
                     Path path = Paths.get(fullPath);
                     Files.write(path, bytes);
-                    ticket.setFileRar(fullPath);
-                    ticketService.editRar(ticket);
+                    ticket.setFileZip(fullPath);
+                    ticketService.editZip(ticket);
                 }
             }
         } catch (Exception e) {

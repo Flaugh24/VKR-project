@@ -165,57 +165,24 @@ public class CoordinatorController {
                 List list = new ArrayList();
                 if(str!=null) {
                     for (String retval : str.split(", ")) {
-                        logger.debug(retval);
                         list.add(retval);
                     }
                 }
-                logger.debug(list);
-                logger.debug(list.size());
-                if (list.size()==0){
-                    dto.setWord1(null);
-                    dto.setWord2(null);
-                    dto.setWord3(null);
-                    dto.setWord4(null);
-                }
-                if (list.size()==1){
-                    dto.setWord1((String) list.get(0));
-                    dto.setWord2(null);
-                    dto.setWord3(null);
-                    dto.setWord4(null);
-                }
-                if (list.size()==2){
-                    dto.setWord1((String) list.get(0));
-                    dto.setWord2((String) list.get(1));
-                    dto.setWord3(null);
-                    dto.setWord4(null);
-                }
-                if (list.size()==3){
+                try{
                     dto.setWord1((String) list.get(0));
                     dto.setWord2((String) list.get(1));
                     dto.setWord3((String) list.get(2));
-                    dto.setWord4(null);
-                }
-                if (list.size()==4){
-                    dto.setWord1((String) list.get(0));
-                    logger.debug("1 "+dto.getWord1());
-                    dto.setWord2((String) list.get(1));
-                    logger.debug("2 "+dto.getWord2());
-                    dto.setWord3((String) list.get(2));
-                    logger.debug("3 "+dto.getWord3());
                     dto.setWord4((String) list.get(3));
-                    logger.debug("4 "+dto.getWord4());
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
                 str = dto.getKeyWordsEng();
-                logger.debug(str);
                 list.clear();
                 if(str!=null) {
                     for (String retval : str.split(", ")) {
-                        logger.debug(retval);
                         list.add(retval);
                     }
                 }
-                logger.debug(list);
-                logger.debug(list.size());
                 try{
                     dto.setWord1Eng((String) list.get(0));
                     dto.setWord2Eng((String) list.get(1));
@@ -235,13 +202,6 @@ public class CoordinatorController {
                 dto.setInstitute(ticket.getInstitute());
                 dto.setDirection(ticket.getDirection());
                 dto.setGroupNum(ticket.getGroupNum());
-//                dto.setDirOfTrain(ticket.getDirOfTrain());
-//                dto.setCodeDirOfTrain(ticket.getCodeDirOfTrain());
-//                dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
-//                dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
-//                dto.setPosOfCurator(ticket.getPosOfCurator());
-//                dto.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
-
                 dto.setPlaceOfPublic(ticket.getPlaceOfPublic());
                 dto.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
                 dto.setYearOfPublic(ticket.getYearOfPublic());
@@ -250,6 +210,10 @@ public class CoordinatorController {
                 dto.setHeadOfDepartment(ticket.getHeadOfDepartment());
                 dto.setFullNameCurator(ticket.getFullNameCurator());
                 dto.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
+                dto.setPosOfCurator(ticket.getPosOfCurator());
+                dto.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
+                dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
+                dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
 
                 model.addAttribute("user", user);
                 model.addAttribute("ticketAttribute", dto);
@@ -286,24 +250,33 @@ public class CoordinatorController {
         ticket.setHeadOfDepartment(dto.getHeadOfDepartment());
         ticket.setFullNameCurator(dto.getFullNameCurator());
         ticket.setFullNameCuratorEng(dto.getFullNameCuratorEng());
-        //----------------------------------------------------
+        ticket.setPosOfCurator(dto.getPosOfCurator());
+        ticket.setPosOfCuratorEng(dto.getPosOfCuratorEng());
+        ticket.setDegreeOfCurator(dto.getDegreeOfCurator());
+        ticket.setDegreeOfCuratorEng(dto.getDegreeOfCuratorEng());
 
-        if(button.equals("ready")){
-            ticket.setStatus(statusService.get(4));
-            ticket.setDateCheckCoordinatorFinish(new Date());
-        }else {
-            ticket.setStatus(statusService.get(3));
+        //----------------------------------------------------
+        switch (button){
+            case "return":
+                ticket.setStatus(statusService.get(5));
+                ticket.setDateReturn(new Date());
+                break;
+            case "ready":
+                ticket.setStatus(statusService.get(4));
+                ticket.setDateCheckCoordinatorFinish(new Date());
+                break;
+            default:
+                ticket.setStatus(statusService.get(3));
+                break;
         }
 
         ticketService.edit(ticket);
 
-
-        if(button.equals("recordSheet")){
-
-            return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
-        };
-        if(button.equals("licenseAgreement")){
-            return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
+        switch (button){
+            case "recordSheet":
+                return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
+            case "licenseAgreement":
+                return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
         }
 
         return "redirect:/coordinator";
@@ -356,13 +329,6 @@ public class CoordinatorController {
         ticket.setDirectionCode(educProgram.getDirectionCode());
         ticket.setInstitute(educProgram.getInstitute());
         ticket.setDepartment(educProgram.getDepartment());
-//        ticket.setSpecialty(educProgram.getSpecialty());
-//        ticket.setDirOfTrain(educProgram.getDirOfTrain());
-//        ticket.setCodeDirOfTrain(educProgram.getCodeDirOfTrain());
-//        ticket.setDegreeOfCurator(educProgram.getDegreeOfCurator());
-//        ticket.setDegreeOfCuratorEng(educProgram.getDegreeOfCuratorEng());
-//        ticket.setPosOfCurator(educProgram.getPosOfCurator());
-//        ticket.setPosOfCuratorEng(educProgram.getPosOfCuratorEng());
         //-----------------------------------------------------------------
         ticketService.add(ticket);
         model.addAttribute("ticket", ticket);

@@ -76,6 +76,8 @@ public class Ticket implements Serializable {
     @Column(name = "DATE_CHECK_COORDINATOR_FINISH")
     private Date dateCheckCoordinatorFinish;
 
+    @Column(name = "DATE_RETURN")
+    private Date dateReturn;
     //----------------------------------------------------
     @Column(name = "INSTITUTE")
     private String institute;
@@ -110,8 +112,14 @@ public class Ticket implements Serializable {
     @Column(name = "POSITION_OF_CURATOR")
     private String posOfCurator;
 
+    @Column(name = "POSITION_OF_CURATOR_ENG")
+    private String posOfCuratorEng;
+
     @Column(name = "DEGREE_OF_CURATOR")
     private String degreeOfCurator;
+
+    @Column(name = "DEGREE_OF_CURATOR_ENG")
+    private String degreeOfCuratorEng;
 
     @ManyToOne
     @JoinColumn(name="ACT")
@@ -360,6 +368,14 @@ public class Ticket implements Serializable {
         this.posOfCurator = posOfCurator;
     }
 
+    public String getPosOfCuratorEng() {
+        return posOfCuratorEng;
+    }
+
+    public void setPosOfCuratorEng(String posOfCuratorEng) {
+        this.posOfCuratorEng = posOfCuratorEng;
+    }
+
     public String getDegreeOfCurator() {
         return degreeOfCurator;
     }
@@ -368,12 +384,28 @@ public class Ticket implements Serializable {
         this.degreeOfCurator = degreeOfCurator;
     }
 
+    public String getDegreeOfCuratorEng() {
+        return degreeOfCuratorEng;
+    }
+
+    public void setDegreeOfCuratorEng(String degreeOfCuratorEng) {
+        this.degreeOfCuratorEng = degreeOfCuratorEng;
+    }
+
     public Act getAct() {
         return act;
     }
 
     public void setAct(Act act) {
         this.act = act;
+    }
+
+    public Date getDateReturn() {
+        return dateReturn;
+    }
+
+    public void setDateReturn(Date dateReturn) {
+        this.dateReturn = dateReturn;
     }
 }
 

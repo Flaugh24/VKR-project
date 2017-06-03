@@ -74,8 +74,8 @@
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketDTO.dateCreationStart}"/></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketDTO.dateCreationFinish}"/></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketDTO.dateCheckCoordinatorStart}" /></a></td>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
+                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketDTO.dateReturn}" /></a></td>
+                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out value="${ticketDTO.dateCheckCoordinatorFinish}" /></a></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
                         </tr>

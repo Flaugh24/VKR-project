@@ -39,7 +39,8 @@ public class TicketEditDTO {
     private String department;
     private String directionCode;
     private String word1,word2,word3,word4,word1Eng,word2Eng,word3Eng,word4Eng;
-    private String dateOfPublic="2017";
+    private String dateOfPublic;
+
     //----------------------------------------------------
 
     public String getId() {

@@ -164,11 +164,20 @@ public class TicketService {
         existingTicket.setAnnotationEng(ticket.getAnnotationEng());
         existingTicket.setKeyWords(ticket.getKeyWords());
         existingTicket.setKeyWordsEng(ticket.getKeyWordsEng());
-        //existingTicket.setFilePdf(ticket.getFilePdf());
         existingTicket.setTypeOfUse(ticket.getTypeOfUse());
         existingTicket.setStatus(ticket.getStatus());
-        existingTicket.setDateCreationFinish(ticket.getDateCreationFinish());
-        existingTicket.setDateCheckCoordinatorStart(ticket.getDateCheckCoordinatorStart());
+        if(ticket.getDateCreationFinish() != null){
+            existingTicket.setDateCreationFinish(ticket.getDateCreationFinish());
+        }
+        if(ticket.getDateCheckCoordinatorStart() != null){
+            existingTicket.setDateCheckCoordinatorStart(ticket.getDateCheckCoordinatorStart());
+        }
+        if(ticket.getDateCheckCoordinatorFinish() != null){
+            existingTicket.setDateCheckCoordinatorFinish(ticket.getDateCheckCoordinatorFinish());
+        }
+        if(ticket.getDateReturn() != null){
+            existingTicket.setDateReturn(ticket.getDateReturn());
+        }
         //-------------------------------------------------------------------
         existingTicket.setPlaceOfPublic(ticket.getPlaceOfPublic());
         existingTicket.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
@@ -177,7 +186,9 @@ public class TicketService {
         existingTicket.setFullNameCurator(ticket.getFullNameCurator());
         existingTicket.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
         existingTicket.setPosOfCurator(ticket.getPosOfCurator());
+        existingTicket.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
         existingTicket.setDegreeOfCurator(ticket.getDegreeOfCurator());
+        existingTicket.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
         //-------------------------------------------------------------------
         session.save(existingTicket);
     }

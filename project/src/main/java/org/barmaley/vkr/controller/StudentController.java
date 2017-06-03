@@ -61,7 +61,7 @@ public class StudentController {
         CustomUser principal = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Users user = usersService.getById(principal.getId());
         List<EducProgram> educPrograms = educProgramService.getAll(user.getExtId());
-        List<EducProgram> educProgramsDTO = new ArrayList<EducProgram>();
+        List<EducProgram> educProgramsDTO = new ArrayList<>();
         List<Ticket> tickets = ticketService.getAllTicketsByUserId(principal.getId());
         List<TicketDTO> ticketsDTO = new ArrayList<>();
         Boolean perm_add_fio_eng = permissionTool.checkPermission("PERM_ADD_FIO_ENG");
@@ -74,8 +74,12 @@ public class StudentController {
                     ticketDTO.setDateCreationStart(dateFormat.format(ticket.getDateCreationStart()));
                     ticketDTO.setDateCreationFinish(dateFormat.format(ticket.getDateCreationFinish()));
                     ticketDTO.setDateCheckCoordinatorStart(dateFormat.format(ticket.getDateCheckCoordinatorStart()));
+                    ticketDTO.setDateReturn(dateFormat.format(ticket.getDateReturn()));
+                    ticketDTO.setDateCheckCoordinatorFinish(dateFormat.format(ticket.getDateCheckCoordinatorFinish()));
                 }
-                catch (Exception e){}
+                catch (Exception e){
+                    e.printStackTrace();
+                }
                 ticketsDTO.add(ticketDTO);
             }
         }
@@ -94,15 +98,9 @@ public class StudentController {
                     dto.setDegree(educProgram.getDegree());
                     dto.setGroupNum(educProgram.getGroupNum());
                     dto.setDepartment(educProgram.getDepartment());
-                    logger.debug("getDepartment "+dto.getDepartment());
                     //----------------------------------------------------
                     dto.setDirection(educProgram.getDirection());
                     dto.setDirectionCode(educProgram.getDirectionCode());
-//                    dto.setDegreeOfCurator(educProgram.getDegreeOfCurator());
-//                    dto.setDegreeOfCuratorEng(educProgram.getDegreeOfCuratorEng());
-//                    dto.setPosOfCurator(educProgram.getPosOfCurator());
-//                    dto.setPosOfCuratorEng(educProgram.getPosOfCuratorEng());
-                    //-----------------------------------------------------
                     //-----------------------------------------------------
                     educProgramsDTO.add(dto);
                 }
@@ -113,14 +111,9 @@ public class StudentController {
                     dto.setDegree(educProgram.getDegree());
                     dto.setGroupNum(educProgram.getGroupNum());
                     dto.setDepartment(educProgram.getDepartment());
-                    logger.debug("getDepartment "+dto.getDepartment());
                     //----------------------------------------------------
                     dto.setDirection(educProgram.getDirection());
                     dto.setDirectionCode(educProgram.getDirectionCode());
-//                    dto.setDegreeOfCurator(educProgram.getDegreeOfCurator());
-//                    dto.setDegreeOfCuratorEng(educProgram.getDegreeOfCuratorEng());
-//                    dto.setPosOfCurator(educProgram.getPosOfCurator());
-//                    dto.setPosOfCuratorEng(educProgram.getPosOfCuratorEng());
                     //----------------------------------------------------
                     educProgramsDTO.add(dto);
 
@@ -173,10 +166,6 @@ public class StudentController {
             logger.debug("getDepartment "+ticket.getDepartment());
             ticket.setDirection(educProgram.getDirection());
             ticket.setDirectionCode(educProgram.getDirectionCode());
-//            ticket.setDegreeOfCurator(educProgram.getDegreeOfCurator());
-//            ticket.setDegreeOfCuratorEng(educProgram.getDegreeOfCuratorEng());
-//            ticket.setPosOfCurator(educProgram.getPosOfCurator());
-//            ticket.setPosOfCuratorEng(educProgram.getPosOfCuratorEng());
             //-----------------------------------------------------------------
             ticketService.add(ticket);
             model.addAttribute("ticket", ticket);
@@ -209,7 +198,7 @@ public class StudentController {
             }
         }
 
-        if (principal.getId() == ticket.getUser().getId() || access) {
+        if (principal.getId().equals(ticket.getUser().getId())  || access) {
             List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());
@@ -219,7 +208,6 @@ public class StudentController {
             dto.setTitle(ticket.getTitle());
             dto.setTitleEng(ticket.getTitleEng());
             dto.setKeyWords(ticket.getKeyWords());
-
             dto.setKeyWordsEng(ticket.getKeyWordsEng());
             dto.setFilePdf(ticket.getFilePdf());
             dto.setFileZip(ticket.getFileZip());
@@ -237,53 +225,21 @@ public class StudentController {
                     list.add(retval);
                 }
             }
-            logger.debug(list);
-            logger.debug(list.size());
-            if (list.size()==0){
-                dto.setWord1(null);
-                dto.setWord2(null);
-                dto.setWord3(null);
-                dto.setWord4(null);
-            }
-            if (list.size()==1){
-                dto.setWord1((String) list.get(0));
-                dto.setWord2(null);
-                dto.setWord3(null);
-                dto.setWord4(null);
-            }
-            if (list.size()==2){
-                dto.setWord1((String) list.get(0));
-                dto.setWord2((String) list.get(1));
-                dto.setWord3(null);
-                dto.setWord4(null);
-            }
-            if (list.size()==3){
+            try{
                 dto.setWord1((String) list.get(0));
                 dto.setWord2((String) list.get(1));
                 dto.setWord3((String) list.get(2));
-                dto.setWord4(null);
-            }
-            if (list.size()==4){
-                dto.setWord1((String) list.get(0));
-                logger.debug("1 "+dto.getWord1());
-                dto.setWord2((String) list.get(1));
-                logger.debug("2 "+dto.getWord2());
-                dto.setWord3((String) list.get(2));
-                logger.debug("3 "+dto.getWord3());
                 dto.setWord4((String) list.get(3));
-                logger.debug("4 "+dto.getWord4());
+                }catch (Exception e){
+                e.printStackTrace();
             }
             str = dto.getKeyWordsEng();
-            logger.debug(str);
             list.clear();
             if(str!=null) {
                 for (String retval : str.split(", ")) {
-                    logger.debug(retval);
                     list.add(retval);
                 }
             }
-            logger.debug(list);
-            logger.debug(list.size());
             try{
                 dto.setWord1Eng((String) list.get(0));
                 dto.setWord2Eng((String) list.get(1));
@@ -298,13 +254,10 @@ public class StudentController {
             dto.setDepartment(ticket.getDepartment());
             dto.setDirectionCode(ticket.getDirectionCode());
             dto.setGroupNum(ticket.getGroupNum());
-
-
-
-//            dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
-//            dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
-//            dto.setPosOfCurator(ticket.getPosOfCurator());
-//            dto.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
+            dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
+            dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
+            dto.setPosOfCurator(ticket.getPosOfCurator());
+            dto.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
             dto.setPlaceOfPublic(ticket.getPlaceOfPublic());
             dto.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
             dto.setYearOfPublic(ticket.getYearOfPublic());
@@ -349,7 +302,10 @@ public class StudentController {
         ticket.setFullNameCurator(dto.getFullNameCurator());
         ticket.setFullNameCuratorEng(dto.getFullNameCuratorEng());
         ticket.setPosOfCurator(dto.getPosOfCurator());
+        ticket.setPosOfCuratorEng(dto.getPosOfCuratorEng());
         ticket.setDegreeOfCurator(dto.getDegreeOfCurator());
+        ticket.setDegreeOfCuratorEng(dto.getDegreeOfCuratorEng());
+
         //----------------------------------------------------
         logger.debug("button: " + button);
         if(button.equals("save")){

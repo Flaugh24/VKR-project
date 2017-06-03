@@ -13,7 +13,8 @@ public class TicketDTO {
     private String dateCreationStart;
     private String dateCreationFinish;
     private String dateCheckCoordinatorStart;
-    private String getDateCheckCoordinatorFinish;
+    private String dateCheckCoordinatorFinish;
+    private String dateReturn;
 
     public String getGroupNum() {
         return groupNum;
@@ -111,12 +112,20 @@ public class TicketDTO {
         this.dateCheckCoordinatorStart = dateCheckCoordinatorStart;
     }
 
-    public String getGetDateCheckCoordinatorFinish() {
-        return getDateCheckCoordinatorFinish;
+    public String getDateCheckCoordinatorFinish() {
+        return dateCheckCoordinatorFinish;
     }
 
-    public void setGetDateCheckCoordinatorFinish(String getDateCheckCoordinatorFinish) {
-        this.getDateCheckCoordinatorFinish = getDateCheckCoordinatorFinish;
+    public void setDateCheckCoordinatorFinish(String dateCheckCoordinatorFinish) {
+        this.dateCheckCoordinatorFinish = dateCheckCoordinatorFinish;
+    }
+
+    public String getDateReturn() {
+        return dateReturn;
+    }
+
+    public void setDateReturn(String dateReturn) {
+        this.dateReturn = dateReturn;
     }
 
     public TicketDTO(String id, String groupNum, String firstName, String secondName, String surname, String title, String documentType, String typeOfUse, String status) {

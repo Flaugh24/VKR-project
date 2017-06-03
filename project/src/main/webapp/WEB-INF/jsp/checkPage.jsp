@@ -122,44 +122,44 @@
                     </div>
                     <div class="form-group">
                         <form:label path="fullNameCurator">ФИО научного руководителя</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="fullNameCurator" id="w-input-search" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="fullNameCurator" id="w-input-search" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="fullNameCuratorEng">ФИО научного руководителя на английском</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="fullNameCuratorEng" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="fullNameCuratorEng" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="degreeOfCurator">Ученая степень руководителя</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="degreeOfCurator" id="degree" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="degreeOfCurator" id="degree" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="degreeOfCuratorEng">Ученая степень руководителя на английском</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="degreeOfCuratorEng" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="degreeOfCuratorEng" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="posOfCurator">Должность руководителя</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="posOfCurator" id="position" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="posOfCurator" id="position" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="posOfCuratorEng">Должность руководителя на английском</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="posOfCuratorEng" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="posOfCuratorEng" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <div class="form-group">
                             <form:label path="title">Заглавие работы</form:label>
-                            <form:input cssClass="form-control ${varclass}" path="title" name="title" maxlength="256"/>
+                            <form:input cssClass="form-control ${varclass}" path="title" name="title" maxlength="255"/>
                         </div>
                         <div class="form-group">
                             <form:label path="titleEng">Заглавие работы на английском языке</form:label>
-                            <form:input cssClass="form-control ${varclass}" path="titleEng" maxlength="256"/>
+                            <form:input cssClass="form-control ${varclass}" path="titleEng" maxlength="255"/>
                         </div>
                         <div class="form-group">
                             <form:label path="placeOfPublic">Место публикации</form:label><br/>
-                            <form:input cssClass="form-control ${varclass}" path="placeOfPublic" maxlength="256"/>
+                            <form:input cssClass="form-control ${varclass}" path="placeOfPublic" maxlength="255"/>
                         </div>
                         <div class="form-group">
                             <form:label path="placeOfPublicEng">Место публикации на английском</form:label><br/>
-                            <form:input cssClass="form-control ${varclass}" path="placeOfPublicEng" maxlength="256"/>
+                            <form:input cssClass="form-control ${varclass}" path="placeOfPublicEng" maxlength="255"/>
                         </div>
                         <div class="form-group">
                             <form:label path="dateOfPublic">Год публикации</form:label><br/>
@@ -228,27 +228,27 @@
                     </div>
                     <div class="form-group">
                         <form:label path="direction">Направлениe подготовки</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="direction" disabled="true" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="direction" disabled="true" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="directionCode">Код направления подготовки</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="directionCode" disabled="true" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="directionCode" disabled="true" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="institute">Институт</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="institute" disabled="true" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="institute" disabled="true" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="groupNum">Группа</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="groupNum" disabled="true" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="groupNum" disabled="true" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="department">Кафедра</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="department" disabled="true" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="department" disabled="true" maxlength="255"/>
                     </div>
                     <div class="form-group">
                         <form:label path="headOfDepartment">ФИО заведующего кафедрой</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="headOfDepartment" maxlength="256"/>
+                        <form:input cssClass="form-control ${varclass}" path="headOfDepartment" maxlength="255"/>
                     </div>
                     <c:if test="${ticketAttribute.status.id == 3}">
                         <div class="form-group">

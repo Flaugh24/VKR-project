@@ -346,6 +346,7 @@ public class CoordinatorController {
         for(String ticketId: ticketsId){
             Ticket ticket = ticketService.get(ticketId);
             ticketList.add(ticket);
+            logger.debug(ticket.getId());
         }
 
         return "redirect:/coordinator";

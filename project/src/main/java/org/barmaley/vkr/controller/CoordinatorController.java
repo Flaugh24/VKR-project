@@ -138,10 +138,12 @@ public class CoordinatorController {
     @GetMapping(value = "/ticket/check")
     public String getCheckTicket(@RequestParam(value = "ticketId") String ticketId,
                                  ModelMap model) {
+
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
         Ticket ticket = ticketService.get(ticketId);
         TicketEditDTO dto = new TicketEditDTO();
+
 
         logger.debug(coordinatorRightsSet.size());
 
@@ -151,6 +153,7 @@ public class CoordinatorController {
                 .orElse(null);
 
         if (coordinatorRights != null) {
+
                 ticket.setStatus(statusService.get(3));
                 ticket.setDateCheckCoordinatorStart(new Date());
                 ticketService.edit(ticket);
@@ -337,7 +340,9 @@ public class CoordinatorController {
     }
 
     @PostMapping(value = "/createAct")
+
     public String ticketsReady(CheckBoxDTO checkBoxDTO, ModelMap model) {
+
 
         List<Ticket> ticketList = new ArrayList<>();
         List<String> ticketsId = checkBoxDTO.getId();

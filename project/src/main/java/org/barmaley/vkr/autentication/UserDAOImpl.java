@@ -27,7 +27,9 @@ public class UserDAOImpl {
     @Resource(name = "rolesService")
     private RolesService rolesService;
 
-    CustomUser loadUserByUsername(final String username) {
+
+    public CustomUser loadUserByUsername(final String username) {
+
         CustomUser customUser = new CustomUser();
         try {
             Users user = usersService.getByExtId(username);

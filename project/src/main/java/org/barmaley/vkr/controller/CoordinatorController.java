@@ -166,7 +166,6 @@ public class CoordinatorController {
                 dto.setDepartment(ticket.getDepartment());
                 dto.setDirectionCode(ticket.getDirectionCode());
                 String str = dto.getKeyWords();
-                logger.debug(str);
                 List<String> list = new ArrayList<>();
                 if (str != null) {
                     Collections.addAll(list, str.split(", "));

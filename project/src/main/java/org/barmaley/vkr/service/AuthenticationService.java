@@ -43,8 +43,10 @@ public class AuthenticationService {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("SELECT P.name FROM Permissions AS P JOIN P.roles AS R " +
-                "                                             LEFT OUTER JOIN R.users AS R" +
-                "                                             WHERE R.id=" + userId);
+
+                "                                             LEFT OUTER JOIN R.users AS U" +
+                "                                             WHERE U.id=" + userId);
+
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         List<String> permissions = query.list();
         for (String permission : permissions) {

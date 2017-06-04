@@ -2,7 +2,6 @@ package org.barmaley.vkr.controller;
 
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.dto.CheckBoxDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
@@ -13,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,9 +55,8 @@ public class CoordinatorController {
     @GetMapping(value = "/coordinator")
     public String getCoordinatorPage(ModelMap model) {
 
-        CustomUser principal = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Users user = usersService.getById(principal.getId());
-        List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(principal.getId());
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
         List<Ticket> ticketsNew = new ArrayList<>();
         List<TicketDTO> ticketsNewDTOList = new ArrayList<>();
 
@@ -141,14 +138,22 @@ public class CoordinatorController {
     @GetMapping(value = "/ticket/check")
     public String getCheckTicket(@RequestParam(value = "ticketId") String ticketId,
                                  ModelMap model) {
-        CustomUser principal = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Users user = usersService.getById(principal.getId());
+
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
         Ticket ticket = ticketService.get(ticketId);
         TicketEditDTO dto = new TicketEditDTO();
 
-        for (CoordinatorRights coordinatorRights : coordinatorRightsSet) {
-            if (coordinatorRights.getGroupNum().equals(ticket.getGroupNum())) {
+
+        logger.debug(coordinatorRightsSet.size());
+
+        CoordinatorRights coordinatorRights = coordinatorRightsSet.stream()
+                .filter(x -> ticket.getGroupNum().equals(x.getGroupNum()))
+                .findAny()
+                .orElse(null);
+
+        if (coordinatorRights != null) {
+
                 ticket.setStatus(statusService.get(3));
                 ticket.setDateCheckCoordinatorStart(new Date());
                 ticketService.edit(ticket);
@@ -219,9 +224,9 @@ public class CoordinatorController {
 
                 return "checkPage";
 
-            }
+        } else {
+            return "pnh";
         }
-        return "pnh";
     }
 
     @PostMapping(value = "ticket/check")
@@ -336,7 +341,9 @@ public class CoordinatorController {
     }
 
     @PostMapping(value = "/createAct")
-    public String ticketsReady(CheckBoxDTO checkBoxDTO, BindingResult result) {
+
+    public String ticketsReady(CheckBoxDTO checkBoxDTO, ModelMap model) {
+
 
         List<Ticket> ticketList = new ArrayList<>();
         List<String> ticketsId = checkBoxDTO.getId();
@@ -344,9 +351,17 @@ public class CoordinatorController {
         for (String ticketId : ticketsId) {
             Ticket ticket = ticketService.get(ticketId);
             ticketList.add(ticket);
+            logger.debug(ticket.getId());
         }
 
-        return "redirect:/coordinator";
+        Act act = new Act();
+        act.setTickets(ticketList);
+        act.setDateOfCreat(new Date());
+        act.setUser((Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+        model.addAttribute("act", act);
+
+        return "actPage";
     }
 
 }

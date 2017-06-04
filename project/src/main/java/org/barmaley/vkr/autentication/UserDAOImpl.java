@@ -27,7 +27,9 @@ public class UserDAOImpl {
     @Resource(name = "rolesService")
     private RolesService rolesService;
 
+
     public CustomUser loadUserByUsername(final String username) {
+
         CustomUser customUser = new CustomUser();
         try {
             Users user = usersService.getByExtId(username);
@@ -36,11 +38,18 @@ public class UserDAOImpl {
             if (user != null) {
                 customUser.setId(user.getId());
                 customUser.setUsername(user.getExtId());
+                customUser.setExtId(user.getExtId());
+                customUser.setOrigin(user.getOrigin());
                 customUser.setFirstName(user.getFirstName());
                 customUser.setSecondName(user.getSecondName());
                 customUser.setSurname(user.getSurname());
+                customUser.setFirstNameEng(user.getFirstNameEng());
+                customUser.setSecondNameEng(user.getSecondNameEng());
+                customUser.setSurnameEng(user.getSurnameEng());
                 customUser.setEmail(user.getEmail());
                 customUser.setPhoneNumber(user.getPhoneNumber());
+                customUser.setCoordinatorRights(user.getCoordinatorRights());
+                customUser.setRoles(user.getRoles());
                 customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
                 if (studentCopy != null) {
                     customUser.setPassword(studentCopy.getPassword());
@@ -61,6 +70,7 @@ public class UserDAOImpl {
                     user.setSecondName(studentCopy.getSecondName());
                     user.setEnabled(true);
                     user.setRoles(roles);
+                    user.setOrigin("StudentCopy");
                     usersService.addUser(user);
                     user = usersService.getByExtId(username);
                     customUser.setPassword(studentCopy.getPassword());
@@ -68,6 +78,7 @@ public class UserDAOImpl {
                 if (employeeCopy != null) {
                     roles.add(rolesService.getRole(2));
                     user.setExtId(employeeCopy.getUsername());
+                    user.setOrigin("EmployeeCopy");
                     user.setSurname(employeeCopy.getSurname());
                     user.setFirstName(employeeCopy.getFirstName());
                     user.setSecondName(employeeCopy.getSecondName());
@@ -79,11 +90,18 @@ public class UserDAOImpl {
                 }
                 customUser.setId(user.getId());
                 customUser.setUsername(user.getExtId());
+                customUser.setExtId(user.getExtId());
+                customUser.setOrigin(user.getOrigin());
                 customUser.setFirstName(user.getFirstName());
                 customUser.setSecondName(user.getSecondName());
                 customUser.setSurname(user.getSurname());
+                customUser.setFirstNameEng(user.getFirstNameEng());
+                customUser.setSecondNameEng(user.getSecondNameEng());
+                customUser.setSurnameEng(user.getSurnameEng());
                 customUser.setEmail(user.getEmail());
                 customUser.setPhoneNumber(user.getPhoneNumber());
+                customUser.setCoordinatorRights(user.getCoordinatorRights());
+                customUser.setRoles(user.getRoles());
                 customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
                 return customUser;
             }

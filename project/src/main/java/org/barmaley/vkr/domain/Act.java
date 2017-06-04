@@ -2,7 +2,7 @@ package org.barmaley.vkr.domain;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "ACT")
@@ -11,12 +11,15 @@ public class Act {
     @Id
     @Column(name = "ID")
     private String id;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private Users user;
     @Column(name = "DATE_OF_СREATN")
-    private Date dateOfCreati;
+    private Date dateOfCreat;
     @Column(name = "DATE_OF_ACCEPT")
     private Date dateOfAccept;
     @OneToMany(mappedBy = "act", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<Ticket> tickets;
+    private List<Ticket> tickets;
 
     public String getId() {
         return id;
@@ -26,12 +29,20 @@ public class Act {
         this.id = id;
     }
 
-    public Date getDateOfCreati() {
-        return dateOfCreati;
+    public Users getUser() {
+        return user;
     }
 
-    public void setDateOfCreati(Date dateOfCreati) {
-        this.dateOfCreati = dateOfCreati;
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public Date getDateOfCreat() {
+        return dateOfCreat;
+    }
+
+    public void setDateOfCreat(Date dateOfCreat) {
+        this.dateOfCreat = dateOfCreat;
     }
 
     public Date getDateOfAccept() {
@@ -42,11 +53,11 @@ public class Act {
         this.dateOfAccept = dateOfAccept;
     }
 
-    public Set<Ticket> getTickets() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(Set<Ticket> tickets) {
+    public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
 }

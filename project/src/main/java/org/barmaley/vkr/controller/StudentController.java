@@ -1,7 +1,6 @@
 package org.barmaley.vkr.controller;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.autentication.CustomUser;
 import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.dto.TicketEditDTO;
@@ -51,11 +50,10 @@ public class StudentController {
     //------------------------------------------------------------------------
     @GetMapping(value = "/student")
     public String getStudentPage(ModelMap model) {
-        CustomUser principal = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Users user = usersService.getById(principal.getId());
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<EducProgram> educPrograms = educProgramService.getAll(user.getExtId());
         List<EducProgram> educProgramsDTO = new ArrayList<>();
-        List<Ticket> tickets = ticketService.getAllTicketsByUserId(principal.getId());
+        List<Ticket> tickets = ticketService.getAllTicketsByUserId(user.getId());
         List<TicketDTO> ticketsDTO = new ArrayList<>();
         Boolean perm_add_fio_eng = permissionTool.checkPermission("PERM_ADD_FIO_ENG");
         if (!tickets.isEmpty()) {
@@ -168,9 +166,7 @@ public class StudentController {
     @GetMapping(value = "/ticket/edit")
     public String getEditTicket(@RequestParam(value = "ticketId") String ticketId,
                                 ModelMap model) {
-        CustomUser principal = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Users user = usersService.getById(principal.getId());
-        Set<Roles> roles = user.getRoles();
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Boolean access = false;
         Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
         Ticket ticket = ticketService.get(ticketId);
@@ -187,7 +183,7 @@ public class StudentController {
             }
         }
 
-        if (principal.getId().equals(ticket.getUser().getId()) || access) {
+        if (user.getId().equals(ticket.getUser().getId()) || access) {
             List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());

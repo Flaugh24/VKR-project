@@ -1,7 +1,10 @@
 package org.barmaley.vkr.controller;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.domain.*;
+import org.barmaley.vkr.domain.EducProgram;
+import org.barmaley.vkr.domain.Ticket;
+import org.barmaley.vkr.domain.TypeOfUse;
+import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.service.*;
@@ -14,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class StudentController {
@@ -167,25 +173,11 @@ public class StudentController {
     public String getEditTicket(@RequestParam(value = "ticketId") String ticketId,
                                 ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Boolean access = false;
-        Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
         Ticket ticket = ticketService.get(ticketId);
         TicketEditDTO dto = new TicketEditDTO();
         SimpleDateFormat dateFormat = new SimpleDateFormat("y");
-        logger.debug("dateofmpublic= " + dto.getDateOfPublic());
 
-        for (CoordinatorRights coordinatorRights : coordinatorRightsSet) {
-            if (coordinatorRights.getGroupNum().equals(ticket.getGroupNum())) {
-                access = true;
-                ticket.setStatus(statusService.get(3));
-                ticket.setDateCheckCoordinatorStart(new Date());
-                ticketService.edit(ticket);
-            }
-        }
-
-
-        if (user.getId().equals(ticket.getUser().getId()) || access) {
-
+        if (user.getId().equals(ticket.getUser().getId())) {
             List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());
@@ -204,13 +196,9 @@ public class StudentController {
             //----------------------------------------------------
             dto.setInstitute(ticket.getInstitute());
             String str = dto.getKeyWords();
-            logger.debug(str);
             List<String> list = new ArrayList<>();
             if (str != null) {
-                for (String retval : str.split(", ")) {
-                    logger.debug(retval);
-                    list.add(retval);
-                }
+                Collections.addAll(list, str.split(", "));
             }
             try {
                 dto.setWord1(list.get(0));

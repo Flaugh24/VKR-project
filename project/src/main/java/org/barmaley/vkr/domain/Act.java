@@ -2,7 +2,9 @@ package org.barmaley.vkr.domain;
 
 import javax.persistence.*;
 import java.util.Date;
+
 import java.util.List;
+
 
 @Entity
 @Table(name = "ACT")
@@ -11,6 +13,7 @@ public class Act {
     @Id
     @Column(name = "ID")
     private String id;
+
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private Users user;
@@ -20,6 +23,7 @@ public class Act {
     private Date dateOfAccept;
     @OneToMany(mappedBy = "act", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Ticket> tickets;
+
 
     public String getId() {
         return id;
@@ -43,7 +47,7 @@ public class Act {
 
     public void setDateOfCreat(Date dateOfCreat) {
         this.dateOfCreat = dateOfCreat;
-    }
+    }<<<<<<< generateAct
 
     public Date getDateOfAccept() {
         return dateOfAccept;

@@ -183,7 +183,9 @@ public class StudentController {
             }
         }
 
+
         if (user.getId().equals(ticket.getUser().getId()) || access) {
+
             List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());

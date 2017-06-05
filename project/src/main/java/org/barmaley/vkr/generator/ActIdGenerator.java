@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TicketIdGenerator implements IdentifierGenerator {
+public class ActIdGenerator implements IdentifierGenerator {
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
         Connection connection = session.connection();
@@ -21,12 +21,12 @@ public class TicketIdGenerator implements IdentifierGenerator {
             Integer year = calendar.get(java.util.Calendar.YEAR);
 
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM Ticket");
+            ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM Act");
 
 
             if (rs.next()) {
                 int id = rs.getInt(1) + 1;
-                String generatedId = "V" + year % 100 + "-" + Integer.toString(id);
+                String generatedId = year % 100 + "-" + Integer.toString(id);
                 return generatedId;
             }
         } catch (SQLException e) {

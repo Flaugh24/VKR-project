@@ -22,12 +22,13 @@ public class UsersService {
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
-    public void addUser(Users user) {
+    public Users addUser(Users user) {
 
         Session session = sessionFactory.getCurrentSession();
-        logger.debug("session" + Integer.toHexString(System.identityHashCode(session)) + "---" + session.hashCode());
         session.save(user);
         session.flush();
+
+        return user;
     }
 
     public void editUser(Users user) {

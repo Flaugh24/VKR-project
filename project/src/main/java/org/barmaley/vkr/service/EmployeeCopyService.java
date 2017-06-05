@@ -1,6 +1,7 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
+import org.barmaley.vkr.domain.EmployeeCopy;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -18,6 +19,15 @@ public class EmployeeCopyService {
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
+
+
+    public EmployeeCopy get(String username) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.get(EmployeeCopy.class, username);
+    }
+
 
     public List getEmployeeByFIO(String like) {
 

@@ -62,6 +62,20 @@ public class TicketService {
         return query.list();
     }
 
+    public List getAllTicketForAct(String groupNum, Integer statusId, String actId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM Ticket WHERE (groupNum = :groupNum AND status.id = :statusId) OR (groupNum = :groupNum AND act.id = :actId)" +
+                " ORDER BY Id"
+        );
+        query.setParameter("groupNum", groupNum);
+        query.setParameter("statusId", statusId);
+        query.setParameter("actId", actId);
+
+        return query.list();
+    }
+
     public List getAllTicketsByUserId(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
@@ -188,8 +202,12 @@ public class TicketService {
         existingTicket.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
         existingTicket.setDegreeOfCurator(ticket.getDegreeOfCurator());
         existingTicket.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
+        if (ticket.getAct() != null) {
+            existingTicket.setAct(ticket.getAct());
+        }
         //-------------------------------------------------------------------
         session.save(existingTicket);
+        session.flush();
     }
 
     //---------------------------------------------------------
@@ -208,6 +226,16 @@ public class TicketService {
 
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
         existingTicket.setFileZip(ticket.getFileZip());
+        session.save(existingTicket);
+    }
+
+    public void editAct(Ticket ticket) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Ticket existingTicket = session.get(Ticket.class, ticket.getId());
+
+        existingTicket.setAct(ticket.getAct());
+        existingTicket.setStatus(ticket.getStatus());
         session.save(existingTicket);
     }
 }

@@ -29,7 +29,7 @@
 <c:url var="pdfDocument" value="/pdfDocument?ticketId=${ticketAttribute.id}"/>
 
 <c:choose>
-    <c:when test="${ticketAttribute.status.id != '3'}">
+    <c:when test="${!(ticketAttribute.status.id == 3 || ticketAttribute.status.id == 4)}">
         <c:set var="varclass" value="disabledEdit"/>
     </c:when>
 </c:choose>
@@ -43,7 +43,7 @@
             <div class="col-md-5" style="max-height: 100vh; overflow-y: auto; padding-bottom: 100px">
                 <h2>Номер заявки <c:out value="${ticketAttribute.id}"/></h2>
 
-                <c:if test="${ticketAttribute.status.id == 3}">
+                <c:if test="${ticketAttribute.status.id == 3 || ticketAttribute.status.id == 4}">
                     <c:if test="${ticketAttribute.filePdf == null }">
                         <div>
                             <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
@@ -274,7 +274,7 @@
                         <form:label path="headOfDepartment">ФИО заведующего кафедрой</form:label><br/>
                         <form:input cssClass="form-control ${varclass}" path="headOfDepartment" maxlength="255"/>
                     </div>
-                    <c:if test="${ticketAttribute.status.id == 3}">
+                    <c:if test="${ticketAttribute.status.id == 3 || ticketAttribute.status.id == 4}">
                         <div class="form-group">
                             <button type="submit" name="button" value="recordSheet" class="btn btn-default">
                                 Регистрационный лист

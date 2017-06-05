@@ -71,8 +71,7 @@ public class UserDAOImpl {
                     user.setEnabled(true);
                     user.setRoles(roles);
                     user.setOrigin("StudentCopy");
-                    usersService.addUser(user);
-                    user = usersService.getByExtId(username);
+                    user = usersService.addUser(user);
                     customUser.setPassword(studentCopy.getPassword());
                 }
                 if (employeeCopy != null) {
@@ -84,8 +83,7 @@ public class UserDAOImpl {
                     user.setSecondName(employeeCopy.getSecondName());
                     user.setEnabled(true);
                     user.setRoles(roles);
-                    usersService.addUser(user);
-                    user = usersService.getByExtId(username);
+                    user = usersService.addUser(user);
                     customUser.setPassword(studentCopy.getPassword());
                 }
                 customUser.setId(user.getId());

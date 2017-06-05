@@ -27,10 +27,6 @@ public class StudentController {
 
     protected static Logger logger = Logger.getLogger("controller");
 
-
-    @Resource(name = "studentCopyService")
-    private StudentCopyService studentCopyService;
-
     @Resource(name = "ticketService")
     private TicketService ticketService;
 

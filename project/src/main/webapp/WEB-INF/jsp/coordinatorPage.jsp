@@ -19,7 +19,7 @@
 </head>
 <body>
 <c:url value="/ticket/addLazy" var="addLazy"/>
-<c:url value="/createAct" var="createAct"/>
+<c:url value="/act/add" var="createAct"/>
 <div class="container-fluid">
     <header>
         <jsp:include page="header.jsp"/>
@@ -48,6 +48,11 @@
                 <c:if test="${not empty lazyStudents}">
                     <li role="presentation"><a href="#lazyStudents" aria-controls="lazyStudents" role="tab"
                                                data-toggle="tab">Студенты (<c:out value="${countLazyStudents}"/>)</a>
+                    </li>
+                </c:if>
+                <c:if test="${not empty acts}">
+                    <li role="presentation"><a href="#acts" aria-controls="acts" role="tab"
+                                               data-toggle="tab">Акты (<c:out value="${countActs}"/>)</a>
                     </li>
                 </c:if>
             </ul>
@@ -201,8 +206,6 @@
                                        id="tableReady">
                                     <thead>
                                     <tr>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center"><input
-                                                type="checkbox" id="all"/></th>
                                         <th rowspan="2" style="vertical-align: middle; text-align: center">№</th>
                                         <th rowspan="2" style="vertical-align: middle; text-align: center">№ Заявки</th>
                                         <th rowspan="2" style="vertical-align: middle; text-align: center">Номер
@@ -237,7 +240,6 @@
                                         <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}"/>
                                         <a href="${checkUrl}">
                                             <tr>
-                                                <td><form:checkbox value="${ticketReady.id}" path="id"/></td>
                                                 <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                                 </a></td>
                                                 <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
@@ -319,6 +321,39 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </c:if>
+                <c:if test="${not empty acts}">
+                    <div role="tabpanel" class="tab-pane" id="acts">
+                        <table class="table table-striped table-bordered" style="text-align: center">
+                            <thead>
+                            <tr>
+                                <th style="vertical-align: middle; text-align: center">№</th>
+                                <th style="vertical-align: middle; text-align: center">№ Акта</th>
+                                <th style="vertical-align: middle; text-align: center">Дата создания</th>
+                                <th style="vertical-align: middle; text-align: center">Статус</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% Integer i = 0; %>
+                            <c:forEach items="${acts}" var="act">
+                                <% i++; %>
+                                <c:url var="editAct" value="/act/edit?actId=${act.id}"/>
+                                <a href="${checkUrl}">
+                                    <tr>
+                                        <td><a href="${editAct}" class="editUrl" style="display: block"><%=i%>
+                                        </a></td>
+                                        <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
+                                                value="${act.id}"/></a></td>
+                                        <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
+                                                value="${act.dateOfCreatDTO}"/> </a></td>
+                                        <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
+                                                value="${act.dateOfAcceptDTO}"/></a></td>
+                                    </tr>
+                                </a>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
                 </c:if>
             </div>

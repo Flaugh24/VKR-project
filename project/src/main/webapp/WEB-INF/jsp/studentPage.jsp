@@ -76,15 +76,15 @@
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
                                     value="${ticketDTO.id}"/></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCreationStart}"/></a></td>
+                                    value="${ticketDTO.dateCreationStartDTO}"/></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCreationFinish}"/></a></td>
+                                    value="${ticketDTO.dateCreationFinishDTO}"/></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCheckCoordinatorStart}"/></a></td>
+                                    value="${ticketDTO.dateCheckCoordinatorStartDTO}"/></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateReturn}"/></a></td>
+                                    value="${ticketDTO.dateReturnDTO}"/></a></td>
                             <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCheckCoordinatorFinish}"/></a>
+                                    value="${ticketDTO.dateCheckCoordinatorFinishDTO}"/></a>
                     </a></td>
                     <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
                     <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>

@@ -117,6 +117,14 @@
                         <form:input path="id" cssStyle="display: none"/>
                     </div>
                     <div class="form-group">
+                        <form:label path="licenseNumber">Номер лицензионного договора</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="licenseNumber"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="licenseDate">Дата лицензионного договора</form:label><br/>
+                        <form:input type="date" cssClass="form-control ${varclass}" path="licenseDate"/>
+                    </div>
+                    <div class="form-group">
                         <form:label path="documentTypeName">Тип документа</form:label><br/>
                         <form:input cssClass="form-control ${varclass}" path="documentTypeName" disabled="true"/>
                     </div>

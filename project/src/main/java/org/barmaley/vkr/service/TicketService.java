@@ -171,6 +171,8 @@ public class TicketService {
 
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
 
+        existingTicket.setLicenseNumber(ticket.getLicenseNumber());
+        existingTicket.setLicenseDate(ticket.getLicenseDate());
         existingTicket.setTitle(ticket.getTitle());
         existingTicket.setTitleEng(ticket.getTitleEng());
         existingTicket.setAnnotation(ticket.getAnnotation());

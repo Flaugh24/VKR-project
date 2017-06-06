@@ -25,12 +25,12 @@
 <body>
 <c:url var="uploadUrl" value="/ticket/fileupload"/>
 <c:url var="deleteUrl" value="/ticket/filedelete"/>
-<c:url var="saveUrl" value="/ticket/edit?ticketId=${ticketAttribute.id}"/>
+<c:url var="saveUrl" value="/ticket/edit"/>
 <c:url var="pdfDocument" value="/pdfDocument?ticketId=${ticketAttribute.id}"/>
 
 
 <c:choose>
-    <c:when test="${!(ticketAttribute.status.id != 1 || ticketAttribute.status.id != 5)}">
+    <c:when test="${!(ticketAttribute.status.id == 1 || ticketAttribute.status.id == 5)}">
         <c:set var="varclass" value="disabledEdit"/>
     </c:when>
 </c:choose>
@@ -116,6 +116,14 @@
 
                     <div>
                         <form:input path="id" cssStyle="display: none"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="licenseNumber">Номер лицензионного договора</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="licenseNumber"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="licenseDate">Дата лицензионного договора</form:label><br/>
+                        <form:input type="date" cssClass="form-control ${varclass}" path="licenseDate"/>
                     </div>
                     <div class="form-group">
                         <form:label path="documentTypeName">Тип документа</form:label><br/>

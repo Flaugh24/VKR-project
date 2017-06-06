@@ -4,7 +4,8 @@ import org.barmaley.vkr.domain.Status;
 
 public class TicketEditDTO {
     private String id;
-    private String agreement;
+    private String licenseNumber;
+    private String licenseDate;
     private String title;
     private String titleEng;
     private String annotation;
@@ -20,10 +21,7 @@ public class TicketEditDTO {
     //----------------------------------------------------
     private String institute;
     private String direction;
-    private String specialty;
     private String groupNum;
-    private String dirOfTrain;
-    private String codeDirOfTrain;
     private String degreeOfCurator;
     private String degreeOfCuratorEng;
     private String posOfCurator;
@@ -51,13 +49,22 @@ public class TicketEditDTO {
         this.id = id;
     }
 
-    public String getAgreement() {
-        return agreement;
+    public String getLicenseNumber() {
+        return licenseNumber;
     }
 
-    public void setAgreement(String agreement) {
-        this.agreement = agreement;
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
     }
+
+    public String getLicenseDate() {
+        return licenseDate;
+    }
+
+    public void setLicenseDate(String licenseDate) {
+        this.licenseDate = licenseDate;
+    }
+
 
     public String getTitle() {
         return title;
@@ -147,14 +154,6 @@ public class TicketEditDTO {
         this.typeOfUseName = typeOfUseName;
     }
 
-    public String getDirOfTrain() {
-        return dirOfTrain;
-    }
-
-    public void setDirOfTrain(String dirOfTrain) {
-        this.dirOfTrain = dirOfTrain;
-    }
-
     public String getInstitute() {
         return institute;
     }
@@ -171,28 +170,12 @@ public class TicketEditDTO {
         this.direction = direction;
     }
 
-    public String getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
-    }
-
     public String getGroupNum() {
         return groupNum;
     }
 
     public void setGroupNum(String groupNum) {
         this.groupNum = groupNum;
-    }
-
-    public String getCodeDirOfTrain() {
-        return codeDirOfTrain;
-    }
-
-    public void setCodeDirOfTrain(String codeDirOfTrain) {
-        this.codeDirOfTrain = codeDirOfTrain;
     }
 
     public String getDegreeOfCurator() {

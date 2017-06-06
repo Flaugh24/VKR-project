@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,11 +64,11 @@ public class StudentController {
                 TicketDTO ticketDTO = new TicketDTO();
                 ticketDTO.setId(ticket.getId());
                 try {
-                    ticketDTO.setDateCreationStart(dateFormat.format(ticket.getDateCreationStart()));
-                    ticketDTO.setDateCreationFinish(dateFormat.format(ticket.getDateCreationFinish()));
-                    ticketDTO.setDateCheckCoordinatorStart(dateFormat.format(ticket.getDateCheckCoordinatorStart()));
-                    ticketDTO.setDateReturn(dateFormat.format(ticket.getDateReturn()));
-                    ticketDTO.setDateCheckCoordinatorFinish(dateFormat.format(ticket.getDateCheckCoordinatorFinish()));
+                    ticketDTO.setDateCreationStartDTO(dateFormat.format(ticket.getDateCreationStart()));
+                    ticketDTO.setDateCreationFinishDTO(dateFormat.format(ticket.getDateCreationFinish()));
+                    ticketDTO.setDateCheckCoordinatorStartDTO(dateFormat.format(ticket.getDateCheckCoordinatorStart()));
+                    ticketDTO.setDateReturnDTO(dateFormat.format(ticket.getDateReturn()));
+                    ticketDTO.setDateCheckCoordinatorFinishDTO(dateFormat.format(ticket.getDateCheckCoordinatorFinish()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -174,7 +175,11 @@ public class StudentController {
             List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());
-            dto.setAgreement(ticket.getAgreement());
+            dto.setLicenseNumber(ticket.getLicenseNumber());
+            if (ticket.getLicenseDate() != null) {
+                SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
+                dto.setLicenseDate(licenseDateFormat.format(ticket.getLicenseDate()));
+            }
             dto.setAnnotation(ticket.getAnnotation());
             dto.setAnnotationEng(ticket.getAnnotationEng());
             dto.setTitle(ticket.getTitle());
@@ -246,8 +251,18 @@ public class StudentController {
     @PostMapping(value = "/ticket/edit")
     public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
                            @RequestParam(value = "button") String button) {
+
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
+        ticket.setLicenseNumber(dto.getLicenseNumber());
+        if (!dto.getLicenseDate().equals("")) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("y-MM-dd");
+            try {
+                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         ticket.setAnnotation(dto.getAnnotation());
         ticket.setAnnotationEng(dto.getAnnotationEng());
         ticket.setTitle(dto.getTitle());

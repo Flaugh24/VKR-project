@@ -29,7 +29,7 @@
         </tr>
         </thead>
         <tbody>
-        <%! Integer i = 0; %>
+        <%Integer i = 0; %>
         <c:forEach items="${tickets}" var="ticket">
             <% i++; %>
             <c:url var="editAct" value="/act/edit?actId=${act.id}"/>

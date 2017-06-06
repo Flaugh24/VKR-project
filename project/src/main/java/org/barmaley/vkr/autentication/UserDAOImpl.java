@@ -8,6 +8,9 @@ import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.service.AuthenticationService;
 import org.barmaley.vkr.service.RolesService;
 import org.barmaley.vkr.service.UsersService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,5 +110,30 @@ public class UserDAOImpl {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Authentication newAuthentication() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUser customUser = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users user = usersService.getById(customUser.getId());
+        customUser.setId(user.getId());
+        customUser.setUsername(user.getExtId());
+        customUser.setExtId(user.getExtId());
+        customUser.setOrigin(user.getOrigin());
+        customUser.setFirstName(user.getFirstName());
+        customUser.setSecondName(user.getSecondName());
+        customUser.setSurname(user.getSurname());
+        customUser.setFirstNameEng(user.getFirstNameEng());
+        customUser.setSecondNameEng(user.getSecondNameEng());
+        customUser.setSurnameEng(user.getSurnameEng());
+        customUser.setEmail(user.getEmail());
+        customUser.setPhoneNumber(user.getPhoneNumber());
+        customUser.setCoordinatorRights(user.getCoordinatorRights());
+        customUser.setRoles(user.getRoles());
+        customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
+
+        return new UsernamePasswordAuthenticationToken(customUser, auth.getCredentials(), customUser.getAuthorities());
+
     }
 }

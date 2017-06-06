@@ -29,7 +29,7 @@
         </tr>
         </thead>
         <tbody>
-        <%Integer i = 0; %>
+        <%int i = 0; %>
         <c:forEach items="${tickets}" var="ticket">
             <% i++; %>
             <c:url var="editAct" value="/act/edit?actId=${act.id}"/>
@@ -45,7 +45,6 @@
                 </td>
                 <td><a href="${editAct}" class="editUrl" style="display: block">Лицензионный договор</a></td>
             </tr>
-            </a>
         </c:forEach>
         </tbody>
     </table>

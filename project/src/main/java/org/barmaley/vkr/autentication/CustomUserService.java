@@ -5,15 +5,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by gagar on 20.05.2017.
- */
-
 @Service
 public class CustomUserService implements UserDetailsService {
 
+    private final UserDAOImpl userDao;
+
     @Autowired
-    private UserDAOImpl userDao;
+    public CustomUserService(UserDAOImpl userDao) {
+        this.userDao = userDao;
+    }
 
 
     public CustomUser loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -57,7 +57,6 @@ public class StudentController {
         List<EducProgram> educProgramsDTO = new ArrayList<>();
         List<Ticket> tickets = ticketService.getAllTicketsByUserId(user.getId());
         List<TicketDTO> ticketsDTO = new ArrayList<>();
-        Boolean perm_add_fio_eng = permissionTool.checkPermission("PERM_ADD_FIO_ENG");
         if (!tickets.isEmpty()) {
             for (Ticket ticket : tickets) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
@@ -112,9 +111,7 @@ public class StudentController {
         }
 
         model.addAttribute("educPrograms", educProgramsDTO);
-        model.addAttribute("user", user);
         model.addAttribute("ticketsDTO", ticketsDTO);
-        model.addAttribute("perm_add_fio_eng", perm_add_fio_eng);
         return ("studentPage");
     }
 
@@ -237,7 +234,6 @@ public class StudentController {
             dto.setPosOfCurator(ticket.getPosOfCurator());
             dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
             //-----------------------------------------------------
-            model.addAttribute("user", user);
             model.addAttribute("ticketAttribute", dto);
             model.addAttribute("typeOfUse", typeOfUse);
             return "editpage";

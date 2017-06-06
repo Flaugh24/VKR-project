@@ -1,7 +1,10 @@
+<%@ page import="org.barmaley.vkr.domain.Users" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<jsp:useBean id="principal" class="org.barmaley.vkr.controller.MainController"/>
+<jsp:useBean id="permission" class="org.barmaley.vkr.tool.PermissionTool"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
@@ -23,11 +26,19 @@
 
 </head>
 <body>
+
+<%
+    Users user = principal.getPrincipal();
+    boolean perm_add_fio_eng = permission.checkPermission("PERM_ADD_FIO_ENG");
+    request.setAttribute("user", user);
+    request.setAttribute("perm_add_fio_eng", perm_add_fio_eng);
+%>
+
 <c:url var="saveUrl" value="/user/profile"/>
-<c:url var="start" value="/"/>
+<c:url var="home" value="/"/>
 <div class="row">
     <div class="col-md-9">
-        <a href="${start}">
+        <a href="${home}">
             <h1>
                 <c:out value="${user.surname}"/>
                 <c:out value="${user.firstName}"/>

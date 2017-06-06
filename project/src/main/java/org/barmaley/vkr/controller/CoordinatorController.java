@@ -146,8 +146,6 @@ public class CoordinatorController {
         countTicketsReady = ticketsReadyDTOList.size();
         countActs = actList.size();
 
-        logger.debug(countActs + "--------------------------------------");
-
         model.addAttribute("ticketsNew", ticketsNewDTOList);
         model.addAttribute("countTicketsNew", countTicketsNew);
         model.addAttribute("ticketsInCheck", ticketsInCheckDTOList);
@@ -158,7 +156,7 @@ public class CoordinatorController {
         model.addAttribute("countTicketsReady", countTicketsReady);
         model.addAttribute("acts", actDTOList);
         model.addAttribute("countActs", countActs);
-        model.addAttribute("user", user);
+
 
         return ("coordinatorPage");
     }
@@ -247,7 +245,6 @@ public class CoordinatorController {
                 dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
                 dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
 
-                model.addAttribute("user", user);
                 model.addAttribute("ticketAttribute", dto);
                 model.addAttribute("typeOfUse", typeOfUse);
 

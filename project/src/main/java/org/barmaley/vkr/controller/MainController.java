@@ -8,6 +8,7 @@ import org.barmaley.vkr.service.EmployeeCopyService;
 import org.barmaley.vkr.service.TicketService;
 import org.barmaley.vkr.service.UsersService;
 import org.barmaley.vkr.tool.PermissionTool;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,12 @@ public class MainController {
 
     @Resource(name = "employeeCopyService")
     private EmployeeCopyService employeeCopyService;
+
+
+    public Users getPrincipal() {
+
+        return (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
 
     @GetMapping(value = ("/login"))

@@ -1,10 +1,12 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
+import org.barmaley.vkr.autentication.UserDAOImpl;
 import org.barmaley.vkr.domain.Users;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +20,14 @@ import java.util.List;
 public class UsersService {
 
     protected static Logger logger = Logger.getLogger("service");
-
+    private final UserDAOImpl userDAO;
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
+
+    @Autowired
+    public UsersService(UserDAOImpl userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public Users addUser(Users user) {
 
@@ -41,6 +48,9 @@ public class UsersService {
         existingUser.setFirstNameEng(user.getFirstNameEng());
         existingUser.setSecondNameEng(user.getSecondNameEng());
         session.save(existingUser);
+
+        userDAO.newAuthentication();
+
     }
 
     public Users getByExtId(String extId) {

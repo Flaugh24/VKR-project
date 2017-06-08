@@ -198,8 +198,16 @@ public class TicketService {
         Session session = sessionFactory.getCurrentSession();
 
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-
+        logger.debug("filepdf "+ticket.getFilePdf());
+        logger.debug("filepdfsecret "+ticket.getFilePdfSecret());
+        if((ticket.getFilePdf() == null)){
+            logger.debug("йцу");
         existingTicket.setFilePdf(ticket.getFilePdf());
+        }
+        if((ticket.getFilePdfSecret() == null)){
+            logger.debug("фыв");
+            existingTicket.setFilePdfSecret(ticket.getFilePdfSecret());
+        }
         session.save(existingTicket);
     }
 
@@ -207,7 +215,16 @@ public class TicketService {
         Session session = sessionFactory.getCurrentSession();
 
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-        existingTicket.setFileZip(ticket.getFileZip());
+        logger.debug("filezip "+ticket.getFileZip());
+        logger.debug("filezipsecret "+ticket.getFileZipSecret());
+        if((ticket.getFileZip() == null)){
+            logger.debug("йцу");
+            existingTicket.setFileZip(ticket.getFileZip());
+        }
+        if((ticket.getFileZipSecret() == null)){
+            logger.debug("фыв");
+            existingTicket.setFileZipSecret(ticket.getFileZipSecret());
+        }
         session.save(existingTicket);
     }
 }

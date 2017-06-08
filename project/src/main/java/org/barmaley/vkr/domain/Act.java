@@ -47,7 +47,7 @@ public class Act {
 
     public void setDateOfCreat(Date dateOfCreat) {
         this.dateOfCreat = dateOfCreat;
-    }<<<<<<< generateAct
+    }
 
     public Date getDateOfAccept() {
         return dateOfAccept;

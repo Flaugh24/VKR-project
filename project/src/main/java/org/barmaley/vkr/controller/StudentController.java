@@ -190,6 +190,8 @@ public class StudentController {
             dto.setKeyWordsEng(ticket.getKeyWordsEng());
             dto.setFilePdf(ticket.getFilePdf());
             dto.setFileZip(ticket.getFileZip());
+            dto.setFilePdfSecret(ticket.getFilePdfSecret());
+            dto.setFileZipSecret(ticket.getFileZipSecret());
             dto.setStatus(statusService.get(ticketService.getStatusId(ticket.getId())));
             dto.setDocumentTypeId(ticketService.getDocumentTypeId(ticket.getId()));
             dto.setTypeOfUseId(ticketService.getTypeOfUse(ticket.getId()));

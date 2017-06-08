@@ -60,9 +60,15 @@ public class Ticket implements Serializable {
     private TypeOfUse typeOfUse;
 
     @Column(name = "FILE_PDF")
-    private String filePdf;
+    private String filePdfSecret;
 
     @Column(name = "FILE_ZIP")
+    private String fileZipSecret;
+
+    @Column(name = "FILE_PDF_SECRET")
+    private String filePdf;
+
+    @Column(name = "FILE_ZIP_SECRET")
     private String fileZip;
 
     @Column(name = "DATE_CREATION_START")
@@ -233,6 +239,22 @@ public class Ticket implements Serializable {
 
     public void setFilePdf(String filePdf) {
         this.filePdf = filePdf;
+    }
+
+    public String getFilePdfSecret() {
+        return filePdfSecret;
+    }
+
+    public void setFilePdfSecret(String filePdfSecret) {
+        this.filePdfSecret = filePdfSecret;
+    }
+
+    public String getFileZipSecret() {
+        return fileZipSecret;
+    }
+
+    public void setFileZipSecret(String fileZipSecret) {
+        this.fileZipSecret = fileZipSecret;
     }
 
     public String getFileZip() {

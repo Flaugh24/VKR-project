@@ -88,12 +88,16 @@ public class MainController {
     @PostMapping("/ticket/fileupload")
     public String singleFileUpload(@RequestParam("uploadFile") MultipartFile file,
                                    @RequestParam("ticketId") String ticketId,
-                                   @RequestParam("submit") String submit) {
+                                   @RequestParam("submit") String submit,
+                                   @RequestParam(value = "tradeSecret", required = false) String tradeSecret) {
 
-        logger.debug("Upload PDF File");
+        logger.debug("tradeSecret= "+tradeSecret);
+        logger.debug("Upload Files");
+
 
         String fullPath,
-                ROOT_FOLDERS = "/home/gagarkin/tmp/",
+                ROOT_FOLDERS = "/home/impolun/data/",
+                ROOT_FOLDERS_TRADE_SECRET="/home/impolun/datasecret/",
                 EXPDF = ".pdf",
                 EXZIP = ".zip";
         Ticket ticket = ticketService.get(ticketId);
@@ -106,21 +110,59 @@ public class MainController {
             logger.debug("Original file name:" + file.getOriginalFilename());
             String expansion = file.getOriginalFilename().substring(file.getOriginalFilename().length() - 4, file.getOriginalFilename().length());
             logger.debug(expansion);
-
             if (submit.equals("Загрузить")) {
+                logger.debug("1");
                 if (expansion.equals(EXPDF)) {
-                    fullPath = ROOT_FOLDERS + ticket.getId() + EXPDF;
-                    logger.debug("Конечный путь файла pdf= " + fullPath);
-                    Path path = Paths.get(fullPath);
-                    Files.write(path, bytes);
-                    ticket.setFilePdf(fullPath);
+                    logger.debug("2");
+
+                    if (tradeSecret==null) {
+                        logger.debug("3");
+
+                        fullPath = ROOT_FOLDERS + ticket.getId() + EXPDF;
+                        logger.debug("Конечный путь файла pdf= " + fullPath);
+                        Path path = Paths.get(fullPath);
+                        Files.write(path, bytes);
+                        ticket.setFilePdf(fullPath);
+                        logger.debug("4");
+
+                    }
+                    else{
+                        logger.debug("5");
+
+                        fullPath = ROOT_FOLDERS_TRADE_SECRET + ticket.getId() + EXPDF;
+                        logger.debug("Конечный путь файла pdf= " + fullPath);
+                        Path path = Paths.get(fullPath);
+                        Files.write(path, bytes);
+                        ticket.setFilePdfSecret(fullPath);
+                        logger.debug("6");
+
+                    }
+
+
                     ticketService.editPdf(ticket);
                 } else {
-                    fullPath = ROOT_FOLDERS + ticket.getId() + EXZIP;
-                    logger.debug("Конечный путь файла zip = " + fullPath);
-                    Path path = Paths.get(fullPath);
-                    Files.write(path, bytes);
-                    ticket.setFileZip(fullPath);
+                    if (tradeSecret==null) {
+                        logger.debug("3");
+
+                        fullPath = ROOT_FOLDERS + ticket.getId() + EXZIP;
+                        logger.debug("Конечный путь файла pdf= " + fullPath);
+                        Path path = Paths.get(fullPath);
+                        Files.write(path, bytes);
+                        ticket.setFileZip(fullPath);
+                        logger.debug("4");
+
+                    }
+                    else{
+                        logger.debug("5");
+
+                        fullPath = ROOT_FOLDERS_TRADE_SECRET + ticket.getId() + EXZIP;
+                        logger.debug("Конечный путь файла pdf= " + fullPath);
+                        Path path = Paths.get(fullPath);
+                        Files.write(path, bytes);
+                        ticket.setFileZipSecret(fullPath);
+                        logger.debug("6");
+
+                    }
                     ticketService.editZip(ticket);
                 }
             }
@@ -141,7 +183,7 @@ public class MainController {
     public String singleFileDelete(/*@RequestParam("uploadFile") MultipartFile file*/
                                    @RequestParam("ticketId") String ticketId,
                                    @RequestParam("submit") String submit) throws MalformedURLException {
-        String ROOT_FOLDERS = "/home/gagarkin/tmp/";
+        String ROOT_FOLDERS = "/home/impolun/data/";
         logger.debug("Upload PDF File");
 
         Ticket ticket = ticketService.get(ticketId);

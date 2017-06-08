@@ -14,7 +14,9 @@ public class TicketEditDTO {
     private Status status;
     private Integer documentTypeId;
     private String filePdf;
+    private String filePdfSecret;
     private String fileZip;
+    private String fileZipSecret;
     private Integer typeOfUseId;
     private String typeOfUseName;
     //----------------------------------------------------
@@ -385,5 +387,21 @@ public class TicketEditDTO {
 
     public void setFileZip(String fileZip) {
         this.fileZip = fileZip;
+    }
+
+    public String getFilePdfSecret() {
+        return filePdfSecret;
+    }
+
+    public void setFilePdfSecret(String filePdfSecret) {
+        this.filePdfSecret = filePdfSecret;
+    }
+
+    public String getFileZipSecret() {
+        return fileZipSecret;
+    }
+
+    public void setFileZipSecret(String fileZipSecret) {
+        this.fileZipSecret = fileZipSecret;
     }
 }

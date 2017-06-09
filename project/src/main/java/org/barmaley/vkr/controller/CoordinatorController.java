@@ -219,6 +219,10 @@ public class CoordinatorController {
                 dto.setKeyWordsEng(ticket.getKeyWordsEng());
                 dto.setDepartment(ticket.getDepartment());
                 dto.setDirectionCode(ticket.getDirectionCode());
+                dto.setFilePdf(ticket.getFilePdf());
+                dto.setFileZip(ticket.getFileZip());
+                dto.setFilePdfSecret(ticket.getFilePdfSecret());
+                dto.setFileZipSecret(ticket.getFileZipSecret());
                 String str = dto.getKeyWords();
                 List<String> list = new ArrayList<>();
                 if (str != null) {

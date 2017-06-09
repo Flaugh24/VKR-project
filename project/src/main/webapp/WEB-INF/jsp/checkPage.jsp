@@ -44,73 +44,50 @@
                 <h2>Номер заявки <c:out value="${ticketAttribute.id}"/></h2>
 
                 <c:if test="${ticketAttribute.status.id == 3 || ticketAttribute.status.id == 4}">
-                    <c:if test="${ticketAttribute.filePdf == null }">
-                        <div>
-                            <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
-                                <label for="ticketId">
-                                    <input name="ticketId" id="ticketId" value="${ticketAttribute.id}"
-                                           style="display: none"/>
-                                </label>
-                                <div class="form-group">
-                                    <label>Загрузите файлы Вашей ВКР в формате PDF или ZIP<br/>
-                                        <input name="uploadFile" id="uploadFile" type="file"/>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" name="submit" value="Загрузить"
-                                           class="btn btn-default uploadButton" disabled/>
-                                </div>
-                            </form>
-
-                        </div>
-                        <c:if test="${ticketAttribute.fileZip != null }">
-                            <div>
-                                <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
-                                    <label>
-                                        <input name="ticketId" value="${ticketAttribute.id}" style="display: none"/>
-                                    </label>
-                                    <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
-                                </form>
-                            </div>
-
-                        </c:if>
-                    </c:if>
-                    <c:if test="${ticketAttribute.filePdf != null }">
-                        <c:if test="${ticketAttribute.fileZip != null }">
-                            <div>
-                                <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
-                                    <input name="ticketId" value="${ticketAttribute.id}" style="display: none"/>
-                                    <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
-                                </form>
-                            </div>
-
-                        </c:if>
-                        <c:if test="${ticketAttribute.fileZip == null }">
+                        <c:if test="${(ticketAttribute.filePdf == null || ticketAttribute.fileZip == null)&&
+                                  (ticketAttribute.filePdfSecret == null || ticketAttribute.fileZipSecret == null)&&
+                                  (ticketAttribute.filePdf == null || ticketAttribute.fileZipSecret == null)&&
+                                  (ticketAttribute.filePdfSecret == null || ticketAttribute.fileZip == null)}">
                             <div>
                                 <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
-                                    <input name="ticketId" value="${ticketAttribute.id}" style="display: none"/>
+                                    <label for="ticketId">
+                                        <input name="ticketId" id="ticketId" value="${ticketAttribute.id}"
+                                               style="display: none"/>
+                                    </label>
                                     <div class="form-group">
-                                        <label for="uploadFile6">Загрузите файлы Вашей ВКР в формате PDF или ZIP</label>
-                                        <input name="uploadFile" id="uploadFile6" type="file"/>
+                                        <label>Загрузите файлы Вашей ВКР в формате PDF или ZIP<br/>
+                                            <input name="uploadFile" id="uploadFile" type="file"/>
+                                        </label>
+                                        <input type="checkbox" name="tradeSecret" value="${true}"/>
                                     </div>
+
                                     <div class="form-group">
                                         <input type="submit" name="submit" value="Загрузить"
                                                class="btn btn-default uploadButton" disabled/>
                                     </div>
                                 </form>
-
                             </div>
                         </c:if>
                         <div>
                             <form method="POST" action="${deleteUrl}" enctype="multipart/form-data">
-                                <input name="ticketId" value="${ticketAttribute.id}" style="display: none"/>
-                                <div class="form-group">
+                                <label>
+                                    <input name="ticketId" value="${ticketAttribute.id}" style="display: none"/>
+                                </label>
+                                <c:if test="${ticketAttribute.filePdf != null }">
                                     <input type="submit" name="submit" value="Удалить PDF" class="btn btn-default"/>
-                                </div>
+                                </c:if>
+                                <c:if test="${ticketAttribute.filePdfSecret != null }">
+                                    <input type="submit" name="submit" value="Удалить PDF" class="btn btn-default"/>
+                                </c:if>
+                                <c:if test="${ticketAttribute.fileZip != null }">
+                                    <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
+                                </c:if>
+                                <c:if test="${ticketAttribute.fileZipSecret != null }">
+                                    <input type="submit" name="submit" value="Удалить архив" class="btn btn-default"/>
+                                </c:if>
                             </form>
                         </div>
                     </c:if>
-                </c:if>
                 <form:form commandName="ticketAttribute" method="POST" id="ticketform" action="${saveUrl}">
 
                     <div>

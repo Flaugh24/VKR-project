@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -95,30 +96,30 @@
                                 <c:forEach items="${ticketsNew}" var="ticketNew">
                                     <% i++; %>
                                     <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketNew.id}"/>
-                                        <tr>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
-                                            </a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketNew.id}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketNew.groupNum}"/> </a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketNew.user.surname}"/> <c:out
-                                                    value="${ticketNew.user.firstName}"/> <c:out
-                                                    value="${ticketNew.user.secondName}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketNew.title}"/> </a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketNew.documentType.name}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketNew.typeOfUse.name}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
-                                            </td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
-                                            </td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketNew.status.name}"/> </a></td>
-                                        </tr>
+                                    <tr>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
+                                        </a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketNew.id}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketNew.groupNum}"/> </a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketNew.user.surname}"/> <c:out
+                                                value="${ticketNew.user.firstName}"/> <c:out
+                                                value="${ticketNew.user.secondName}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketNew.title}"/> </a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketNew.documentType.name}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketNew.typeOfUse.name}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        </td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        </td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketNew.status.name}"/> </a></td>
+                                    </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
@@ -161,30 +162,30 @@
                                 <c:forEach items="${ticketsInCheck}" var="ticketInCheck">
                                     <% i++; %>
                                     <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketInCheck.id}"/>
-                                        <tr>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
-                                            </a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketInCheck.id}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketInCheck.groupNum}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketInCheck.user.surname}"/> <c:out
-                                                    value="${ticketInCheck.user.firstName}"/> <c:out
-                                                    value="${ticketInCheck.user.secondName}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketInCheck.title}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketInCheck.documentType.name}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketInCheck.typeOfUse.name}"/></a></td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
-                                            </td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
-                                            </td>
-                                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                    value="${ticketInCheck.status.name}"/></a></td>
-                                        </tr>
+                                    <tr>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
+                                        </a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketInCheck.id}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketInCheck.groupNum}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketInCheck.user.surname}"/> <c:out
+                                                value="${ticketInCheck.user.firstName}"/> <c:out
+                                                value="${ticketInCheck.user.secondName}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketInCheck.title}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketInCheck.documentType.name}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketInCheck.typeOfUse.name}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        </td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        </td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketInCheck.status.name}"/></a></td>
+                                    </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
@@ -193,77 +194,74 @@
                 </c:if>
                 <c:if test="${not empty ticketsReady}">
                     <div role="tabpanel" class="tab-pane" id="ticketsReady">
-                        <form:form method="post" commandName="checkBox" action="${createAct}">
-                            <div class="panel panel-default" style="margin-top: 10px">
-                                <div class="panel-heading">
-                                    <h2 class="panel-title">Заявки доступные для проверки</h2>
-                                </div>
-                                <table class="table table-striped table-bordered" style="text-align: center"
-                                       id="tableReady">
-                                    <thead>
-                                    <tr>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">№</th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">№ Заявки</th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">Номер
-                                            группы
-                                        </th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">ФИО
-                                            соискателя
-                                        </th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">Заглавие
-                                            работы
-                                        </th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">Тип
-                                            документа
-                                        </th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">Вид
-                                            использования
-                                        </th>
-                                        <th colspan="2" style="vertical-align: middle; text-align: center">Лицензионный
-                                            договор
-                                        </th>
-                                        <th rowspan="2" style="vertical-align: middle; text-align: center">Статус</th>
-                                    </tr>
-                                    <tr>
-                                        <th style="vertical-align: middle; text-align: center">Дата</th>
-                                        <th style="vertical-align: middle; text-align: center">Номер</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <% int i = 0; %>
-                                    <c:forEach items="${ticketsReady}" var="ticketReady">
-                                        <% i++; %>
-                                        <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}"/>
-                                            <tr>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
-                                                </a></td>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                        value="${ticketReady.id}"/></a></td>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                        value="${ticketReady.groupNum}"/></a></td>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                        value="${ticketReady.user.surname}"/> <c:out
-                                                        value="${ticketReady.user.firstName}"/> <c:out
-                                                        value="${ticketReady.user.secondName}"/></a></td>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                        value="${ticketReady.title}"/></a></td>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                        value="${ticketReady.documentType.name}"/></a></td>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                        value="${ticketReady.typeOfUse.name}"/></a></td>
-                                                <td><a href="${checkUrl}" class="editUrl"
-                                                       style="display: block">Data</a></td>
-                                                <td><a href="${checkUrl}" class="editUrl"
-                                                       style="display: block">Data</a></td>
-                                                <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                                        value="${ticketReady.status.name}"/></a></td>
-                                            </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
+                        <div class="panel panel-default" style="margin-top: 10px">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">Проверенные заяки. Их можно включить в акт</h2>
                             </div>
-                            <button>Создать акт</button>
-                        </form:form>
+                            <table class="table table-striped table-bordered" style="text-align: center"
+                                   id="tableReady">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">№</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">№ Заявки</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Номер
+                                        группы
+                                    </th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">ФИО
+                                        соискателя
+                                    </th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Заглавие
+                                        работы
+                                    </th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Тип
+                                        документа
+                                    </th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Вид
+                                        использования
+                                    </th>
+                                    <th colspan="2" style="vertical-align: middle; text-align: center">Лицензионный
+                                        договор
+                                    </th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center">Статус</th>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align: middle; text-align: center">Дата</th>
+                                    <th style="vertical-align: middle; text-align: center">Номер</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% int i = 0; %>
+                                <c:forEach items="${ticketsReady}" var="ticketReady">
+                                    <% i++; %>
+                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}"/>
+                                    <tr>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
+                                        </a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketReady.id}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketReady.groupNum}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketReady.user.surname}"/> <c:out
+                                                value="${ticketReady.user.firstName}"/> <c:out
+                                                value="${ticketReady.user.secondName}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketReady.title}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketReady.documentType.name}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketReady.typeOfUse.name}"/></a></td>
+                                        <td><a href="${checkUrl}" class="editUrl"
+                                               style="display: block">Data</a></td>
+                                        <td><a href="${checkUrl}" class="editUrl"
+                                               style="display: block">Data</a></td>
+                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                                value="${ticketReady.status.name}"/></a></td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </c:if>
                 <div role="tabpanel" class="tab-pane" id="ticketsInvalid">...</div>
@@ -285,22 +283,22 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${lazyStudents}" var="lazyStudent">
                                     <% i++; %>
-                                        <tr>
-                                            <td><a href="#"
-                                                   onclick="document.getElementById('addticket${lazyStudent.studentCopy.username}').submit()"
-                                                   class="editUrl" style="display: block"><%=i%>
-                                            </a></td>
-                                            <td><a href="#"
-                                                   onclick="document.getElementById('addticket${lazyStudent.studentCopy.username}').submit()"
-                                                   class="editUrl" style="display: block"><c:out
-                                                    value="${lazyStudent.educProgram.groupNum}"/></a></td>
-                                            <td><a href="#"
-                                                   onclick="document.getElementById('addticket${lazyStudent.studentCopy.username}').submit()"
-                                                   class="editUrl" style="display: block"><c:out
-                                                    value="${lazyStudent.studentCopy.surname}"/> <c:out
-                                                    value="${lazyStudent.studentCopy.firstName}"/> <c:out
-                                                    value="${lazyStudent.studentCopy.secondName}"/></a></td>
-                                        </tr>
+                                    <tr>
+                                        <td><a href="#"
+                                               onclick="document.getElementById('addticket${lazyStudent.studentCopy.username}').submit()"
+                                               class="editUrl" style="display: block"><%=i%>
+                                        </a></td>
+                                        <td><a href="#"
+                                               onclick="document.getElementById('addticket${lazyStudent.studentCopy.username}').submit()"
+                                               class="editUrl" style="display: block"><c:out
+                                                value="${lazyStudent.educProgram.groupNum}"/></a></td>
+                                        <td><a href="#"
+                                               onclick="document.getElementById('addticket${lazyStudent.studentCopy.username}').submit()"
+                                               class="editUrl" style="display: block"><c:out
+                                                value="${lazyStudent.studentCopy.surname}"/> <c:out
+                                                value="${lazyStudent.studentCopy.firstName}"/> <c:out
+                                                value="${lazyStudent.studentCopy.secondName}"/></a></td>
+                                    </tr>
                                     <form method="post" id="addticket${lazyStudent.studentCopy.username}"
                                           action="${addLazy}" enctype="application/x-www-form-urlencoded">
                                         <input name="lazyStudentId" value="${lazyStudent.studentCopy.username}"
@@ -316,6 +314,9 @@
                 </c:if>
                 <c:if test="${not empty acts}">
                     <div role="tabpanel" class="tab-pane" id="acts">
+                    <c:if test="${not empty ticketsReady}">
+                        <a class="btn btn-default" href="${createAct}">Создать акт</a>
+                    </c:if>
                         <table class="table table-striped table-bordered" style="text-align: center">
                             <thead>
                             <tr>
@@ -330,16 +331,16 @@
                             <c:forEach items="${acts}" var="act">
                                 <% i++; %>
                                 <c:url var="editAct" value="/act/edit?actId=${act.id}"/>
-                                    <tr>
-                                        <td><a href="${editAct}" class="editUrl" style="display: block"><%=i%>
-                                        </a></td>
-                                        <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
-                                                value="${act.id}"/></a></td>
-                                        <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
-                                                value="${act.dateOfCreatDTO}"/> </a></td>
-                                        <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
-                                                value="${act.dateOfAcceptDTO}"/></a></td>
-                                    </tr>
+                                <tr>
+                                    <td><a href="${editAct}" class="editUrl" style="display: block"><%=i%>
+                                    </a></td>
+                                    <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
+                                            value="${act.id}"/></a></td>
+                                    <td><a href="${editAct}" class="editUrl" style="display: block"><fmt:formatDate
+                                            pattern="dd.MM.yyyy" value="${act.dateOfCreat}"/></a></td>
+                                    <td><a href="${editAct}" class="editUrl" style="display: block"><c:out
+                                            value="${act.status.name}"/></a></td>
+                                </tr>
                             </c:forEach>
                             </tbody>
                         </table>

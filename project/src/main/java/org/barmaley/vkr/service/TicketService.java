@@ -180,7 +180,9 @@ public class TicketService {
         existingTicket.setKeyWords(ticket.getKeyWords());
         existingTicket.setKeyWordsEng(ticket.getKeyWordsEng());
         existingTicket.setTypeOfUse(ticket.getTypeOfUse());
-        existingTicket.setStatus(ticket.getStatus());
+        if (ticket.getStatus() != null){
+            existingTicket.setStatus(ticket.getStatus());
+        }
         if (ticket.getDateCreationFinish() != null) {
             existingTicket.setDateCreationFinish(ticket.getDateCreationFinish());
         }

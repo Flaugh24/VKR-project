@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
@@ -53,7 +54,7 @@
                 </c:forEach>
             </div>
         </c:if>
-        <c:if test="${not empty ticketsDTO}">
+        <c:if test="${not empty tickets}">
             <h2>Ваши заявки</h2>
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
@@ -69,25 +70,36 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${ticketsDTO}" var="ticketDTO">
-                    <c:url var="checkUrl" value="/ticket/edit?ticketId=${ticketDTO.id}"/>
-                    <a href="${checkUrl}">
-                        <tr>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.id}"/></a></td>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCreationStartDTO}"/></a></td>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCreationFinishDTO}"/></a></td>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCheckCoordinatorStartDTO}"/></a></td>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateReturnDTO}"/></a></td>
-                            <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                    value="${ticketDTO.dateCheckCoordinatorFinishDTO}"/></a>
-                    </a></td>
-                    <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
-                    <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
+                <c:forEach items="${tickets}" var="ticket">
+                    <c:url var="checkUrl" value="/ticket/edit?ticketId=${ticket.id}"/>
+                    <tr>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                value="${ticket.id}"/>
+                        </a>
+                        </td>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                                pattern="dd.MM.yyyy" value="${ticket.dateCreationStart}"/>
+                        </a>
+                        </td>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block">
+                            <fmt:formatDate
+                                    pattern="dd.MM.yyyy" value="${ticket.dateCreationFinish}"/>
+                        </a>
+                        </td>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                                pattern="dd.MM.yyyy" value="${ticket.dateCheckCoordinatorStart}"/>
+                        </a>
+                        </td>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                                pattern="dd.MM.yyyy" value="${ticket.dateReturn}"/>
+                        </a>
+                        </td>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                                pattern="dd.MM.yyyy" value="${ticket.dateCheckCoordinatorFinish}"/>
+                        </a>
+                        </td>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
+                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
                     </tr>
                     </a>
                 </c:forEach>

@@ -5,10 +5,8 @@ import org.barmaley.vkr.domain.EducProgram;
 import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.TypeOfUse;
 import org.barmaley.vkr.domain.Users;
-import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.service.*;
-import org.barmaley.vkr.tool.PermissionTool;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,24 +52,6 @@ public class StudentController {
         List<EducProgram> educPrograms = educProgramService.getAll(user.getExtId());
         List<EducProgram> educProgramsDTO = new ArrayList<>();
         List<Ticket> tickets = ticketService.getAllTicketsByUserId(user.getId());
-        List<TicketDTO> ticketsDTO = new ArrayList<>();
-        if (!tickets.isEmpty()) {
-            for (Ticket ticket : tickets) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
-                TicketDTO ticketDTO = new TicketDTO();
-                ticketDTO.setId(ticket.getId());
-                try {
-                    ticketDTO.setDateCreationStartDTO(dateFormat.format(ticket.getDateCreationStart()));
-                    ticketDTO.setDateCreationFinishDTO(dateFormat.format(ticket.getDateCreationFinish()));
-                    ticketDTO.setDateCheckCoordinatorStartDTO(dateFormat.format(ticket.getDateCheckCoordinatorStart()));
-                    ticketDTO.setDateReturnDTO(dateFormat.format(ticket.getDateReturn()));
-                    ticketDTO.setDateCheckCoordinatorFinishDTO(dateFormat.format(ticket.getDateCheckCoordinatorFinish()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                ticketsDTO.add(ticketDTO);
-            }
-        }
         for (EducProgram educProgram : educPrograms) {
             if ((educProgram.getGroupNum().charAt(0) == '4' && educProgram.getDegree().equals("Бакалавр"))
                     || (educProgram.getGroupNum().charAt(0) == '6' && educProgram.getDegree().equals("Магистр"))
@@ -109,7 +89,7 @@ public class StudentController {
         }
 
         model.addAttribute("educPrograms", educProgramsDTO);
-        model.addAttribute("ticketsDTO", ticketsDTO);
+        model.addAttribute("tickets", tickets);
         return ("studentPage");
     }
 
@@ -169,14 +149,15 @@ public class StudentController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("y");
 
         if (user.getId().equals(ticket.getUser().getId())) {
-            List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
+            List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());
             dto.setLicenseNumber(ticket.getLicenseNumber());
             if (ticket.getLicenseDate() != null) {
                 SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
-                dto.setLicenseDate(licenseDateFormat.format(ticket.getLicenseDate()));
+                dto.setLicenseDateDTO(licenseDateFormat.format(ticket.getLicenseDate()));
             }
+            dto.setDocumentType(ticket.getDocumentType());
             dto.setAnnotation(ticket.getAnnotation());
             dto.setAnnotationEng(ticket.getAnnotationEng());
             dto.setTitle(ticket.getTitle());
@@ -187,9 +168,8 @@ public class StudentController {
             dto.setFileZip(ticket.getFileZip());
             dto.setFilePdfSecret(ticket.getFilePdfSecret());
             dto.setFileZipSecret(ticket.getFileZipSecret());
-            dto.setStatus(statusService.get(ticketService.getStatusId(ticket.getId())));
-            dto.setDocumentTypeId(ticketService.getDocumentTypeId(ticket.getId()));
-            dto.setTypeOfUseId(ticketService.getTypeOfUse(ticket.getId()));
+            dto.setStatus(ticket.getStatus());
+            dto.setTypeOfUse(ticket.getTypeOfUse());
             //----------------------------------------------------
             dto.setInstitute(ticket.getInstitute());
             String str = dto.getKeyWords();
@@ -230,8 +210,6 @@ public class StudentController {
             dto.setPlaceOfPublic(ticket.getPlaceOfPublic());
             dto.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
             dto.setYearOfPublic(ticket.getYearOfPublic());
-            dto.setDocumentTypeName(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getName());
-            dto.setDocumentTypeNameEng(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getNameEng());
             dto.setHeadOfDepartment(ticket.getHeadOfDepartment());
             dto.setFullNameCurator(ticket.getFullNameCurator());
             dto.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
@@ -239,7 +217,7 @@ public class StudentController {
             dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
             //-----------------------------------------------------
             model.addAttribute("ticketAttribute", dto);
-            model.addAttribute("typeOfUse", typeOfUse);
+            model.addAttribute("typesOfUse", typesOfUse);
             return "editpage";
         } else {
             return "pnh";
@@ -254,10 +232,10 @@ public class StudentController {
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
         ticket.setLicenseNumber(dto.getLicenseNumber());
-        if (!dto.getLicenseDate().equals("")) {
+        if (!dto.getLicenseDateDTO().equals("")) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("y-MM-dd");
             try {
-                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDate()));
+                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDateDTO()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -270,7 +248,7 @@ public class StudentController {
         ticket.setKeyWords(str);
         str = dto.getWord1Eng() + ", " + dto.getWord2Eng() + ", " + dto.getWord3Eng() + ", " + dto.getWord4Eng();
         ticket.setKeyWordsEng(str);
-        ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUseId()));
+        ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUse().getId()));
         //----------------------------------------------------
         ticket.setPlaceOfPublic(dto.getPlaceOfPublic());
         ticket.setPlaceOfPublicEng(dto.getPlaceOfPublicEng());

@@ -7,8 +7,6 @@ import java.util.List;
 public class ActDTO extends Act {
 
     private List<String> ticketsId;
-    private String dateOfCreatDTO;
-    private String dateOfAcceptDTO;
 
     public List<String> getTicketsId() {
         return ticketsId;
@@ -18,19 +16,4 @@ public class ActDTO extends Act {
         this.ticketsId = ticketsId;
     }
 
-    public String getDateOfCreatDTO() {
-        return dateOfCreatDTO;
-    }
-
-    public void setDateOfCreatDTO(String dateOfCreatDTO) {
-        this.dateOfCreatDTO = dateOfCreatDTO;
-    }
-
-    public String getDateOfAcceptDTO() {
-        return dateOfAcceptDTO;
-    }
-
-    public void setDateOfAcceptDTO(String dateOfAcceptDTO) {
-        this.dateOfAcceptDTO = dateOfAcceptDTO;
-    }
 }

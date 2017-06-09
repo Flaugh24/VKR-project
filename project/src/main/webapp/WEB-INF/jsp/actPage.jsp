@@ -51,7 +51,8 @@
 
     Телефон координатора <c:out value="${act.user.phoneNumber}"/> E-mail координатора <c:out value="${act.user.email}"/>
 
-    <button type="submit">Сохранить</button>
+    <button name="button" value="save" type="submit">Сохранить</button>
+    <button name="button" value="send" type="submit">Отправить на проверку</button>
 </form:form>
 </body>
 </html>

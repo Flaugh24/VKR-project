@@ -19,6 +19,10 @@ public class Act {
     private String id;
 
     @ManyToOne
+    @JoinColumn(name = "STATUS", nullable = false)
+    private StatusAct status;
+
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private Users user;
 
@@ -46,6 +50,14 @@ public class Act {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public StatusAct getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusAct status) {
+        this.status = status;
     }
 
     public Users getUser() {

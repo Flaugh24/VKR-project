@@ -52,7 +52,7 @@ public class Ticket implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "STATUS", nullable = false)
-    private Status status;
+    private StatusTicket status;
 
     @ManyToOne
     @JoinColumn(name = "DOCUMENT_TYPE")
@@ -222,11 +222,11 @@ public class Ticket implements Serializable {
         this.keyWordsEng = keyWordsEng;
     }
 
-    public Status getStatus() {
+    public StatusTicket getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusTicket status) {
         this.status = status;
     }
 

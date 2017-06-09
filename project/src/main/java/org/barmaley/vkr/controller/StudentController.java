@@ -34,8 +34,8 @@ public class StudentController {
     @Resource(name = "documentTypeService")
     private DocumentTypeService documentTypeService;
 
-    @Resource(name = "statusService")
-    private StatusService statusService;
+    @Resource(name = "statusTicketService")
+    private StatusTicketService statusService;
 
     @Resource(name = "usersService")
     private UsersService usersService;
@@ -45,9 +45,6 @@ public class StudentController {
 
     @Resource(name = "educProgramService")
     private EducProgramService educProgramService;
-
-    @Resource(name = "permissionTool")
-    private PermissionTool permissionTool;
 
 
     //------------------------------------------------------------------------

@@ -51,8 +51,11 @@ public class CoordinatorController {
     @Resource(name = "documentTypeService")
     private DocumentTypeService documentTypeService;
 
-    @Resource(name = "statusService")
-    private StatusService statusService;
+    @Resource(name = "statusTicketService")
+    private StatusTicketService statusService;
+
+    @Resource(name = "statusActService")
+    private StatusActService statusActService;
 
     @Resource(name = "rolesService")
     private RolesService rolesService;
@@ -403,6 +406,7 @@ public class CoordinatorController {
 
         Act act = new Act();
         act.setDateOfCreat(new Date());
+        act.setStatus(statusActService.get(1));
         act.setInstitute(coordinator.getInstitute());
         act.setDepartment(coordinator.getDepartment());
         act.setPosition(coordinator.getPosition());
@@ -453,7 +457,7 @@ public class CoordinatorController {
     }
 
     @PostMapping(value = "/act/edit")
-    public String postEditAct(ModelMap model, ActDTO dto) {
+    public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) {
 
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
@@ -469,6 +473,11 @@ public class CoordinatorController {
             ticket.setStatus(statusService.get(6));
             ticketService.editAct(ticket);
             tickets.add(ticket);
+        }
+
+        if(button.equals("send")){
+            act.setStatus(statusActService.get(2));
+            actService.edit(act);
         }
 
         if (!coordinatorRightsList.isEmpty()) {

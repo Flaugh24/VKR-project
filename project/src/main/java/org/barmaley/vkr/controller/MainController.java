@@ -64,12 +64,15 @@ public class MainController {
     @GetMapping(value = {"/user", "/"})
     public String user() {
         logger.debug("MainController./user");
-        Boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
-        Boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+        boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
+        boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+        boolean check_acts = permissionTool.checkPermission("PERM_CHECK_ACTS");
         if (add_ticket_for_educ_program) {
             return "redirect:/student";
         } else if (check_tickets) {
             return "redirect:/coordinator";
+        } else if (check_acts) {
+            return "redirect:/bibliographer";
         }
         return "pnh";
     }

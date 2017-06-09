@@ -1,6 +1,6 @@
 package org.barmaley.vkr.dto;
 
-import org.barmaley.vkr.domain.Status;
+import org.barmaley.vkr.domain.StatusTicket;
 
 public class TicketEditDTO {
     private String id;
@@ -12,7 +12,7 @@ public class TicketEditDTO {
     private String annotationEng;
     private String keyWords;
     private String keyWordsEng;
-    private Status status;
+    private StatusTicket status;
     private Integer documentTypeId;
     private String filePdf;
     private String fileZip;
@@ -114,11 +114,11 @@ public class TicketEditDTO {
         this.keyWordsEng = keyWordsEng;
     }
 
-    public Status getStatus() {
+    public StatusTicket getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusTicket status) {
         this.status = status;
     }
 

@@ -7,8 +7,8 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "STATUS")
-public class Status implements Serializable {
+@Table(name = "STATUS_TICKET")
+public class StatusTicket implements Serializable {
 
     @Id
     @Column(name = "ID")

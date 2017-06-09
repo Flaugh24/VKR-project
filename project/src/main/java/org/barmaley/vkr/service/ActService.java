@@ -72,6 +72,7 @@ public class ActService {
 
         existingAct.setTickets(act.getTickets());
         existingAct.setDateOfAccept(act.getDateOfAccept());
+        existingAct.setStatus(act.getStatus());
         session.save(existingAct);
 
         session.flush();

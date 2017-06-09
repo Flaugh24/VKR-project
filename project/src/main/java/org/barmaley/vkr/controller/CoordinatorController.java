@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
-import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,32 +68,10 @@ public class CoordinatorController {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
         List<Ticket> ticketsNew = new ArrayList<>();
-        List<TicketDTO> ticketsNewDTOList = new ArrayList<>();
-
         List<Ticket> ticketsInCheck = new ArrayList<>();
-        List<TicketDTO> ticketsInCheckDTOList = new ArrayList<>();
-
         List<Ticket> ticketsReady = new ArrayList<>();
-        List<TicketDTO> ticketsReadyDTOList = new ArrayList<>();
-
         List<LazyStudentsDTO> lazyStudentsDTOList = new ArrayList<>();
-
-        List<ActDTO> actDTOList = new ArrayList<>();
         List<Act> actList = actService.getAllActsByUserId(user.getId());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
-        for (Act act : actList) {
-            ActDTO dto = new ActDTO();
-            try {
-                dto.setId(act.getId());
-                dto.setDateOfCreatDTO(dateFormat.format(act.getDateOfCreat()));
-                dto.setDateOfAcceptDTO(dateFormat.format(act.getDateOfAccept()));
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            actDTOList.add(dto);
-        }
-
 
         int countTicketsNew;
         int countTicketsInCheck;
@@ -125,57 +102,23 @@ public class CoordinatorController {
                 ticketsReady.addAll(ticketsReadyList);
             }
         }
-        for (Ticket ticket : ticketsNew) {
-            TicketDTO dto = new TicketDTO();
-            dto.setId(ticket.getId());
-            dto.setGroupNum(ticket.getGroupNum());
-            dto.setUser(ticket.getUser());
-            dto.setDocumentType(ticket.getDocumentType());
-            dto.setTitle(ticket.getTitle());
-            dto.setTypeOfUse(ticket.getTypeOfUse());
-            dto.setStatus(ticket.getStatus());
-            ticketsNewDTOList.add(dto);
-        }
-        for (Ticket ticket : ticketsInCheck) {
-            TicketDTO dto = new TicketDTO();
-            dto.setId(ticket.getId());
-            dto.setGroupNum(ticket.getGroupNum());
-            dto.setUser(ticket.getUser());
-            dto.setDocumentType(ticket.getDocumentType());
-            dto.setTitle(ticket.getTitle());
-            dto.setTypeOfUse(ticket.getTypeOfUse());
-            dto.setStatus(ticket.getStatus());
-            ticketsInCheckDTOList.add(dto);
-        }
-        for (Ticket ticket : ticketsReady) {
-            TicketDTO dto = new TicketDTO();
-            dto.setId(ticket.getId());
-            dto.setGroupNum(ticket.getGroupNum());
-            dto.setUser(ticket.getUser());
-            dto.setDocumentType(ticket.getDocumentType());
-            dto.setTitle(ticket.getTitle());
-            dto.setTypeOfUse(ticket.getTypeOfUse());
-            dto.setStatus(ticket.getStatus());
-            ticketsReadyDTOList.add(dto);
-        }
 
-        countTicketsNew = ticketsNewDTOList.size();
-        countTicketsInCheck = ticketsInCheckDTOList.size();
+        countTicketsNew = ticketsNew.size();
+        countTicketsInCheck = ticketsInCheck.size();
         countLazyStudents = lazyStudentsDTOList.size();
-        countTicketsReady = ticketsReadyDTOList.size();
+        countTicketsReady = ticketsReady.size();
         countActs = actList.size();
 
-        model.addAttribute("ticketsNew", ticketsNewDTOList);
+        model.addAttribute("ticketsNew", ticketsNew);
         model.addAttribute("countTicketsNew", countTicketsNew);
-        model.addAttribute("ticketsInCheck", ticketsInCheckDTOList);
+        model.addAttribute("ticketsInCheck", ticketsInCheck);
         model.addAttribute("countTicketsInCheck", countTicketsInCheck);
-        model.addAttribute("ticketsReady", ticketsReadyDTOList);
+        model.addAttribute("ticketsReady", ticketsReady);
         model.addAttribute("countTicketsReady", countTicketsReady);
         model.addAttribute("lazyStudents", lazyStudentsDTOList);
         model.addAttribute("countLazyStudents", countLazyStudents);
-        model.addAttribute("acts", actDTOList);
+        model.addAttribute("acts", actList);
         model.addAttribute("countActs", countActs);
-
 
         return ("coordinatorPage");
     }
@@ -204,13 +147,13 @@ public class CoordinatorController {
             }
                 ticket.setDateCheckCoordinatorStart(new Date());
                 ticketService.edit(ticket);
-                List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
+                List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
                 dto.setId(ticket.getId());
-            dto.setLicenseNumber(ticket.getLicenseNumber());
-            if (ticket.getLicenseDate() != null) {
-                SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
-                dto.setLicenseDate(licenseDateFormat.format(ticket.getLicenseDate()));
-            }
+                dto.setLicenseNumber(ticket.getLicenseNumber());
+                if (ticket.getLicenseDate() != null) {
+                    SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
+                    dto.setLicenseDateDTO(licenseDateFormat.format(ticket.getLicenseDate()));
+                }
                 dto.setAnnotation(ticket.getAnnotation());
                 dto.setAnnotationEng(ticket.getAnnotationEng());
                 dto.setTitle(ticket.getTitle());
@@ -252,9 +195,8 @@ public class CoordinatorController {
                 dto.setKeyWordsEng(ticket.getKeyWordsEng());
                 dto.setFilePdf(ticket.getFilePdf());
                 dto.setFileZip(ticket.getFileZip());
-                dto.setStatus(statusService.get(ticketService.getStatusId(ticket.getId())));
-                dto.setDocumentTypeId(ticketService.getDocumentTypeId(ticket.getId()));
-                dto.setTypeOfUseId(ticketService.getTypeOfUse(ticket.getId()));
+                dto.setStatus(ticket.getStatus());
+                dto.setTypeOfUse(ticket.getTypeOfUse());
                 //----------------------------------------------------
                 dto.setInstitute(ticket.getInstitute());
                 dto.setDirection(ticket.getDirection());
@@ -262,8 +204,7 @@ public class CoordinatorController {
                 dto.setPlaceOfPublic(ticket.getPlaceOfPublic());
                 dto.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
                 dto.setYearOfPublic(ticket.getYearOfPublic());
-                dto.setDocumentTypeName(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getName());
-                dto.setDocumentTypeNameEng(documentTypeService.get(ticketService.getDocumentTypeId(ticket.getId())).getNameEng());
+                dto.setDocumentType(ticket.getDocumentType());
                 dto.setHeadOfDepartment(ticket.getHeadOfDepartment());
                 dto.setFullNameCurator(ticket.getFullNameCurator());
                 dto.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
@@ -273,7 +214,7 @@ public class CoordinatorController {
                 dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
 
                 model.addAttribute("ticketAttribute", dto);
-                model.addAttribute("typeOfUse", typeOfUse);
+                model.addAttribute("typesOfUse", typesOfUse);
 
                 return "checkPage";
 
@@ -285,14 +226,13 @@ public class CoordinatorController {
     @PostMapping(value = "/ticket/check")
     public String saveCheck(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
                             @RequestParam(value = "button") String button) {
-
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
         ticket.setLicenseNumber(dto.getLicenseNumber());
-        if (!dto.getLicenseDate().equals("")) {
+        if (!dto.getLicenseDateDTO().equals("")) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("y-MM-dd");
             try {
-                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDate()));
+                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDateDTO()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -303,7 +243,7 @@ public class CoordinatorController {
         ticket.setTitleEng(dto.getTitleEng());
         ticket.setKeyWords(dto.getKeyWords());
         ticket.setKeyWordsEng(dto.getKeyWordsEng());
-        ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUseId()));
+        ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUse().getId()));
         String str = dto.getWord1() + ", " + dto.getWord2() + ", " + dto.getWord3() + ", " + dto.getWord4();
         ticket.setKeyWords(str);
         str = dto.getWord1Eng() + ", " + dto.getWord2Eng() + ", " + dto.getWord3Eng() + ", " + dto.getWord4Eng();
@@ -402,7 +342,7 @@ public class CoordinatorController {
         return "redirect:/ticket/check?ticketId=" + ticket.getId();
     }
 
-    @PostMapping(value = "/act/add")
+    @GetMapping(value = "/act/add")
     public String createAct() {
 
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -450,8 +390,6 @@ public class CoordinatorController {
         dto.setInstitute(act.getInstitute());
         dto.setTickets(act.getTickets());
         dto.setTicketsId(preCheckedVals);
-
-        logger.debug(tickets.size());
 
         model.addAttribute("act", dto);
         model.addAttribute("tickets", tickets);

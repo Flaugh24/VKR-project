@@ -99,15 +99,15 @@
                     </div>
                     <div class="form-group">
                         <form:label path="licenseDate">Дата лицензионного договора</form:label><br/>
-                        <form:input type="date" cssClass="form-control ${varclass}" path="licenseDate"/>
+                        <form:input type="date" cssClass="form-control ${varclass}" path="licenseDateDTO"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="documentTypeName">Тип документа</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="documentTypeName" disabled="true"/>
+                        <form:label path="documentType.name">Тип документа</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="documentType.name" disabled="true"/>
                     </div>
                     <div class="form-group">
-                        <form:label path="documentTypeNameEng">Тип документа на английском</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="documentTypeNameEng" disabled="true"/>
+                        <form:label path="documentType.nameEng">Тип документа на английском</form:label><br/>
+                        <form:input cssClass="form-control ${varclass}" path="documentType.nameEng" disabled="true"/>
                     </div>
                     <div class="form-group">
                         <form:label path="fullNameCurator">ФИО научного руководителя</form:label><br/>
@@ -223,9 +223,9 @@
                             </div>
                         </div>
 
-                        <form:label path="typeOfUseId">Свободный доступ из сети</form:label>
-                        <form:select path="typeOfUseId" cssClass="form-control ${varclass}" cssStyle="width: auto">
-                            <c:forEach items="${typeOfUse}" var="typeOfUse">
+                        <form:label path="typeOfUse.id">Свободный доступ из сети</form:label>
+                        <form:select path="typeOfUse.id" cssClass="form-control ${varclass}" cssStyle="width: auto">
+                            <c:forEach items="${typesOfUse}" var="typeOfUse">
                                 <form:option value="${typeOfUse.id}"><c:out value="${typeOfUse.name}"/></form:option>>
                             </c:forEach>
                         </form:select>

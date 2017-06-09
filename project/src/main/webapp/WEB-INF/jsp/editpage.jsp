@@ -44,7 +44,10 @@
             <div class="col-md-5" style="max-height: 100vh; overflow-y: auto; padding-bottom: 100px">
                 <h2>Номер заявки <c:out value="${ticketAttribute.id}"/></h2>
                 <c:if test="${ticketAttribute.status.id == 1 || ticketAttribute.status.id == 5}">
-                    <c:if test="${ticketAttribute.filePdf == null || ticketAttribute.fileZip == null}">
+                    <c:if test="${(ticketAttribute.filePdf == null || ticketAttribute.fileZip == null)&&
+                                  (ticketAttribute.filePdfSecret == null || ticketAttribute.fileZipSecret == null)&&
+                                  (ticketAttribute.filePdf == null || ticketAttribute.fileZipSecret == null)&&
+                                  (ticketAttribute.filePdfSecret == null || ticketAttribute.fileZip == null)}">
                         <div>
                             <form method="POST" action="${uploadUrl}" enctype="multipart/form-data">
                                 <label for="ticketId">

@@ -188,19 +188,35 @@ public class MainController {
 
         Ticket ticket = ticketService.get(ticketId);
         if (submit.equals("Удалить PDF")) {
-            File file = new File(ticket.getFilePdf());
+            logger.debug("УДАЛЕНИЕ PDF");
+            File file;
+            if(ticket.getFilePdf()!=null){
+                file = new File(ticket.getFilePdf());
+                ticket.setFilePdf(null);
+            }
+            else{
+                file = new File(ticket.getFilePdfSecret());
+                ticket.setFilePdfSecret(null);
+            }
             if (file.delete()) {
                 logger.debug(ticket.getFilePdf() + " файл удален");
             } else logger.debug("Файла" + ticket.getFilePdf() + " не обнаружено");
-            ticket.setFilePdf(null);
             ticketService.editPdf(ticket);
         }
         if (submit.equals("Удалить архив")) {
-            File file = new File(ticket.getFileZip());
+            logger.debug("УДАЛЕНИЕ АРХИВА");
+            File file;
+            if(ticket.getFileZip()!=null){
+                file = new File(ticket.getFileZip());
+                ticket.setFileZip(null);
+            }
+            else{
+                file = new File(ticket.getFileZipSecret());
+                ticket.setFileZipSecret(null);
+            }
             if (file.delete()) {
                 logger.debug(ticket.getFileZip() + " файл удален");
             } else logger.debug("Файла" + ticket.getFileZip() + " не обнаружено");
-            ticket.setFileZip(null);
             ticketService.editZip(ticket);
         }
 

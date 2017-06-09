@@ -59,16 +59,16 @@ public class Ticket implements Serializable {
     @JoinColumn(name = "TYPE_OF_USE")
     private TypeOfUse typeOfUse;
 
-    @Column(name = "FILE_PDF")
+    @Column(name = "FILE_PDF_SECRET")
     private String filePdfSecret;
 
-    @Column(name = "FILE_ZIP")
+    @Column(name = "FILE_ZIP_SECRET")
     private String fileZipSecret;
 
-    @Column(name = "FILE_PDF_SECRET")
+    @Column(name = "FILE_PDF")
     private String filePdf;
 
-    @Column(name = "FILE_ZIP_SECRET")
+    @Column(name = "FILE_ZIP")
     private String fileZip;
 
     @Column(name = "DATE_CREATION_START")

@@ -23,11 +23,14 @@ public class Ticket implements Serializable {
     @JoinColumn(name = "USER_ID", nullable = false)
     private Users user;
 
+    @Column(name = "LICENSE_NUMBER")
+    private String licenseNumber;
+
+    @Column(name = "LICENSE_DATE")
+    private Date licenseDate;
+
     @Column(name = "GROUP_NUM")
     private String groupNum;
-
-    @Column(name = "AGREEMENT")
-    private String agreement;
 
     @Column(name = "TITLE")
     private String title;
@@ -49,7 +52,7 @@ public class Ticket implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "STATUS", nullable = false)
-    private Status status;
+    private StatusTicket status;
 
     @ManyToOne
     @JoinColumn(name = "DOCUMENT_TYPE")
@@ -153,20 +156,28 @@ public class Ticket implements Serializable {
         this.user = user;
     }
 
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    public Date getLicenseDate() {
+        return licenseDate;
+    }
+
+    public void setLicenseDate(Date licenseDate) {
+        this.licenseDate = licenseDate;
+    }
+
     public String getGroupNum() {
         return groupNum;
     }
 
     public void setGroupNum(String groupNum) {
         this.groupNum = groupNum;
-    }
-
-    public String getAgreement() {
-        return agreement;
-    }
-
-    public void setAgreement(String agreement) {
-        this.agreement = agreement;
     }
 
     public String getTitle() {
@@ -217,11 +228,11 @@ public class Ticket implements Serializable {
         this.keyWordsEng = keyWordsEng;
     }
 
-    public Status getStatus() {
+    public StatusTicket getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusTicket status) {
         this.status = status;
     }
 

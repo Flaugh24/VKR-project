@@ -8,6 +8,7 @@ import org.barmaley.vkr.service.EmployeeCopyService;
 import org.barmaley.vkr.service.TicketService;
 import org.barmaley.vkr.service.UsersService;
 import org.barmaley.vkr.tool.PermissionTool;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,12 @@ public class MainController {
     private EmployeeCopyService employeeCopyService;
 
 
+    public Users getPrincipal() {
+
+        return (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+
     @GetMapping(value = ("/login"))
     public String login(Model model, String error, String logout) {
         if (error != null) {
@@ -57,12 +64,15 @@ public class MainController {
     @GetMapping(value = {"/user", "/"})
     public String user() {
         logger.debug("MainController./user");
-        Boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
-        Boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+        boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
+        boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+        boolean check_acts = permissionTool.checkPermission("PERM_CHECK_ACTS");
         if (add_ticket_for_educ_program) {
             return "redirect:/student";
         } else if (check_tickets) {
             return "redirect:/coordinator";
+        } else if (check_acts) {
+            return "redirect:/bibliographer";
         }
         return "pnh";
     }

@@ -1,7 +1,7 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.domain.Status;
+import org.barmaley.vkr.domain.StatusTicket;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,9 +16,9 @@ import java.util.List;
  *
  * @author Krams at
  */
-@Service("statusService")
+@Service("statusTicketService")
 @Transactional
-public class StatusService {
+public class StatusTicketService {
 
     protected static Logger logger = Logger.getLogger("service");
 
@@ -30,14 +30,14 @@ public class StatusService {
      *
      * @return a list of persons
      */
-    public List<Status> getAll() {
+    public List<StatusTicket> getAll() {
         logger.debug("Retrieving all persons");
 
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
 
         // Create a Hibernate query (HQL)
-        Query query = session.createQuery("FROM  Status");
+        Query query = session.createQuery("FROM  StatusTicket");
 
         // Retrieve all
         return query.list();
@@ -48,12 +48,12 @@ public class StatusService {
      *
      * @param id
      */
-    public Status get(Integer id) {
+    public StatusTicket get(Integer id) {
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
 
         // Retrieve existing person
-        Status status = session.get(Status.class, id);
+        StatusTicket status = session.get(StatusTicket.class, id);
 
         return status;
     }
@@ -61,7 +61,7 @@ public class StatusService {
     /**
      * Adds a new person
      */
-    public void add(Status status) {
+    public void add(StatusTicket status) {
         logger.debug("Adding new person");
 
         // Retrieve session from Hibernate
@@ -83,7 +83,7 @@ public class StatusService {
         Session session = sessionFactory.getCurrentSession();
 
         // Retrieve existing person
-        Status status = session.get(Status.class, id);
+        StatusTicket status = session.get(StatusTicket.class, id);
 
         // Delete
         session.delete(status);

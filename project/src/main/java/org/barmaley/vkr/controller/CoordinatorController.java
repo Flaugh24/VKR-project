@@ -3,7 +3,7 @@ package org.barmaley.vkr.controller;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.*;
-import org.barmaley.vkr.dto.CheckBoxDTO;
+import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
 import org.barmaley.vkr.dto.TicketDTO;
 import org.barmaley.vkr.dto.TicketEditDTO;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -28,6 +30,9 @@ public class CoordinatorController {
     @Resource(name = "ticketService")
     private TicketService ticketService;
 
+    @Resource(name = "actService")
+    private ActService actService;
+
     @Resource(name = "usersService")
     private UsersService usersService;
 
@@ -37,14 +42,20 @@ public class CoordinatorController {
     @Resource(name = "studentCopyService")
     private StudentCopyService studentCopyService;
 
+    @Resource(name = "employeeCopyService")
+    private EmployeeCopyService employeeCopyService;
+
     @Resource(name = "educProgramService")
     private EducProgramService educProgramService;
 
     @Resource(name = "documentTypeService")
     private DocumentTypeService documentTypeService;
 
-    @Resource(name = "statusService")
-    private StatusService statusService;
+    @Resource(name = "statusTicketService")
+    private StatusTicketService statusService;
+
+    @Resource(name = "statusActService")
+    private StatusActService statusActService;
 
     @Resource(name = "rolesService")
     private RolesService rolesService;
@@ -60,7 +71,7 @@ public class CoordinatorController {
         List<Ticket> ticketsNew = new ArrayList<>();
         List<TicketDTO> ticketsNewDTOList = new ArrayList<>();
 
-        List<Ticket> ticketsCheck = new ArrayList<>();
+        List<Ticket> ticketsInCheck = new ArrayList<>();
         List<TicketDTO> ticketsInCheckDTOList = new ArrayList<>();
 
         List<Ticket> ticketsReady = new ArrayList<>();
@@ -68,12 +79,28 @@ public class CoordinatorController {
 
         List<LazyStudentsDTO> lazyStudentsDTOList = new ArrayList<>();
 
-        Integer countTicketsNew;
-        Integer countTicketsInCheck;
-        Integer countTicketsReady;
-        Integer countLazyStudents;
+        List<ActDTO> actDTOList = new ArrayList<>();
+        List<Act> actList = actService.getAllActsByUserId(user.getId());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
+        for (Act act : actList) {
+            ActDTO dto = new ActDTO();
+            try {
+                dto.setId(act.getId());
+                dto.setDateOfCreatDTO(dateFormat.format(act.getDateOfCreat()));
+                dto.setDateOfAcceptDTO(dateFormat.format(act.getDateOfAccept()));
 
-        CheckBoxDTO checkBoxDTO = new CheckBoxDTO();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            actDTOList.add(dto);
+        }
+
+
+        int countTicketsNew;
+        int countTicketsInCheck;
+        int countTicketsReady;
+        int countLazyStudents;
+        int countActs;
 
         if (!coordinatorRightsList.isEmpty()) {
             for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
@@ -94,26 +121,41 @@ public class CoordinatorController {
 
                 }
                 ticketsNew.addAll(ticketsNewList);
-                ticketsCheck.addAll(ticketsCheckList);
+                ticketsInCheck.addAll(ticketsCheckList);
                 ticketsReady.addAll(ticketsReadyList);
             }
         }
         for (Ticket ticket : ticketsNew) {
-            TicketDTO dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
-                    ticket.getUser().getSecondName(), ticket.getUser().getSurname(), ticket.getTitle(), ticket.getDocumentType().getName(),
-                    ticket.getTypeOfUse().getName(), ticket.getStatus().getName());
+            TicketDTO dto = new TicketDTO();
+            dto.setId(ticket.getId());
+            dto.setGroupNum(ticket.getGroupNum());
+            dto.setUser(ticket.getUser());
+            dto.setDocumentType(ticket.getDocumentType());
+            dto.setTitle(ticket.getTitle());
+            dto.setTypeOfUse(ticket.getTypeOfUse());
+            dto.setStatus(ticket.getStatus());
             ticketsNewDTOList.add(dto);
         }
-        for (Ticket ticket : ticketsCheck) {
-            TicketDTO dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
-                    ticket.getUser().getSecondName(), ticket.getUser().getSurname(), ticket.getTitle(), ticket.getDocumentType().getName(),
-                    ticket.getTypeOfUse().getName(), ticket.getStatus().getName());
+        for (Ticket ticket : ticketsInCheck) {
+            TicketDTO dto = new TicketDTO();
+            dto.setId(ticket.getId());
+            dto.setGroupNum(ticket.getGroupNum());
+            dto.setUser(ticket.getUser());
+            dto.setDocumentType(ticket.getDocumentType());
+            dto.setTitle(ticket.getTitle());
+            dto.setTypeOfUse(ticket.getTypeOfUse());
+            dto.setStatus(ticket.getStatus());
             ticketsInCheckDTOList.add(dto);
         }
         for (Ticket ticket : ticketsReady) {
-            TicketDTO dto = new TicketDTO(ticket.getId(), ticket.getGroupNum(), ticket.getUser().getFirstName(),
-                    ticket.getUser().getSecondName(), ticket.getUser().getSurname(), ticket.getTitle(), ticket.getDocumentType().getName(),
-                    ticket.getTypeOfUse().getName(), ticket.getStatus().getName());
+            TicketDTO dto = new TicketDTO();
+            dto.setId(ticket.getId());
+            dto.setGroupNum(ticket.getGroupNum());
+            dto.setUser(ticket.getUser());
+            dto.setDocumentType(ticket.getDocumentType());
+            dto.setTitle(ticket.getTitle());
+            dto.setTypeOfUse(ticket.getTypeOfUse());
+            dto.setStatus(ticket.getStatus());
             ticketsReadyDTOList.add(dto);
         }
 
@@ -121,16 +163,20 @@ public class CoordinatorController {
         countTicketsInCheck = ticketsInCheckDTOList.size();
         countLazyStudents = lazyStudentsDTOList.size();
         countTicketsReady = ticketsReadyDTOList.size();
+        countActs = actList.size();
+
         model.addAttribute("ticketsNew", ticketsNewDTOList);
         model.addAttribute("countTicketsNew", countTicketsNew);
         model.addAttribute("ticketsInCheck", ticketsInCheckDTOList);
         model.addAttribute("countTicketsInCheck", countTicketsInCheck);
-        model.addAttribute("lazyStudents", lazyStudentsDTOList);
-        model.addAttribute("countLazyStudents", countLazyStudents);
         model.addAttribute("ticketsReady", ticketsReadyDTOList);
         model.addAttribute("countTicketsReady", countTicketsReady);
-        model.addAttribute("user", user);
-        model.addAttribute("checkBox", checkBoxDTO);
+        model.addAttribute("lazyStudents", lazyStudentsDTOList);
+        model.addAttribute("countLazyStudents", countLazyStudents);
+        model.addAttribute("acts", actDTOList);
+        model.addAttribute("countActs", countActs);
+
+
         return ("coordinatorPage");
     }
 
@@ -152,14 +198,19 @@ public class CoordinatorController {
                 .findAny()
                 .orElse(null);
 
-        if (coordinatorRights != null) {
-
+        if (coordinatorRights != null && (ticket.getStatus().getId() != 1)) {
+            if (ticket.getStatus().getId() == 2) {
                 ticket.setStatus(statusService.get(3));
+            }
                 ticket.setDateCheckCoordinatorStart(new Date());
                 ticketService.edit(ticket);
                 List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
                 dto.setId(ticket.getId());
-                dto.setAgreement(ticket.getAgreement());
+            dto.setLicenseNumber(ticket.getLicenseNumber());
+            if (ticket.getLicenseDate() != null) {
+                SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
+                dto.setLicenseDate(licenseDateFormat.format(ticket.getLicenseDate()));
+            }
                 dto.setAnnotation(ticket.getAnnotation());
                 dto.setAnnotationEng(ticket.getAnnotationEng());
                 dto.setTitle(ticket.getTitle());
@@ -217,7 +268,6 @@ public class CoordinatorController {
                 dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
                 dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
 
-                model.addAttribute("user", user);
                 model.addAttribute("ticketAttribute", dto);
                 model.addAttribute("typeOfUse", typeOfUse);
 
@@ -228,12 +278,21 @@ public class CoordinatorController {
         }
     }
 
-    @PostMapping(value = "ticket/check")
+    @PostMapping(value = "/ticket/check")
     public String saveCheck(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
                             @RequestParam(value = "button") String button) {
 
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
+        ticket.setLicenseNumber(dto.getLicenseNumber());
+        if (!dto.getLicenseDate().equals("")) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("y-MM-dd");
+            try {
+                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         ticket.setAnnotation(dto.getAnnotation());
         ticket.setAnnotationEng(dto.getAnnotationEng());
         ticket.setTitle(dto.getTitle());
@@ -339,28 +398,116 @@ public class CoordinatorController {
         return "redirect:/ticket/check?ticketId=" + ticket.getId();
     }
 
-    @PostMapping(value = "/createAct")
+    @PostMapping(value = "/act/add")
+    public String createAct() {
 
-    public String ticketsReady(CheckBoxDTO checkBoxDTO, ModelMap model) {
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        EmployeeCopy coordinator = employeeCopyService.get(user.getExtId());
+
+        Act act = new Act();
+        act.setDateOfCreat(new Date());
+        act.setStatus(statusActService.get(1));
+        act.setInstitute(coordinator.getInstitute());
+        act.setDepartment(coordinator.getDepartment());
+        act.setPosition(coordinator.getPosition());
+        act.setUser(user);
+        act = actService.add(act);
+
+        return "redirect:/act/edit?actId=" + act.getId();
+    }
+
+    @GetMapping(value = "/act/edit")
+    public String getEditAct(@RequestParam(value = "actId") String actId, ModelMap model) {
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
+        List<Ticket> tickets = new ArrayList<>();
+        List<String> preCheckedVals = new ArrayList<>();
+        ActDTO dto = new ActDTO();
+        Act act = actService.get(actId);
 
 
-        List<Ticket> ticketList = new ArrayList<>();
-        List<String> ticketsId = checkBoxDTO.getId();
+        if (!coordinatorRightsList.isEmpty()) {
+            for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
+                List<Ticket> ticketList = ticketService.getAllTicketForAct(coordinatorRights.getGroupNum(), 4, actId);
+                tickets.addAll(ticketList);
+            }
+        }
+
+        for (Ticket ticket : act.getTickets()) {
+            preCheckedVals.add(ticket.getId());
+        }
+
+        dto.setId(act.getId());
+        dto.setDateOfCreat(act.getDateOfCreat());
+        dto.setDateOfAccept(act.getDateOfAccept());
+        dto.setUser(act.getUser());
+        dto.setPosition(act.getPosition());
+        dto.setDepartment(act.getDepartment());
+        dto.setInstitute(act.getInstitute());
+        dto.setTickets(act.getTickets());
+        dto.setTicketsId(preCheckedVals);
+
+        logger.debug(tickets.size());
+
+        model.addAttribute("act", dto);
+        model.addAttribute("tickets", tickets);
+
+        return "actPage";
+
+    }
+
+    @PostMapping(value = "/act/edit")
+    public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) {
+
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
+
+        Act act = actService.get(dto.getId());
+        List<String> ticketsId = dto.getTicketsId();
+        List<Ticket> tickets = new ArrayList<>();
+        List<Ticket> otherTickets = new ArrayList<>();
 
         for (String ticketId : ticketsId) {
             Ticket ticket = ticketService.get(ticketId);
-            ticketList.add(ticket);
-            logger.debug(ticket.getId());
+            ticket.setAct(act);
+            ticket.setStatus(statusService.get(6));
+            ticketService.editAct(ticket);
+            tickets.add(ticket);
         }
 
-        Act act = new Act();
-        act.setTickets(ticketList);
-        act.setDateOfCreat(new Date());
-        act.setUser((Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        if(button.equals("send")){
+            act.setStatus(statusActService.get(2));
+            actService.edit(act);
+        }
 
-        model.addAttribute("act", act);
+        if (!coordinatorRightsList.isEmpty()) {
+            for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
+                List<Ticket> ticketList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 6);
+                otherTickets.addAll(ticketList);
+            }
+        }
 
-        return "actPage";
+        for (Ticket otherTicket : otherTickets) {
+            if (otherTicket.getAct().getId().equals(act.getId())) {
+
+                boolean exist = false;
+
+                for (Ticket ticket : tickets) {
+                    if (otherTicket.getId().equals(ticket.getId())) {
+                        exist = true;
+                    }
+                }
+
+                if (!exist) {
+                    otherTicket.setAct(null);
+                    otherTicket.setStatus(statusService.get(4));
+                    ticketService.editAct(otherTicket);
+                }
+            }
+        }
+
+
+        return "redirect:/";
     }
 
 }

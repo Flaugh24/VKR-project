@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,18 +28,14 @@ public class StudentController {
 
     protected static Logger logger = Logger.getLogger("controller");
 
-
-    @Resource(name = "studentCopyService")
-    private StudentCopyService studentCopyService;
-
     @Resource(name = "ticketService")
     private TicketService ticketService;
 
     @Resource(name = "documentTypeService")
     private DocumentTypeService documentTypeService;
 
-    @Resource(name = "statusService")
-    private StatusService statusService;
+    @Resource(name = "statusTicketService")
+    private StatusTicketService statusService;
 
     @Resource(name = "usersService")
     private UsersService usersService;
@@ -49,9 +46,6 @@ public class StudentController {
     @Resource(name = "educProgramService")
     private EducProgramService educProgramService;
 
-    @Resource(name = "permissionTool")
-    private PermissionTool permissionTool;
-
 
     //------------------------------------------------------------------------
     @GetMapping(value = "/student")
@@ -61,18 +55,17 @@ public class StudentController {
         List<EducProgram> educProgramsDTO = new ArrayList<>();
         List<Ticket> tickets = ticketService.getAllTicketsByUserId(user.getId());
         List<TicketDTO> ticketsDTO = new ArrayList<>();
-        Boolean perm_add_fio_eng = permissionTool.checkPermission("PERM_ADD_FIO_ENG");
         if (!tickets.isEmpty()) {
             for (Ticket ticket : tickets) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.y");
                 TicketDTO ticketDTO = new TicketDTO();
                 ticketDTO.setId(ticket.getId());
                 try {
-                    ticketDTO.setDateCreationStart(dateFormat.format(ticket.getDateCreationStart()));
-                    ticketDTO.setDateCreationFinish(dateFormat.format(ticket.getDateCreationFinish()));
-                    ticketDTO.setDateCheckCoordinatorStart(dateFormat.format(ticket.getDateCheckCoordinatorStart()));
-                    ticketDTO.setDateReturn(dateFormat.format(ticket.getDateReturn()));
-                    ticketDTO.setDateCheckCoordinatorFinish(dateFormat.format(ticket.getDateCheckCoordinatorFinish()));
+                    ticketDTO.setDateCreationStartDTO(dateFormat.format(ticket.getDateCreationStart()));
+                    ticketDTO.setDateCreationFinishDTO(dateFormat.format(ticket.getDateCreationFinish()));
+                    ticketDTO.setDateCheckCoordinatorStartDTO(dateFormat.format(ticket.getDateCheckCoordinatorStart()));
+                    ticketDTO.setDateReturnDTO(dateFormat.format(ticket.getDateReturn()));
+                    ticketDTO.setDateCheckCoordinatorFinishDTO(dateFormat.format(ticket.getDateCheckCoordinatorFinish()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -116,9 +109,7 @@ public class StudentController {
         }
 
         model.addAttribute("educPrograms", educProgramsDTO);
-        model.addAttribute("user", user);
         model.addAttribute("ticketsDTO", ticketsDTO);
-        model.addAttribute("perm_add_fio_eng", perm_add_fio_eng);
         return ("studentPage");
     }
 
@@ -181,7 +172,11 @@ public class StudentController {
             List<TypeOfUse> typeOfUse = typeOfUseService.getAll();
             dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
             dto.setId(ticket.getId());
-            dto.setAgreement(ticket.getAgreement());
+            dto.setLicenseNumber(ticket.getLicenseNumber());
+            if (ticket.getLicenseDate() != null) {
+                SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
+                dto.setLicenseDate(licenseDateFormat.format(ticket.getLicenseDate()));
+            }
             dto.setAnnotation(ticket.getAnnotation());
             dto.setAnnotationEng(ticket.getAnnotationEng());
             dto.setTitle(ticket.getTitle());
@@ -243,7 +238,6 @@ public class StudentController {
             dto.setPosOfCurator(ticket.getPosOfCurator());
             dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
             //-----------------------------------------------------
-            model.addAttribute("user", user);
             model.addAttribute("ticketAttribute", dto);
             model.addAttribute("typeOfUse", typeOfUse);
             return "editpage";
@@ -256,8 +250,18 @@ public class StudentController {
     @PostMapping(value = "/ticket/edit")
     public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
                            @RequestParam(value = "button") String button) {
+
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
+        ticket.setLicenseNumber(dto.getLicenseNumber());
+        if (!dto.getLicenseDate().equals("")) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("y-MM-dd");
+            try {
+                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         ticket.setAnnotation(dto.getAnnotation());
         ticket.setAnnotationEng(dto.getAnnotationEng());
         ticket.setTitle(dto.getTitle());

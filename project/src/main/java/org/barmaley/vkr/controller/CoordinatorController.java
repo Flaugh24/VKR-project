@@ -244,9 +244,46 @@ public class CoordinatorController {
         ticket.setKeyWords(dto.getKeyWords());
         ticket.setKeyWordsEng(dto.getKeyWordsEng());
         ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUse().getId()));
-        String str = dto.getWord1() + ", " + dto.getWord2() + ", " + dto.getWord3() + ", " + dto.getWord4();
+        List<String> wordsList = new ArrayList<>();
+        String s = dto.getWord1();
+
+        logger.debug(s.length());
+        int j = s.length();
+        logger.debug("1!= "+dto.getWord1().length());
+        logger.debug("2!= "+dto.getWord2());
+        logger.debug("3!= "+dto.getWord3());
+        logger.debug("4!= "+dto.getWord4());
+        if (dto.getWord1().length()!=0){logger.debug("Зашел 1!");wordsList.add(dto.getWord1());}
+        if (dto.getWord2().length()!=0){logger.debug("Зашел 2!");wordsList.add(dto.getWord2());}
+        if (dto.getWord3().length()!=0){logger.debug("Зашел 3!");wordsList.add(dto.getWord3());}
+        if (dto.getWord4().length()!=0){logger.debug("Зашел 4!");wordsList.add(dto.getWord4());}
+        logger.debug("worListSize= "+wordsList.size());
+        for(int i=0; i<wordsList.size(); i++){
+            logger.debug("i= "+i);
+            if(i==wordsList.size()-1) {logger.debug("зашел в условие");wordsList.set(i,wordsList.get(i));}
+            else{wordsList.set(i,wordsList.get(i)+", ");}
+        }
+        String str="";
+        for (int i=0; i<wordsList.size();i++){
+            str=str+wordsList.get(i);
+        }
+// String str = dto.getWord1() + ", " + dto.getWord2() + ", " + dto.getWord3() + ", " + dto.getWord4();
         ticket.setKeyWords(str);
-        str = dto.getWord1Eng() + ", " + dto.getWord2Eng() + ", " + dto.getWord3Eng() + ", " + dto.getWord4Eng();
+        wordsList.clear();
+        if (dto.getWord1Eng().length()!=0){wordsList.add(dto.getWord1Eng());}
+        if (dto.getWord2Eng().length()!=0){wordsList.add(dto.getWord2Eng());}
+        if (dto.getWord3Eng().length()!=0){wordsList.add(dto.getWord3Eng());}
+        if (dto.getWord4Eng().length()!=0){wordsList.add(dto.getWord4Eng());}
+        for(int i=0; i<wordsList.size(); i++){
+            if(i==wordsList.size()-1) {wordsList.set(i,wordsList.get(i));}
+            else{wordsList.set(i,wordsList.get(i)+", ");}
+        }
+        str="";
+        for (int i=0; i<wordsList.size();i++){
+            str=str+wordsList.get(i);
+        }
+        ticket.setKeyWordsEng(str);
+
         ticket.setKeyWordsEng(str);
         //----------------------------------------------------
         ticket.setPlaceOfPublic(dto.getPlaceOfPublic());

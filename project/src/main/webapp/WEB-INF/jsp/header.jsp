@@ -31,21 +31,21 @@
 <body>
 
 <%
-    Users user = principal.getPrincipal();
+    Users coordinator = principal.getPrincipal();
     boolean perm_add_fio_eng = permission.checkPermission("PERM_ADD_FIO_ENG");
-    request.setAttribute("user", user);
+    request.setAttribute("coordinator", coordinator);
     request.setAttribute("perm_add_fio_eng", perm_add_fio_eng);
 %>
 
-<c:url var="saveUrl" value="/user/profile"/>
+<c:url var="saveUrl" value="/coordinator/profile"/>
 <c:url var="home" value="/"/>
 <div class="row">
     <div class="col-md-9">
         <a href="${home}">
             <h1>
-                <c:out value="${user.surname}"/>
-                <c:out value="${user.firstName}"/>
-                <c:out value="${user.secondName}"/>
+                <c:out value="${coordinator.surname}"/>
+                <c:out value="${coordinator.firstName}"/>
+                <c:out value="${coordinator.secondName}"/>
             </h1>
         </a>
     </div>
@@ -71,7 +71,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="myModalLabel">Настройки профиля</h4>
                         </div>
-                        <form:form commandName="user" action="${saveUrl}" method="post" id="profileform">
+                        <form:form commandName="coordinator" action="${saveUrl}" method="post" id="profileform">
                             <div class="modal-body">
                                 <form:label path="id" cssStyle="display: none"/>
                                 <form:input path="id" cssStyle="display: none"/>

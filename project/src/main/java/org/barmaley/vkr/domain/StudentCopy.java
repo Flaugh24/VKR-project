@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import javax.persistence.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,10 +29,10 @@ public class StudentCopy implements Serializable {
     @Column(name = "SECOND_NAME")
     private String secondName;
 
-    @ManyToMany
-    @JoinTable(name = "STUDENT_EDUC_PROGRAMS", joinColumns = @JoinColumn(name = "STUDENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "EDUC_PROGRAM_ID"))
-    private Set<EducProgram> educPrograms;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<EducProgram> educPrograms = new HashSet<>();
+
 
     public String getUsername() {
         return username;

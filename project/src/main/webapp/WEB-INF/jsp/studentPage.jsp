@@ -23,8 +23,8 @@
 
 </head>
 <body>
-<c:url var="saveUrl" value="/user/profile"/>
-<c:set value="${user}" var="user"/>
+<c:url var="saveUrl" value="/coordinator/profile"/>
+<c:set value="${coordinator}" var="coordinator"/>
 <div class="container-fluid">
     <header>
         <jsp:include page="header.jsp"/>
@@ -47,7 +47,7 @@
                         </a>
                         <form method="post" id="addticket${educProgram.id}" action="${addTicket}"
                               enctype="application/x-www-form-urlencoded">
-                            <input name="userId" value="${user.id}" style="display: none"/>
+                            <input name="userId" value="${coordinator.id}" style="display: none"/>
                             <input name="educId" value="${educProgram.id}" style="display: none"/>
                         </form>
                     </div>

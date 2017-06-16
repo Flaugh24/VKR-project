@@ -20,4 +20,12 @@ public class CustomUserService implements UserDetailsService {
         return userDao.loadUserByUsername(username);
     }
 
+    public CustomUser loadStudentByUsername(String username) throws UsernameNotFoundException {
+        return userDao.loadStudentByUsername(username);
+    }
+
+    public CustomUser loadEployeeByUsername(String username) throws UsernameNotFoundException {
+        return userDao.loadEmployeeByUsername(username);
+    }
+
 }

@@ -21,13 +21,11 @@ public class EducProgramService {
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
-    public List getAll(String username) {
+    public List<EducProgram> getAll(String username) {
         Session session = sessionFactory.getCurrentSession();
-        logger.debug("Get users by institute");
-        EducProgram educProgram = new EducProgram();
-        SQLQuery query = session.createSQLQuery("SELECT * FROM EDUC_PROGRAM " +
-                "WHERE ID IN(SELECT EDUC_PROGRAM_ID FROM STUDENT_EDUC_PROGRAMS WHERE STUDENT_ID='" + username + "')");
-        query.addEntity(EducProgram.class);
+
+        Query query = session.createQuery("FROM EducProgram WHERE student = '" + username + "'");
+
         return query.list();
     }
 

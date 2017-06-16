@@ -1,6 +1,5 @@
 package org.barmaley.vkr.autentication;
 
-import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.EmployeeCopy;
 import org.barmaley.vkr.domain.Roles;
 import org.barmaley.vkr.domain.StudentCopy;
@@ -17,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Transactional
 @Repository
@@ -34,83 +34,111 @@ public class UserDAOImpl {
     public CustomUser loadUserByUsername(final String username) {
 
         CustomUser customUser = new CustomUser();
-        try {
-            Users user = usersService.getByExtId(username);
-            StudentCopy studentCopy = authenticationService.getStudentCopy(username);
-            EmployeeCopy employeeCopy = authenticationService.getEmployeeCopy(username);
-            if (user != null) {
-                customUser.setId(user.getId());
-                customUser.setUsername(user.getExtId());
-                customUser.setExtId(user.getExtId());
-                customUser.setOrigin(user.getOrigin());
-                customUser.setFirstName(user.getFirstName());
-                customUser.setSecondName(user.getSecondName());
-                customUser.setSurname(user.getSurname());
-                customUser.setFirstNameEng(user.getFirstNameEng());
-                customUser.setSecondNameEng(user.getSecondNameEng());
-                customUser.setSurnameEng(user.getSurnameEng());
-                customUser.setEmail(user.getEmail());
-                customUser.setPhoneNumber(user.getPhoneNumber());
-                customUser.setCoordinatorRights(user.getCoordinatorRights());
-                customUser.setRoles(user.getRoles());
-                customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
-                if (studentCopy != null) {
-                    customUser.setPassword(studentCopy.getPassword());
-                } else {
-                    customUser.setPassword(employeeCopy.getPassword());
-                }
-                return customUser;
-            }
-
-            if (user == null && (studentCopy != null || employeeCopy != null)) {
-                user = new Users();
-                Set<Roles> roles = new HashSet<>();
-                if (studentCopy != null) {
-                    roles.add(rolesService.getRole(1));
-                    user.setExtId(studentCopy.getUsername());
-                    user.setSurname(studentCopy.getSurname());
-                    user.setFirstName(studentCopy.getFirstName());
-                    user.setSecondName(studentCopy.getSecondName());
-                    user.setEnabled(true);
-                    user.setRoles(roles);
-                    user.setOrigin("StudentCopy");
-                    user = usersService.addUser(user);
-                    customUser.setPassword(studentCopy.getPassword());
-                }
-                if (employeeCopy != null) {
-                    roles.add(rolesService.getRole(2));
-                    user.setExtId(employeeCopy.getUsername());
-                    user.setOrigin("EmployeeCopy");
-                    user.setSurname(employeeCopy.getSurname());
-                    user.setFirstName(employeeCopy.getFirstName());
-                    user.setSecondName(employeeCopy.getSecondName());
-                    user.setEnabled(true);
-                    user.setRoles(roles);
-                    user = usersService.addUser(user);
-                    customUser.setPassword(studentCopy.getPassword());
-                }
-                customUser.setId(user.getId());
-                customUser.setUsername(user.getExtId());
-                customUser.setExtId(user.getExtId());
-                customUser.setOrigin(user.getOrigin());
-                customUser.setFirstName(user.getFirstName());
-                customUser.setSecondName(user.getSecondName());
-                customUser.setSurname(user.getSurname());
-                customUser.setFirstNameEng(user.getFirstNameEng());
-                customUser.setSecondNameEng(user.getSecondNameEng());
-                customUser.setSurnameEng(user.getSurnameEng());
-                customUser.setEmail(user.getEmail());
-                customUser.setPhoneNumber(user.getPhoneNumber());
-                customUser.setCoordinatorRights(user.getCoordinatorRights());
-                customUser.setRoles(user.getRoles());
-                customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
-                return customUser;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Users user = usersService.getByExtId(username);
+        if (user != null) {
+            customUser.setId(user.getId());
+            customUser.setUsername(user.getExtId());
+            customUser.setPassword(user.getPassword());
+            customUser.setExtId(user.getExtId());
+            customUser.setOrigin(user.getOrigin());
+            customUser.setFirstName(user.getFirstName());
+            customUser.setSecondName(user.getSecondName());
+            customUser.setSurname(user.getSurname());
+            customUser.setFirstNameEng(user.getFirstNameEng());
+            customUser.setSecondNameEng(user.getSecondNameEng());
+            customUser.setSurnameEng(user.getSurnameEng());
+            customUser.setEmail(user.getEmail());
+            customUser.setPhoneNumber(user.getPhoneNumber());
+            customUser.setCoordinatorRights(user.getCoordinatorRights());
+            customUser.setRoles(user.getRoles());
+            customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
+            return customUser;
         }
         return null;
     }
+
+
+    public CustomUser loadStudentByUsername(final String username) {
+
+        CustomUser customUser = new CustomUser();
+        StudentCopy studentCopy = authenticationService.getStudentCopy(username);
+        if (studentCopy != null) {
+            Users user = new Users();
+            Set<Roles> roles = new HashSet<>();
+            if (studentCopy != null) {
+                roles.add(rolesService.getRole(1));
+                user.setExtId(studentCopy.getUsername());
+                user.setPassword(studentCopy.getPassword());
+                user.setSurname(studentCopy.getSurname());
+                user.setFirstName(studentCopy.getFirstName());
+                user.setSecondName(studentCopy.getSecondName());
+                user.setEnabled(true);
+                user.setRoles(roles);
+                user.setOrigin("StudentCopy");
+                user = usersService.addUser(user);
+            }
+            customUser.setId(user.getId());
+            customUser.setUsername(user.getExtId());
+            customUser.setPassword(user.getPassword());
+            customUser.setExtId(user.getExtId());
+            customUser.setOrigin(user.getOrigin());
+            customUser.setFirstName(user.getFirstName());
+            customUser.setSecondName(user.getSecondName());
+            customUser.setSurname(user.getSurname());
+            customUser.setFirstNameEng(user.getFirstNameEng());
+            customUser.setSecondNameEng(user.getSecondNameEng());
+            customUser.setSurnameEng(user.getSurnameEng());
+            customUser.setEmail(user.getEmail());
+            customUser.setPhoneNumber(user.getPhoneNumber());
+            customUser.setCoordinatorRights(user.getCoordinatorRights());
+            customUser.setRoles(user.getRoles());
+            customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
+            return customUser;
+        }
+        return null;
+    }
+
+
+    public CustomUser loadEmployeeByUsername(final String username) {
+
+        CustomUser customUser = new CustomUser();
+        EmployeeCopy employeeCopy = authenticationService.getEmployeeCopy(username);
+        if (employeeCopy != null) {
+            Users user = new Users();
+            Set<Roles> roles = new HashSet<>();
+            if (employeeCopy != null) {
+                roles.add(rolesService.getRole(2));
+                user.setExtId(employeeCopy.getUsername());
+                user.setPassword(employeeCopy.getPassword());
+                user.setSurname(employeeCopy.getSurname());
+                user.setFirstName(employeeCopy.getFirstName());
+                user.setSecondName(employeeCopy.getSecondName());
+                user.setEnabled(true);
+                user.setRoles(roles);
+                user.setOrigin("StudentCopy");
+                user = usersService.addUser(user);
+                }
+            customUser.setId(user.getId());
+            customUser.setUsername(user.getExtId());
+            customUser.setPassword(user.getPassword());
+            customUser.setExtId(user.getExtId());
+            customUser.setOrigin(user.getOrigin());
+            customUser.setFirstName(user.getFirstName());
+            customUser.setSecondName(user.getSecondName());
+            customUser.setSurname(user.getSurname());
+            customUser.setFirstNameEng(user.getFirstNameEng());
+            customUser.setSecondNameEng(user.getSecondNameEng());
+            customUser.setSurnameEng(user.getSurnameEng());
+            customUser.setEmail(user.getEmail());
+            customUser.setPhoneNumber(user.getPhoneNumber());
+            customUser.setCoordinatorRights(user.getCoordinatorRights());
+            customUser.setRoles(user.getRoles());
+            customUser.setAuthorities(authenticationService.getAuthorities(user.getId()));
+            return customUser;
+        }
+        return null;
+    }
+
 
     public Authentication newAuthentication() {
 

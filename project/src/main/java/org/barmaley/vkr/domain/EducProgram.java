@@ -35,8 +35,9 @@ public class EducProgram implements Serializable {
     @Column(name = "DEPARTMENT")
     private String department;
 
-    @ManyToMany(mappedBy = "educPrograms")
-    private Set<StudentCopy> studentCopies;
+    @ManyToOne
+    @JoinColumn(name = "STUDENT_ID", nullable = false)
+    private StudentCopy student;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -98,12 +99,11 @@ public class EducProgram implements Serializable {
         this.department = department;
     }
 
-    public Set<StudentCopy> getStudentCopies() {
-        return studentCopies;
+    public StudentCopy getStudent() {
+        return student;
     }
 
-    public void setStudentCopies(Set<StudentCopy> studentCopies) {
-        this.studentCopies = studentCopies;
+    public void setStudent(StudentCopy student) {
+        this.student = student;
     }
-
 }

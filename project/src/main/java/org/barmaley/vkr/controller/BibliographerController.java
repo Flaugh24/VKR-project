@@ -3,12 +3,18 @@ package org.barmaley.vkr.controller;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.Act;
+import org.barmaley.vkr.domain.Ticket;
+import org.barmaley.vkr.domain.Users;
+import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.service.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -60,5 +66,39 @@ public class BibliographerController {
 
         model.addAttribute("actList", actList);
         return "bibliographerPage";
+    }
+
+    @GetMapping(value = "/act/check")
+    public String getCheckAct(@RequestParam(value = "actId") String actId, ModelMap model){
+
+        Act act = actService.get(actId);
+
+        ActDTO dto = new ActDTO();
+        List<String> preCheckedVals = new ArrayList<>();
+
+        for (Ticket ticket : act.getTickets()) {
+            preCheckedVals.add(ticket.getId());
+            ticket.setStatus(statusService.get(7));
+            ticketService.edit(ticket);
+        }
+
+        act.setStatus(statusActService.get(3));
+        act.setBibliographer((Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        actService.edit(act);
+
+
+        dto.setId(act.getId());
+        dto.setDateOfCreate(act.getDateOfCreate());
+        dto.setDateOfAccept(act.getDateOfAccept());
+        dto.setCoordinator(act.getCoordinator());
+        dto.setPosition(act.getPosition());
+        dto.setDepartment(act.getDepartment());
+        dto.setInstitute(act.getInstitute());
+        dto.setTickets(act.getTickets());
+        dto.setTicketsId(preCheckedVals);
+
+        model.addAttribute("act", dto);
+
+        return "checkActPage";
     }
 }

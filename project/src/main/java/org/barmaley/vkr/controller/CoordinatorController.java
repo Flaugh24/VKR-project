@@ -133,15 +133,12 @@ public class CoordinatorController {
         Ticket ticket = ticketService.get(ticketId);
         TicketEditDTO dto = new TicketEditDTO();
 
-
-        logger.debug(coordinatorRightsSet.size());
-
         CoordinatorRights coordinatorRights = coordinatorRightsSet.stream()
                 .filter(x -> ticket.getGroupNum().equals(x.getGroupNum()))
                 .findAny()
                 .orElse(null);
 
-        if (coordinatorRights != null && (ticket.getStatus().getId() != 1)) {
+        if ((coordinatorRights != null && (ticket.getStatus().getId() != 1)) || ticket.getStatus().getId() == 7) {
             if (ticket.getStatus().getId() == 2) {
                 ticket.setStatus(statusService.get(3));
             }
@@ -386,12 +383,12 @@ public class CoordinatorController {
         EmployeeCopy coordinator = employeeCopyService.get(user.getExtId());
 
         Act act = new Act();
-        act.setDateOfCreat(new Date());
+        act.setDateOfCreate(new Date());
         act.setStatus(statusActService.get(1));
         act.setInstitute(coordinator.getInstitute());
         act.setDepartment(coordinator.getDepartment());
         act.setPosition(coordinator.getPosition());
-        act.setUser(user);
+        act.setCoordinator(user);
         act = actService.add(act);
 
         return "redirect:/act/edit?actId=" + act.getId();
@@ -416,12 +413,13 @@ public class CoordinatorController {
 
         for (Ticket ticket : act.getTickets()) {
             preCheckedVals.add(ticket.getId());
+
         }
 
         dto.setId(act.getId());
-        dto.setDateOfCreat(act.getDateOfCreat());
+        dto.setDateOfCreate(act.getDateOfCreate());
         dto.setDateOfAccept(act.getDateOfAccept());
-        dto.setUser(act.getUser());
+        dto.setCoordinator(act.getCoordinator());
         dto.setPosition(act.getPosition());
         dto.setDepartment(act.getDepartment());
         dto.setInstitute(act.getInstitute());
@@ -431,7 +429,7 @@ public class CoordinatorController {
         model.addAttribute("act", dto);
         model.addAttribute("tickets", tickets);
 
-        return "actPage";
+        return "editActPage";
 
     }
 

@@ -20,6 +20,9 @@ public class Users implements Serializable {
     @Column(name = "EXT_ID")
     private String extId;
 
+    @Column(name = "PASSWORD")
+    private String password;
+
     @Column(name = "ORIGIN")
     private String origin;
 
@@ -76,6 +79,14 @@ public class Users implements Serializable {
 
     public void setExtId(String extId) {
         this.extId = extId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getOrigin() {

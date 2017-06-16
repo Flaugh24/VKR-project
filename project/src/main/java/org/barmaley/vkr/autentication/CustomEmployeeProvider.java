@@ -1,5 +1,6 @@
 package org.barmaley.vkr.autentication;
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -12,17 +13,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
 @Component
-public class CustomProvider implements AuthenticationProvider {
+public class CustomEmployeeProvider implements AuthenticationProvider {
 
     protected static Logger logger = Logger.getLogger(CustomProvider.class);
-
 
     private final CustomUserService userService;
 
     @Autowired
-    public CustomProvider(CustomUserService userService) {
+    public CustomEmployeeProvider(CustomUserService userService) {
         this.userService = userService;
     }
 
@@ -30,7 +29,7 @@ public class CustomProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        CustomUser user = userService.loadUserByUsername(username);
+        CustomUser user = userService.loadEployeeByUsername(username);
 
         if (user == null || !user.getUsername().equalsIgnoreCase(username)) {
             throw new BadCredentialsException("Username not found.");
@@ -49,4 +48,3 @@ public class CustomProvider implements AuthenticationProvider {
     }
 
 }
-

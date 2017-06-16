@@ -56,7 +56,7 @@ public class UsersService {
     public Users getByExtId(String extId) {
         Session session = sessionFactory.getCurrentSession();
         logger.debug("Get user by extId");
-        Query query = session.createQuery("FROM Users as U WHERE U.extId='" + extId + "'");
+        Query query = session.createQuery("FROM Users WHERE extId='" + extId + "'");
         return (Users) query.uniqueResult();
     }
 

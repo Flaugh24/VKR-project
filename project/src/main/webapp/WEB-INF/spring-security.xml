@@ -16,7 +16,7 @@
 
 
         <!-- Standard login page -->
-        <form-login login-page="/login" default-target-url="/user" authentication-failure-url="/login?error"
+        <form-login login-page="/login" default-target-url="/coordinator" authentication-failure-url="/login?error"
                     username-parameter="username" password-parameter="password"/>
 
         <session-management>
@@ -35,6 +35,10 @@
 
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="customProvider">
+        </authentication-provider>
+        <authentication-provider ref="customEmployeeProvider">
+        </authentication-provider>
+        <authentication-provider ref="customStudentProvider">
         </authentication-provider>
     </authentication-manager>
 

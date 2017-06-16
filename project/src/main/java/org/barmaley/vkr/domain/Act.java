@@ -23,11 +23,16 @@ public class Act {
     private StatusAct status;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private Users user;
+    @JoinColumn(name = "COORDINATOR_ID", nullable = false)
+    private Users coordinator;
 
-    @Column(name = "DATE_OF_СREATN")
-    private Date dateOfCreat;
+
+    @ManyToOne
+    @JoinColumn(name = "BIBLIOGRAPHER_ID")
+    private Users bibliographer;
+
+    @Column(name = "DATE_OF_СREATE")
+    private Date dateOfCreate;
 
     @Column(name = "DATE_OF_ACCEPT")
     private Date dateOfAccept;
@@ -60,20 +65,28 @@ public class Act {
         this.status = status;
     }
 
-    public Users getUser() {
-        return user;
+    public Users getCoordinator() {
+        return coordinator;
     }
 
-    public void setUser(Users user) {
-        this.user = user;
+    public void setCoordinator(Users coordinator) {
+        this.coordinator = coordinator;
     }
 
-    public Date getDateOfCreat() {
-        return dateOfCreat;
+    public Users getBibliographer() {
+        return bibliographer;
     }
 
-    public void setDateOfCreat(Date dateOfCreat) {
-        this.dateOfCreat = dateOfCreat;
+    public void setBibliographer(Users bibliographer) {
+        this.bibliographer = bibliographer;
+    }
+
+    public Date getDateOfCreate() {
+        return dateOfCreate;
+    }
+
+    public void setDateOfCreate(Date dateOfCreate) {
+        this.dateOfCreate = dateOfCreate;
     }
 
     public Date getDateOfAccept() {

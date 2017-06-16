@@ -40,7 +40,7 @@ public class ActService {
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
         // Создаем запрос
-        Query query = session.createQuery("FROM Act WHERE user.id = " + userId + " ORDER BY Id");
+        Query query = session.createQuery("FROM Act WHERE coordinator.id = " + userId + " ORDER BY Id");
 
 
         // Retrieve all

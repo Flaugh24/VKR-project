@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 public class CustomProvider implements AuthenticationProvider {
 
-    protected static Logger logger = Logger.getLogger(CustomProvider.class);
+    protected static Logger logger = Logger.getLogger("controller");
 
 
     private final CustomUserService userService;

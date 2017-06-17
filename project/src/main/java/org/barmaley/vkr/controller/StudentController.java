@@ -122,6 +122,7 @@ public class StudentController {
             ticket.setDateCreationStart(new Date());
             ticket.setUser(usersService.getById(userId));
             ticket.setStatus(statusService.get(1));
+            logger.debug("заявка "+statusService.get(1));
             ticket.setGroupNum(educProgram.getGroupNum());
             //-----------------------------------------------------------------
             ticket.setGroupNum(educProgram.getGroupNum());
@@ -301,9 +302,12 @@ public class StudentController {
         logger.debug("button: " + button);
         if (button.equals("save")) {
             ticket.setStatus(statusService.get(1));
+            logger.debug("Заявка "+statusService.get(1));
         }
         if (button.equals("send")) {
             ticket.setStatus(statusService.get(2));
+            logger.debug("Заявка "+statusService.get(2));
+
             ticket.setDateCreationFinish(new Date());
         }
 

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
@@ -62,9 +63,12 @@ public class BibliographerController {
     @GetMapping(value = "/bibliographer")
     public String getBibliographerPage(ModelMap model){
 
-        List<Act> actList = actService.getAll();
-
+        List<Act> actList = actService.getAllActForCoordinator(2);
+        List<Act> actListReadyConvert = actService.getAllActForCoordinator(3);
+        List<Act> actListReadyLibrary = actService.getAllActForCoordinator(4);
         model.addAttribute("actList", actList);
+        model.addAttribute("actListReadyConvert", actListReadyConvert);
+        model.addAttribute("actListReadyLibrary", actListReadyLibrary);
         return "bibliographerPage";
     }
 
@@ -101,4 +105,17 @@ public class BibliographerController {
 
         return "checkActPage";
     }
+
+    @PostMapping(value = "/act/check")
+    public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) {
+        Act act = actService.get(dto.getId());
+        if (button.equals("return")){
+            act.setStatus(statusActService.get(3));
+            actService.edit(act);
+
+        }
+
+        return "redirect:/bibliographer";
+    }
+
 }

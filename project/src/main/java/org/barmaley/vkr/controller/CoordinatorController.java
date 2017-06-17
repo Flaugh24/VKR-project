@@ -71,13 +71,15 @@ public class CoordinatorController {
         List<Ticket> ticketsInCheck = new ArrayList<>();
         List<Ticket> ticketsReady = new ArrayList<>();
         List<LazyStudentsDTO> lazyStudentsDTOList = new ArrayList<>();
-        List<Act> actList = actService.getAllActsByUserId(user.getId());
+        List<Act> actList = actService.getAllActsByUserId(1, user.getId());
+        List<Act> actListReturn = actService.getAllActsByUserIdReturn(5, user.getId());
 
         int countTicketsNew;
         int countTicketsInCheck;
         int countTicketsReady;
         int countLazyStudents;
         int countActs;
+        int countActsReturn;
 
         if (!coordinatorRightsList.isEmpty()) {
             for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
@@ -108,6 +110,7 @@ public class CoordinatorController {
         countLazyStudents = lazyStudentsDTOList.size();
         countTicketsReady = ticketsReady.size();
         countActs = actList.size();
+        countActsReturn=actListReturn.size();
 
         model.addAttribute("ticketsNew", ticketsNew);
         model.addAttribute("countTicketsNew", countTicketsNew);
@@ -118,7 +121,9 @@ public class CoordinatorController {
         model.addAttribute("lazyStudents", lazyStudentsDTOList);
         model.addAttribute("countLazyStudents", countLazyStudents);
         model.addAttribute("acts", actList);
+        model.addAttribute("actsreturn",actListReturn);
         model.addAttribute("countActs", countActs);
+        model.addAttribute("countActsReturn", countActsReturn);
 
         return ("coordinatorPage");
     }
@@ -339,8 +344,7 @@ public class CoordinatorController {
         user.setSecondName(studentCopy.getSecondName());
         user.setEnabled(true);
         user.setRoles(roles);
-        usersService.addUser(user);
-        user = usersService.getByExtId(username);
+        user = usersService.addUser(user);
 
         Ticket ticket = new Ticket();
         String degree = educProgram.getDegree();
@@ -356,22 +360,37 @@ public class CoordinatorController {
                 ticket.setDocumentType(documentTypeService.get(3));
                 break;
         }
+        logger.debug("1");
         ticket.setDateCreationStart(new Date());
+        logger.debug("2");
+        if (user ==null){
+            logger.debug("null");
+        }
         ticket.setUser(usersService.getById(user.getId()));
+        logger.debug("3");
         ticket.setStatus(statusService.get(3));
+        logger.debug("4");
         ticket.setTypeOfUse(typeOfUseService.get(1));
+        logger.debug("5");
         ticket.setGroupNum(educProgram.getGroupNum());
+        logger.debug("6");
 
         //-----------------------------------------------------------------
         ticket.setGroupNum(educProgram.getGroupNum());
+        logger.debug("7");
         ticket.setDirection(educProgram.getDirection());
+        logger.debug("8");
         ticket.setDirectionCode(educProgram.getDirectionCode());
+        logger.debug("9");
         ticket.setInstitute(educProgram.getInstitute());
+        logger.debug("10");
         ticket.setDepartment(educProgram.getDepartment());
+        logger.debug("11");
         //-----------------------------------------------------------------
         ticketService.add(ticket);
+        logger.debug("12");
         model.addAttribute("ticket", ticket);
-
+        logger.debug("13");
 
         return "redirect:/ticket/check?ticketId=" + ticket.getId();
     }

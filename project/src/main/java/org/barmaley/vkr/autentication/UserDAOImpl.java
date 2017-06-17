@@ -1,5 +1,6 @@
 package org.barmaley.vkr.autentication;
 
+import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.EmployeeCopy;
 import org.barmaley.vkr.domain.Roles;
 import org.barmaley.vkr.domain.StudentCopy;
@@ -16,13 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Transactional
 @Repository
 public class UserDAOImpl {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    private static  Logger logger = Logger.getLogger(UserDAOImpl.class.getName());
     @Resource(name = "authenticationService")
     private AuthenticationService authenticationService;
     @Resource(name = "usersService")

@@ -24,7 +24,7 @@ import java.util.*;
 @Controller
 public class CoordinatorController {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(CoordinatorController.class.getName());
 
     @Resource(name = "ticketService")
     private TicketService ticketService;
@@ -244,20 +244,13 @@ public class CoordinatorController {
         List<String> wordsList = new ArrayList<>();
         String s = dto.getWord1();
 
-        logger.debug(s.length());
         int j = s.length();
-        logger.debug("1!= "+dto.getWord1().length());
-        logger.debug("2!= "+dto.getWord2());
-        logger.debug("3!= "+dto.getWord3());
-        logger.debug("4!= "+dto.getWord4());
-        if (dto.getWord1().length()!=0){logger.debug("Зашел 1!");wordsList.add(dto.getWord1());}
-        if (dto.getWord2().length()!=0){logger.debug("Зашел 2!");wordsList.add(dto.getWord2());}
-        if (dto.getWord3().length()!=0){logger.debug("Зашел 3!");wordsList.add(dto.getWord3());}
-        if (dto.getWord4().length()!=0){logger.debug("Зашел 4!");wordsList.add(dto.getWord4());}
-        logger.debug("worListSize= "+wordsList.size());
+        if (dto.getWord1().length()!=0){wordsList.add(dto.getWord1());}
+        if (dto.getWord2().length()!=0){wordsList.add(dto.getWord2());}
+        if (dto.getWord3().length()!=0){wordsList.add(dto.getWord3());}
+        if (dto.getWord4().length()!=0){wordsList.add(dto.getWord4());}
         for(int i=0; i<wordsList.size(); i++){
-            logger.debug("i= "+i);
-            if(i==wordsList.size()-1) {logger.debug("зашел в условие");wordsList.set(i,wordsList.get(i));}
+            if(i==wordsList.size()-1) {wordsList.set(i,wordsList.get(i));}
             else{wordsList.set(i,wordsList.get(i)+", ");}
         }
         String str="";
@@ -344,7 +337,6 @@ public class CoordinatorController {
 
         Ticket ticket = new Ticket();
         String degree = educProgram.getDegree();
-        logger.debug(degree);
         switch (degree) {
             case "Бакалавр":
                 ticket.setDocumentType(documentTypeService.get(1));

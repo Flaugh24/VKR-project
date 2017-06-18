@@ -48,9 +48,9 @@
             </a></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out value="${ticket.id}"/></a></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
-                    value="${ticket.coordinator.surname}"/> <c:out
-                    value="${ticket.coordinator.firstName}"/> <c:out
-                    value="${ticket.coordinator.secondName}"/></a></td>
+                    value="${ticket.user.surname}"/> <c:out
+                    value="${ticket.user.firstName}"/> <c:out
+                    value="${ticket.user.secondName}"/></a></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out value="${ticket.title}"/></a>
             </td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block">Лицензионный договор</a></td>
@@ -59,8 +59,8 @@
     </tbody>
 </table>
 
-    <button type="submit" value="return" class="btn btn-default">Вернуть координатору</button>
-    <button type="submit" value="accept" class="btn btn-default">Принять акт</button>
+    <button type="submit"  name="button" value="return" class="btn btn-default">Вернуть координатору</button>
+    <button type="submit"  name="button" value="accept" class="btn btn-default">Принять акт</button>
 </form:form>
 </body>
 </html>

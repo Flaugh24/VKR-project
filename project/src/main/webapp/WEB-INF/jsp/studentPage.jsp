@@ -45,11 +45,11 @@
                                 Направление: <c:out value="${educProgram.direction}"/><br>
                             </div>
                         </a>
-                        <form method="post" id="addticket${educProgram.id}" action="${addTicket}"
-                              enctype="application/x-www-form-urlencoded">
-                            <input name="userId" value="${coordinator.id}" style="display: none"/>
-                            <input name="educId" value="${educProgram.id}" style="display: none"/>
-                        </form>
+                        <%--<form method="post" id="addticket${educProgram.id}" action="${addTicket}"--%>
+                              <%--enctype="application/x-www-form-urlencoded">--%>
+                            <%--<input name="userId" value="${coordinator.id}" style="display: none"/>--%>
+                            <%--<input name="educId" value="${educProgram.id}" style="display: none"/>--%>
+                        <%--</form>--%>
                     </div>
                 </c:forEach>
             </div>

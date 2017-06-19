@@ -4,9 +4,19 @@ import org.barmaley.vkr.domain.Act;
 
 import java.util.List;
 
-public class ActDTO extends Act {
+public class ActDTO {
+
+    private Act act;
 
     private List<String> ticketsId;
+
+    public Act getAct() {
+        return act;
+    }
+
+    public void setAct(Act act) {
+        this.act = act;
+    }
 
     public List<String> getTicketsId() {
         return ticketsId;

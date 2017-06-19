@@ -87,17 +87,10 @@ public class BibliographerController {
         actService.edit(act);
 
 
-        dto.setId(act.getId());
-        dto.setDateOfCreate(act.getDateOfCreate());
-        dto.setDateOfAccept(act.getDateOfAccept());
-        dto.setCoordinator(act.getCoordinator());
-        dto.setPosition(act.getPosition());
-        dto.setDepartment(act.getDepartment());
-        dto.setInstitute(act.getInstitute());
-        dto.setTickets(act.getTickets());
+        dto.setAct(act);
         dto.setTicketsId(preCheckedVals);
 
-        model.addAttribute("act", dto);
+        model.addAttribute("dto", dto);
 
         return "checkActPage";
     }

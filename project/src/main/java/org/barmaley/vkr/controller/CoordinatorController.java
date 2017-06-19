@@ -406,17 +406,10 @@ public class CoordinatorController {
 
         }
 
-        dto.setId(act.getId());
-        dto.setDateOfCreate(act.getDateOfCreate());
-        dto.setDateOfAccept(act.getDateOfAccept());
-        dto.setCoordinator(act.getCoordinator());
-        dto.setPosition(act.getPosition());
-        dto.setDepartment(act.getDepartment());
-        dto.setInstitute(act.getInstitute());
-        dto.setTickets(act.getTickets());
+        dto.setAct(act);
         dto.setTicketsId(preCheckedVals);
 
-        model.addAttribute("act", dto);
+        model.addAttribute("dto", dto);
         model.addAttribute("tickets", tickets);
 
         return "editActPage";
@@ -424,12 +417,13 @@ public class CoordinatorController {
     }
 
     @PostMapping(value = "/act/{id}/edit")
-    public String postEditAct(@PathVariable(value = "id") String actId, ActDTO dto, @RequestParam(name = "button") String button) {
+    public String postEditAct(@PathVariable(value = "id") String actId, @ModelAttribute("dto") ActDTO dto,
+                              @RequestParam(name = "button") String button) {
 
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
 
-        Act act = actService.get(dto.getId());
+        Act act = actService.get(dto.getAct().getId());
         List<String> ticketsId = dto.getTicketsId();
         List<Ticket> tickets = new ArrayList<>();
         List<Ticket> otherTickets = new ArrayList<>();

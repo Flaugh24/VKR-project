@@ -44,8 +44,6 @@
                                                data-toggle="tab">Проверенные (<c:out value="${countTicketsReady}"/>)</a>
                     </li>
                 </c:if>
-                <li role="presentation"><a href="#ticketsInvalid" aria-controls="ticketsInvalid" role="tab"
-                                           data-toggle="tab">На доработку</a></li>
                 <c:if test="${not empty lazyStudents}">
                     <li role="presentation"><a href="#lazyStudents" aria-controls="lazyStudents" role="tab"
                                                data-toggle="tab">Студенты (<c:out value="${countLazyStudents}"/>)</a>

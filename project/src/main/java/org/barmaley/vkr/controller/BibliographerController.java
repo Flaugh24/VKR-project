@@ -90,7 +90,7 @@ public class BibliographerController {
         model.addAttribute("actListReadyConvert", actListReadyConvert);
         model.addAttribute("actListReadyLibrary", actListReadyLibrary);
 
-        return "test";
+        return "bibliographerPage";
     }
 
     @GetMapping(value = "/act/check")
@@ -111,8 +111,12 @@ public class BibliographerController {
             ticket.setStatus(statusService.get(7));
             ticketService.edit(ticket);
         }
+        if(act.getStatus().getId()==4||act.getStatus().getId()==5||act.getStatus().getId()==6) {
 
-        act.setStatus(statusActService.get(3));
+        }else
+        {
+            act.setStatus(statusActService.get(3));
+        }
         act.setBibliographer((Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         actService.edit(act);
 

@@ -13,6 +13,9 @@ public class ActFormValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "ticketsId", "id.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "ticketsId", "tickets.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "act.department", "department.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "act.institute", "institute.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "act.position", "position.required");
     }
 }

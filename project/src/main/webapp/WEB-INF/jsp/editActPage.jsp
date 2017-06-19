@@ -57,6 +57,9 @@
     E-mail координатора <c:out value="${actDto.act.coordinator.email}"/>
 
     <h1><form:errors path="ticketsId" /></h1>
+    <h1><form:errors path="act.department" /></h1>
+    <h1><form:errors path="act.institute" /></h1>
+    <h1><form:errors path="act.position" /></h1>
     <button name="button" value="save" type="submit">Сохранить</button>
     <button name="button" value="send" type="submit">Отправить на проверку</button>
 </form:form>

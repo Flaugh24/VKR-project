@@ -13,6 +13,17 @@
     <!-- Activates various annotations to be detected in bean classes -->
     <context:annotation-config/>
 
+
+    <bean id="actFormValidator" class="org.barmaley.vkr.validator.ActFormValidator" />
+
+    <bean id="messageSource"
+                class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:message" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+
+
     <!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.
      For example @Controller and @Service. Make sure to set the correct base-package-->
     <context:component-scan base-package="org.barmaley.vkr"/>

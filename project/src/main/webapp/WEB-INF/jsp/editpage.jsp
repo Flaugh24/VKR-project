@@ -58,10 +58,10 @@
                                     <label>Загрузите файлы Вашей ВКР в формате PDF или ZIP<br/>
                                         <input name="uploadFile" id="uploadFile" type="file"/>
                                     </label>
-                                    <input type="checkbox" name="tradeSecret" value="${true}"/>
                                 </div>
 
                                 <div class="form-group">
+                                    <input type="checkbox" name="tradeSecret" value="${true}"/>Файл содержит комерческую тайну<br/>
                                     <input type="submit" name="submit" value="Загрузить"
                                            class="btn btn-default uploadButton" disabled/>
                                 </div>

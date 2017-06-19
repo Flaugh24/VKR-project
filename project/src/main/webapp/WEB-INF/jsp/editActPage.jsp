@@ -3,23 +3,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Акт <c:out value="${dto.act.id}"/></title>
+    <title>Акт <c:out value="${actDto.act.id}"/></title>
 </head>
 <body>
 
-<c:url value="/act/${dto.act.id}/edit" var="saveUrl"/>
+<c:url value="/act/${actDto.act.id}/edit" var="saveUrl"/>
 
 <header>
     <jsp:include page="header.jsp"/>
 </header>
 
-<form:form commandName="dto" method="post" action="${saveUrl}">
+<form:form commandName="actDto" method="post" action="${saveUrl}">
 
     <form:input path="act.id" cssStyle="display: none"/>
 
     Представитель <form:input path="act.department"/>, <form:input path="act.institute"/><br/>
 
-    <c:out value="${dto.act.coordinator.surname}"/> <c:out value="${dto.act.coordinator.firstName}"/> <c:out value="${dto.act.coordinator.secondName}"/>,
+    <c:out value="${actDto.act.coordinator.surname}"/> <c:out value="${actDto.act.coordinator.firstName}"/> <c:out value="${actDto.act.coordinator.secondName}"/>,
     <form:input path="act.position"/>
 
     <table class="table table-striped table-bordered" style="text-align: center">
@@ -53,9 +53,10 @@
         </tbody>
     </table>
 
-    Телефон координатора <c:out value="${dto.act.coordinator.phoneNumber}"/>
-    E-mail координатора <c:out value="${dto.act.coordinator.email}"/>
+    Телефон координатора <c:out value="${actDto.act.coordinator.phoneNumber}"/>
+    E-mail координатора <c:out value="${actDto.act.coordinator.email}"/>
 
+    <h1><form:errors path="ticketsId" /></h1>
     <button name="button" value="save" type="submit">Сохранить</button>
     <button name="button" value="send" type="submit">Отправить на проверку</button>
 </form:form>

@@ -7,10 +7,16 @@ import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
 import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,6 +28,16 @@ import java.util.*;
 public class CoordinatorController {
 
     protected static Logger logger = Logger.getLogger(CoordinatorController.class.getName());
+
+
+    @Autowired
+    @Qualifier("actFormValidator")
+    private Validator validator;
+
+    @InitBinder("actDto")
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
+    }
 
     @Resource(name = "ticketService")
     private TicketService ticketService;
@@ -76,28 +92,26 @@ public class CoordinatorController {
         int countLazyStudents;
         int countActs;
 
-        if (!coordinatorRightsList.isEmpty()) {
-            for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
-                List<Ticket> ticketsNewList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 2);
-                List<Ticket> ticketsCheckList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 3);
-                List<Ticket> ticketsReadyList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 4);
-                List<StudentCopy> studentCopyList = studentCopyService.getStudentByEducProgram(coordinatorRights.getGroupNum());
-                for (StudentCopy studentCopy : studentCopyList) {
-                    LazyStudentsDTO dto = new LazyStudentsDTO();
-                    dto.setStudentCopy(studentCopy);
-                    Set<EducProgram> educProgramSet = studentCopy.getEducPrograms();
-                    for (EducProgram educProgram : educProgramSet) {
-                        if (educProgram.getGroupNum().equals(coordinatorRights.getGroupNum())) {
-                            dto.setEducProgram(educProgram);
-                        }
+        for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
+            List<Ticket> ticketsNewList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 2);
+            List<Ticket> ticketsCheckList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 3);
+            List<Ticket> ticketsReadyList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 4);
+            List<StudentCopy> studentCopyList = studentCopyService.getStudentByEducProgram(coordinatorRights.getGroupNum());
+            for (StudentCopy studentCopy : studentCopyList) {
+                LazyStudentsDTO dto = new LazyStudentsDTO();
+                dto.setStudentCopy(studentCopy);
+                Set<EducProgram> educProgramSet = studentCopy.getEducPrograms();
+                for (EducProgram educProgram : educProgramSet) {
+                    if (educProgram.getGroupNum().equals(coordinatorRights.getGroupNum())) {
+                        dto.setEducProgram(educProgram);
                     }
-                    lazyStudentsDTOList.add(dto);
-
                 }
-                ticketsNew.addAll(ticketsNewList);
-                ticketsInCheck.addAll(ticketsCheckList);
-                ticketsReady.addAll(ticketsReadyList);
+                lazyStudentsDTOList.add(dto);
+
             }
+            ticketsNew.addAll(ticketsNewList);
+            ticketsInCheck.addAll(ticketsCheckList);
+            ticketsReady.addAll(ticketsReadyList);
         }
 
         countTicketsNew = ticketsNew.size();
@@ -385,21 +399,17 @@ public class CoordinatorController {
     }
 
     @GetMapping(value = "/act/{id}/edit")
-    public String getEditAct(@PathVariable(value = "id") String actId, ModelMap model) {
+    public String getEditAct(@PathVariable(value = "id") String actId, ModelMap model, ActDTO dto) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
         List<Ticket> tickets = new ArrayList<>();
         List<String> preCheckedVals = new ArrayList<>();
-        ActDTO dto = new ActDTO();
         Act act = actService.get(actId);
 
-
-        if (!coordinatorRightsList.isEmpty()) {
             for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
                 List<Ticket> ticketList = ticketService.getAllTicketForAct(coordinatorRights.getGroupNum(), 4, actId);
                 tickets.addAll(ticketList);
             }
-        }
 
         for (Ticket ticket : act.getTickets()) {
             preCheckedVals.add(ticket.getId());
@@ -409,7 +419,7 @@ public class CoordinatorController {
         dto.setAct(act);
         dto.setTicketsId(preCheckedVals);
 
-        model.addAttribute("dto", dto);
+        model.addAttribute("actDto", dto);
         model.addAttribute("tickets", tickets);
 
         return "editActPage";
@@ -417,8 +427,15 @@ public class CoordinatorController {
     }
 
     @PostMapping(value = "/act/{id}/edit")
-    public String postEditAct(@PathVariable(value = "id") String actId, @ModelAttribute("dto") ActDTO dto,
+    public String postEditAct(@PathVariable(value = "id") String actId, @ModelAttribute("actDto") @Validated ActDTO dto,
+                              BindingResult bindingResult, ModelMap model,
                               @RequestParam(name = "button") String button) {
+
+        if(bindingResult.hasErrors()){
+            logger.info("error");
+            return getEditAct(actId, model, dto);
+        }
+
 
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
@@ -441,11 +458,9 @@ public class CoordinatorController {
             actService.edit(act);
         }
 
-        if (!coordinatorRightsList.isEmpty()) {
-            for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
-                List<Ticket> ticketList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 6);
-                otherTickets.addAll(ticketList);
-            }
+        for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
+            List<Ticket> ticketList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 6);
+            otherTickets.addAll(ticketList);
         }
 
         for (Ticket otherTicket : otherTickets) {

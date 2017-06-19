@@ -41,16 +41,16 @@
     <%int i = 0; %>
     <c:forEach items="${act.tickets}" var="ticket">
         <% i++; %>
-        <c:url var="checkTicket" value="/ticket/check?ticketId=${ticket.id}"/>
+        <c:url var="checkTicket" value="/ticket/${ticket.id}/check"/>
         <tr>
             <td><form:checkbox path="ticketsId" value="${ticket.id}"/></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>
             </a></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out value="${ticket.id}"/></a></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
-                    value="${ticket.coordinator.surname}"/> <c:out
-                    value="${ticket.coordinator.firstName}"/> <c:out
-                    value="${ticket.coordinator.secondName}"/></a></td>
+                    value="${ticket.user.surname}"/> <c:out
+                    value="${ticket.user.firstName}"/> <c:out
+                    value="${ticket.user.secondName}"/></a></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out value="${ticket.title}"/></a>
             </td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block">Лицензионный договор</a></td>

@@ -131,13 +131,13 @@ public class StudentController {
             model.addAttribute("ticket", ticket);
 
 
-            return "redirect:/ticket/edit?ticketId=" + ticket.getId();
+            return "redirect:/ticket/" + ticket.getId() + "edit";
         }
         return "redirect:/user";
     }
 
-    @GetMapping(value = "/ticket/edit")
-    public String getEditTicket(@RequestParam(value = "ticketId") String ticketId,
+    @GetMapping(value = "/ticket/{id}/edit")
+    public String getEditTicket(@PathVariable(value = "id") String ticketId,
                                 ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.get(ticketId);
@@ -221,8 +221,9 @@ public class StudentController {
     }
 
 
-    @PostMapping(value = "/ticket/edit")
-    public String saveEdit(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
+    @PostMapping(value = "/ticket/{id}/edit")
+    public String saveEdit(@PathVariable(value = "id") String ticketId,
+                           @ModelAttribute("ticketAttribute") TicketEditDTO dto,
                            @RequestParam(value = "button") String button) {
 
         Ticket ticket = new Ticket();

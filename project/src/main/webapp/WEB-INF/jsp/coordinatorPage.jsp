@@ -94,7 +94,7 @@
                                 <% Integer i = 0; %>
                                 <c:forEach items="${ticketsNew}" var="ticketNew">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketNew.id}"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketNew.id}/check"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -160,7 +160,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsInCheck}" var="ticketInCheck">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketInCheck.id}"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketInCheck.id}/check"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -232,7 +232,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsReady}" var="ticketReady">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketReady.id}/check"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -328,7 +328,7 @@
                             <% Integer i = 0; %>
                             <c:forEach items="${acts}" var="act">
                                 <% i++; %>
-                                <c:url var="checkTicket" value="/act/edit?actId=${act.id}"/>
+                                <c:url var="checkTicket" value="/act/${act.id}/edit"/>
                                 <tr>
                                     <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>
                                     </a></td>

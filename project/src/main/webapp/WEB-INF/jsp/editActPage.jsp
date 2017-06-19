@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<c:url value="/act/edit" var="saveUrl"/>
+<c:url value="/act/${act.id}/edit" var="saveUrl"/>
 
 <header>
     <jsp:include page="header.jsp"/>
@@ -36,7 +36,7 @@
         <%int i = 0; %>
         <c:forEach items="${tickets}" var="ticket">
             <% i++; %>
-            <c:url var="checkTicket" value="/act/edit?actId=${act.id}"/>
+            <c:url var="checkTicket" value="/ticket/${ticket.id}/check"/>
             <tr>
                 <td><form:checkbox path="ticketsId" value="${ticket.id}"/></td>
                 <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>

@@ -11,10 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -124,8 +121,8 @@ public class CoordinatorController {
     }
 
 
-    @GetMapping(value = "/ticket/check")
-    public String getCheckTicket(@RequestParam(value = "ticketId") String ticketId,
+    @GetMapping(value = "/ticket/{id}/check")
+    public String getCheckTicket(@PathVariable(value = "id") String ticketId,
                                  ModelMap model) {
 
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -220,8 +217,9 @@ public class CoordinatorController {
         }
     }
 
-    @PostMapping(value = "/ticket/check")
-    public String saveCheck(@ModelAttribute("ticketAttribute") TicketEditDTO dto,
+    @PostMapping(value = "/ticket/{id}/check")
+    public String saveCheck(@PathVariable(value = "id") String ticketId,
+                            @ModelAttribute("ticketAttribute") TicketEditDTO dto,
                             @RequestParam(value = "button") String button) {
         Ticket ticket = new Ticket();
         ticket.setId(dto.getId());
@@ -365,7 +363,7 @@ public class CoordinatorController {
         model.addAttribute("ticket", ticket);
 
 
-        return "redirect:/ticket/check?ticketId=" + ticket.getId();
+        return "redirect:/ticket/" + ticket.getId() + "/check";
     }
 
     @GetMapping(value = "/act/add")
@@ -383,11 +381,11 @@ public class CoordinatorController {
         act.setCoordinator(user);
         act = actService.add(act);
 
-        return "redirect:/act/edit?actId=" + act.getId();
+        return "redirect:/act/" + act.getId() + "/edit";
     }
 
-    @GetMapping(value = "/act/edit")
-    public String getEditAct(@RequestParam(value = "actId") String actId, ModelMap model) {
+    @GetMapping(value = "/act/{id}/edit")
+    public String getEditAct(@PathVariable(value = "id") String actId, ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
         List<Ticket> tickets = new ArrayList<>();
@@ -425,8 +423,8 @@ public class CoordinatorController {
 
     }
 
-    @PostMapping(value = "/act/edit")
-    public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) {
+    @PostMapping(value = "/act/{id}/edit")
+    public String postEditAct(@PathVariable(value = "id") String actId, ActDTO dto, @RequestParam(name = "button") String button) {
 
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());

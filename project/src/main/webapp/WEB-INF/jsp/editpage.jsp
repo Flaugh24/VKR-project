@@ -25,7 +25,7 @@
 <body>
 <c:url var="uploadUrl" value="/ticket/fileupload"/>
 <c:url var="deleteUrl" value="/ticket/filedelete"/>
-<c:url var="saveUrl" value="/ticket/edit"/>
+<c:url var="saveUrl" value="/ticket/${ticketAttribute.id}/edit"/>
 <c:url var="pdfDocument" value="/pdfDocument?ticketId=${ticketAttribute.id}"/>
 
 

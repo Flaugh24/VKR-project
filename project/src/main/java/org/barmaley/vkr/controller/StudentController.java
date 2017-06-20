@@ -1,8 +1,10 @@
 package org.barmaley.vkr.controller;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.domain.*;
-import org.barmaley.vkr.dto.TicketEditDTO;
+import org.barmaley.vkr.domain.EducProgram;
+import org.barmaley.vkr.domain.Ticket;
+import org.barmaley.vkr.domain.TypeOfUse;
+import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,8 +13,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -126,6 +126,8 @@ public class StudentController {
             ticket.setDepartment(educProgram.getDepartment());
             ticket.setDirection(educProgram.getDirection());
             ticket.setDirectionCode(educProgram.getDirectionCode());
+            ticket.setKeyWords("-,-,-,-");
+            ticket.setKeyWordsEng("-,-,-,-");
             //-----------------------------------------------------------------
             ticketService.add(ticket);
             model.addAttribute("ticket", ticket);
@@ -141,78 +143,25 @@ public class StudentController {
                                 ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.get(ticketId);
-        TicketEditDTO dto = new TicketEditDTO();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("y");
-
         if (user.getId().equals(ticket.getUser().getId())) {
             List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
-            dto.setDateOfPublic(dateFormat.format(ticket.getDateCreationStart()));
-            dto.setId(ticket.getId());
-            dto.setLicenseNumber(ticket.getLicenseNumber());
-            if (ticket.getLicenseDate() != null) {
-                SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
-                dto.setLicenseDateDTO(licenseDateFormat.format(ticket.getLicenseDate()));
+            List<String> words = new ArrayList<>();
+            List<String> wordsEng = new ArrayList<>();
+            Collections.addAll(words, ticket.getKeyWords().split(","));
+            if (words.size() < 4) {
+                while (words.size() != 4) {
+                    words.add("-;");
+                }
             }
-            dto.setDocumentType(ticket.getDocumentType());
-            dto.setAnnotation(ticket.getAnnotation());
-            dto.setAnnotationEng(ticket.getAnnotationEng());
-            dto.setTitle(ticket.getTitle());
-            dto.setTitleEng(ticket.getTitleEng());
-            dto.setKeyWords(ticket.getKeyWords());
-            dto.setKeyWordsEng(ticket.getKeyWordsEng());
-            dto.setFilePdf(ticket.getFilePdf());
-            dto.setFileZip(ticket.getFileZip());
-            dto.setFilePdfSecret(ticket.getFilePdfSecret());
-            dto.setFileZipSecret(ticket.getFileZipSecret());
-            dto.setStatus(ticket.getStatus());
-            dto.setTypeOfUse(ticket.getTypeOfUse());
-            //----------------------------------------------------
-            dto.setInstitute(ticket.getInstitute());
-            String str = dto.getKeyWords();
-            List<String> list = new ArrayList<>();
-            if (str != null) {
-                Collections.addAll(list, str.split(", "));
+            ticket.setKeyWords(String.join(",", words).replaceAll(";",""));
+            Collections.addAll(wordsEng, ticket.getKeyWordsEng().split(","));
+            if (wordsEng.size() < 4) {
+                while (wordsEng.size() != 4) {
+                    wordsEng.add("-;");
+                }
             }
-            try {
-                dto.setWord1(list.get(0));
-                dto.setWord2(list.get(1));
-                dto.setWord3(list.get(2));
-                dto.setWord4(list.get(3));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            str = dto.getKeyWordsEng();
-            list.clear();
-            if (str != null) {
-                Collections.addAll(list, str.split(", "));
-            }
-            try {
-                dto.setWord1Eng(list.get(0));
-                dto.setWord2Eng(list.get(1));
-                dto.setWord3Eng(list.get(2));
-                dto.setWord4Eng(list.get(3));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            dto.setDirection(ticket.getDirection());
-            dto.setDepartment(ticket.getDepartment());
-            dto.setDirectionCode(ticket.getDirectionCode());
-            dto.setGroupNum(ticket.getGroupNum());
-            dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
-            dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
-            dto.setPosOfCurator(ticket.getPosOfCurator());
-            dto.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
-            dto.setPlaceOfPublic(ticket.getPlaceOfPublic());
-            dto.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
-            dto.setYearOfPublic(ticket.getYearOfPublic());
-            dto.setHeadOfDepartment(ticket.getHeadOfDepartment());
-            dto.setFullNameCurator(ticket.getFullNameCurator());
-            dto.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
-            dto.setPosOfCurator(ticket.getPosOfCurator());
-            dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
-            //-----------------------------------------------------
-            model.addAttribute("ticketAttribute", dto);
+            ticket.setKeyWordsEng(String.join(",", wordsEng).replaceAll(";",""));
+            model.addAttribute("ticketAttribute", ticket);
             model.addAttribute("typesOfUse", typesOfUse);
             return "editpage";
         } else {
@@ -223,71 +172,11 @@ public class StudentController {
 
     @PostMapping(value = "/ticket/{id}/edit")
     public String saveEdit(@PathVariable(value = "id") String ticketId,
-                           @ModelAttribute("ticketAttribute") TicketEditDTO dto,
+                           @ModelAttribute("ticketAttribute") Ticket ticket,
                            @RequestParam(value = "button") String button) {
 
-        Ticket ticket = new Ticket();
-        ticket.setId(dto.getId());
-        ticket.setLicenseNumber(dto.getLicenseNumber());
-        if (!dto.getLicenseDateDTO().equals("")) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("y-MM-dd");
-            try {
-                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDateDTO()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        ticket.setAnnotation(dto.getAnnotation());
-        ticket.setAnnotationEng(dto.getAnnotationEng());
-        ticket.setTitle(dto.getTitle());
-        ticket.setTitleEng(dto.getTitleEng());
-        List<String> wordsList = new ArrayList<>();
-        String s = dto.getWord1();
-
-        int j = s.length();
-        if (dto.getWord1().length()!=0){wordsList.add(dto.getWord1());}
-        if (dto.getWord2().length()!=0){wordsList.add(dto.getWord2());}
-        if (dto.getWord3().length()!=0){wordsList.add(dto.getWord3());}
-        if (dto.getWord4().length()!=0){wordsList.add(dto.getWord4());}
-        for(int i=0; i<wordsList.size(); i++){
-            if(i==wordsList.size()-1) {wordsList.set(i,wordsList.get(i));}
-            else{wordsList.set(i,wordsList.get(i)+", ");}
-        }
-        String str="";
-        for (int i=0; i<wordsList.size();i++){
-            str=str+wordsList.get(i);
-        }
-// String str = dto.getWord1() + ", " + dto.getWord2() + ", " + dto.getWord3() + ", " + dto.getWord4();
-        ticket.setKeyWords(str);
-        wordsList.clear();
-        if (dto.getWord1Eng().length()!=0){wordsList.add(dto.getWord1Eng());}
-        if (dto.getWord2Eng().length()!=0){wordsList.add(dto.getWord2Eng());}
-        if (dto.getWord3Eng().length()!=0){wordsList.add(dto.getWord3Eng());}
-        if (dto.getWord4Eng().length()!=0){wordsList.add(dto.getWord4Eng());}
-        for(int i=0; i<wordsList.size(); i++){
-            if(i==wordsList.size()-1) {wordsList.set(i,wordsList.get(i));}
-            else{wordsList.set(i,wordsList.get(i)+", ");}
-        }
-        str="";
-        for (int i=0; i<wordsList.size();i++){
-            str=str+wordsList.get(i);
-        }
-        ticket.setKeyWordsEng(str);
-
-        ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUse().getId()));
-        //----------------------------------------------------
-        ticket.setPlaceOfPublic(dto.getPlaceOfPublic());
-        ticket.setPlaceOfPublicEng(dto.getPlaceOfPublicEng());
-        ticket.setYearOfPublic(dto.getDateOfPublic());
-        ticket.setHeadOfDepartment(dto.getHeadOfDepartment());
-        ticket.setFullNameCurator(dto.getFullNameCurator());
-        ticket.setFullNameCuratorEng(dto.getFullNameCuratorEng());
-        ticket.setPosOfCurator(dto.getPosOfCurator());
-        ticket.setPosOfCuratorEng(dto.getPosOfCuratorEng());
-        ticket.setDegreeOfCurator(dto.getDegreeOfCurator());
-        ticket.setDegreeOfCuratorEng(dto.getDegreeOfCuratorEng());
-
-        //----------------------------------------------------
+        ticket.setKeyWords(ticket.getKeyWords().replaceAll("-,",""));
+        ticket.setKeyWordsEng(ticket.getKeyWordsEng().replaceAll("-,",""));
         if (button.equals("save")) {
             ticket.setStatus(statusService.get(1));
         }

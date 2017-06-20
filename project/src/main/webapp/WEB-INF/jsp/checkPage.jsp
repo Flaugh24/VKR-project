@@ -155,8 +155,8 @@
                             <form:input cssClass="form-control ${varclass}" path="placeOfPublicEng" maxlength="255"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="dateOfPublic">Год публикации</form:label><br/>
-                            <form:input cssClass="form-control ${varclass}" path="dateOfPublic" disabled="true"
+                            <form:label path="yearOfPublic">Год публикации</form:label><br/>
+                            <form:input cssClass="form-control ${varclass}" path="yearOfPublic" disabled="true"
                                         maxlength="4"/>
                         </div>
                         <div class="form-group">
@@ -170,59 +170,27 @@
                                            cssClass="form-control ${varclass}" cssStyle="max-width:100%"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="word1">Ключевые слова</form:label>
+                            <form:label path="keyWords">Ключевые слова</form:label>
                             <div class="row">
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Первое слово"
-                                                path="word1" maxlength="64"/>
-                                </div>
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Второе слово"
-                                                path="word2" maxlength="64"/>
-                                </div>
+                                <c:forEach items="${ticketAttribute.keyWords}" var="word">
+                                    <div class="col-xs-6">
+                                        <form:input cssClass="form-control ${varclass}"
+                                                    path="keyWords" value="${word}" maxlength="64"/>
+                                    </div>
+                                </c:forEach>
                             </div>
-
                         </div>
                         <div class="form-group">
+                            <form:label path="keyWordsEng">Ключевые слова на английском языке</form:label>
                             <div class="row">
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Третье слово"
-                                                path="word3" maxlength="64"/>
-                                </div>
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="Четвертое слово"
-                                                path="word4" maxlength="64"/>
-                                </div>
+                                <c:forEach items="${ticketAttribute.keyWordsEng}" var="word">
+                                    <div class="col-xs-6">
+                                        <form:input cssClass="form-control ${varclass}"
+                                                    path="keyWordsEng" value="${word}" maxlength="64"/>
+                                    </div>
+                                </c:forEach>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <form:label path="word1Eng">Ключевые слова на английском языке</form:label>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The first word"
-                                                path="word1Eng" maxlength="64"/>
-                                </div>
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The second word"
-                                                path="word2Eng" maxlength="64"/>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The third word"
-                                                path="word3Eng" maxlength="64"/>
-                                </div>
-                                <div class="col-xs-6">
-                                    <form:input cssClass="form-control ${varclass}" placeholder="The fourth word"
-                                                path="word4Eng" maxlength="64"/>
-                                </div>
-                            </div>
-                        </div>
-
                         <form:label path="typeOfUse.id">Свободный доступ из сети</form:label>
                         <form:select path="typeOfUse.id" cssClass="form-control ${varclass}" cssStyle="width: auto">
                             <c:forEach items="${typesOfUse}" var="typeOfUse">

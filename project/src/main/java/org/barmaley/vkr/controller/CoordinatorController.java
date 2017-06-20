@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
-import org.barmaley.vkr.dto.TicketEditDTO;
 import org.barmaley.vkr.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -33,47 +30,35 @@ public class CoordinatorController {
     @Autowired
     @Qualifier("actFormValidator")
     private Validator validator;
+    @Resource(name = "ticketService")
+    private TicketService ticketService;
+    @Resource(name = "actService")
+    private ActService actService;
+    @Resource(name = "usersService")
+    private UsersService usersService;
+    @Resource(name = "coordinatorRightsService")
+    private CoordinatorRightsService coordinatorRightsService;
+    @Resource(name = "studentCopyService")
+    private StudentCopyService studentCopyService;
+    @Resource(name = "employeeCopyService")
+    private EmployeeCopyService employeeCopyService;
+    @Resource(name = "educProgramService")
+    private EducProgramService educProgramService;
+    @Resource(name = "documentTypeService")
+    private DocumentTypeService documentTypeService;
+    @Resource(name = "statusTicketService")
+    private StatusTicketService statusService;
+    @Resource(name = "statusActService")
+    private StatusActService statusActService;
+    @Resource(name = "rolesService")
+    private RolesService rolesService;
+    @Resource(name = "typeOfUseService")
+    private TypeOfUseService typeOfUseService;
 
     @InitBinder("actDto")
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(validator);
     }
-
-    @Resource(name = "ticketService")
-    private TicketService ticketService;
-
-    @Resource(name = "actService")
-    private ActService actService;
-
-    @Resource(name = "usersService")
-    private UsersService usersService;
-
-    @Resource(name = "coordinatorRightsService")
-    private CoordinatorRightsService coordinatorRightsService;
-
-    @Resource(name = "studentCopyService")
-    private StudentCopyService studentCopyService;
-
-    @Resource(name = "employeeCopyService")
-    private EmployeeCopyService employeeCopyService;
-
-    @Resource(name = "educProgramService")
-    private EducProgramService educProgramService;
-
-    @Resource(name = "documentTypeService")
-    private DocumentTypeService documentTypeService;
-
-    @Resource(name = "statusTicketService")
-    private StatusTicketService statusService;
-
-    @Resource(name = "statusActService")
-    private StatusActService statusActService;
-
-    @Resource(name = "rolesService")
-    private RolesService rolesService;
-
-    @Resource(name = "typeOfUseService")
-    private TypeOfUseService typeOfUseService;
 
     @GetMapping(value = "/coordinator")
     public String getCoordinatorPage(ModelMap model) {
@@ -142,7 +127,6 @@ public class CoordinatorController {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
         Ticket ticket = ticketService.get(ticketId);
-        TicketEditDTO dto = new TicketEditDTO();
 
         CoordinatorRights coordinatorRights = coordinatorRightsSet.stream()
                 .filter(x -> ticket.getGroupNum().equals(x.getGroupNum()))
@@ -153,78 +137,14 @@ public class CoordinatorController {
             if (ticket.getStatus().getId() == 2) {
                 ticket.setStatus(statusService.get(3));
             }
-                ticket.setDateCheckCoordinatorStart(new Date());
-                ticketService.edit(ticket);
-                List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
-                dto.setId(ticket.getId());
-                dto.setLicenseNumber(ticket.getLicenseNumber());
-                if (ticket.getLicenseDate() != null) {
-                    SimpleDateFormat licenseDateFormat = new SimpleDateFormat("y-MM-dd");
-                    dto.setLicenseDateDTO(licenseDateFormat.format(ticket.getLicenseDate()));
-                }
-                dto.setAnnotation(ticket.getAnnotation());
-                dto.setAnnotationEng(ticket.getAnnotationEng());
-                dto.setTitle(ticket.getTitle());
-                dto.setTitleEng(ticket.getTitleEng());
-                dto.setKeyWords(ticket.getKeyWords());
-                dto.setKeyWordsEng(ticket.getKeyWordsEng());
-                dto.setDepartment(ticket.getDepartment());
-                dto.setDirectionCode(ticket.getDirectionCode());
-                dto.setFilePdf(ticket.getFilePdf());
-                dto.setFileZip(ticket.getFileZip());
-                dto.setFilePdfSecret(ticket.getFilePdfSecret());
-                dto.setFileZipSecret(ticket.getFileZipSecret());
-                String str = dto.getKeyWords();
-                List<String> list = new ArrayList<>();
-                if (str != null) {
-                    Collections.addAll(list, str.split(", "));
-                }
-                try {
-                    dto.setWord1(list.get(0));
-                    dto.setWord2(list.get(1));
-                    dto.setWord3(list.get(2));
-                    dto.setWord4(list.get(3));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                str = dto.getKeyWordsEng();
-                list.clear();
-                if (str != null) {
-                    Collections.addAll(list, str.split(", "));
-                }
-                try {
-                    dto.setWord1Eng(list.get(0));
-                    dto.setWord2Eng(list.get(1));
-                    dto.setWord3Eng(list.get(2));
-                    dto.setWord4Eng(list.get(3));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                dto.setKeyWordsEng(ticket.getKeyWordsEng());
-                dto.setFilePdf(ticket.getFilePdf());
-                dto.setFileZip(ticket.getFileZip());
-                dto.setStatus(ticket.getStatus());
-                dto.setTypeOfUse(ticket.getTypeOfUse());
-                //----------------------------------------------------
-                dto.setInstitute(ticket.getInstitute());
-                dto.setDirection(ticket.getDirection());
-                dto.setGroupNum(ticket.getGroupNum());
-                dto.setPlaceOfPublic(ticket.getPlaceOfPublic());
-                dto.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
-                dto.setYearOfPublic(ticket.getYearOfPublic());
-                dto.setDocumentType(ticket.getDocumentType());
-                dto.setHeadOfDepartment(ticket.getHeadOfDepartment());
-                dto.setFullNameCurator(ticket.getFullNameCurator());
-                dto.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
-                dto.setPosOfCurator(ticket.getPosOfCurator());
-                dto.setPosOfCuratorEng(ticket.getPosOfCuratorEng());
-                dto.setDegreeOfCurator(ticket.getDegreeOfCurator());
-                dto.setDegreeOfCuratorEng(ticket.getDegreeOfCuratorEng());
+            ticket.setDateCheckCoordinatorStart(new Date());
+            ticketService.edit(ticket);
+            List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
 
-                model.addAttribute("ticketAttribute", dto);
-                model.addAttribute("typesOfUse", typesOfUse);
+            model.addAttribute("ticketAttribute", ticket);
+            model.addAttribute("typesOfUse", typesOfUse);
 
-                return "checkPage";
+            return "checkPage";
 
         } else {
             return "pnh";
@@ -233,73 +153,8 @@ public class CoordinatorController {
 
     @PostMapping(value = "/ticket/{id}/check")
     public String saveCheck(@PathVariable(value = "id") String ticketId,
-                            @ModelAttribute("ticketAttribute") TicketEditDTO dto,
+                            @ModelAttribute("ticketAttribute") Ticket ticket,
                             @RequestParam(value = "button") String button) {
-        Ticket ticket = new Ticket();
-        ticket.setId(dto.getId());
-        ticket.setLicenseNumber(dto.getLicenseNumber());
-        if (!dto.getLicenseDateDTO().equals("")) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("y-MM-dd");
-            try {
-                ticket.setLicenseDate(dateFormat.parse(dto.getLicenseDateDTO()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        ticket.setAnnotation(dto.getAnnotation());
-        ticket.setAnnotationEng(dto.getAnnotationEng());
-        ticket.setTitle(dto.getTitle());
-        ticket.setTitleEng(dto.getTitleEng());
-        ticket.setKeyWords(dto.getKeyWords());
-        ticket.setKeyWordsEng(dto.getKeyWordsEng());
-        ticket.setTypeOfUse(typeOfUseService.get(dto.getTypeOfUse().getId()));
-        List<String> wordsList = new ArrayList<>();
-        String s = dto.getWord1();
-
-        int j = s.length();
-        if (dto.getWord1().length()!=0){wordsList.add(dto.getWord1());}
-        if (dto.getWord2().length()!=0){wordsList.add(dto.getWord2());}
-        if (dto.getWord3().length()!=0){wordsList.add(dto.getWord3());}
-        if (dto.getWord4().length()!=0){wordsList.add(dto.getWord4());}
-        for(int i=0; i<wordsList.size(); i++){
-            if(i==wordsList.size()-1) {wordsList.set(i,wordsList.get(i));}
-            else{wordsList.set(i,wordsList.get(i)+", ");}
-        }
-        String str="";
-        for (int i=0; i<wordsList.size();i++){
-            str=str+wordsList.get(i);
-        }
-// String str = dto.getWord1() + ", " + dto.getWord2() + ", " + dto.getWord3() + ", " + dto.getWord4();
-        ticket.setKeyWords(str);
-        wordsList.clear();
-        if (dto.getWord1Eng().length()!=0){wordsList.add(dto.getWord1Eng());}
-        if (dto.getWord2Eng().length()!=0){wordsList.add(dto.getWord2Eng());}
-        if (dto.getWord3Eng().length()!=0){wordsList.add(dto.getWord3Eng());}
-        if (dto.getWord4Eng().length()!=0){wordsList.add(dto.getWord4Eng());}
-        for(int i=0; i<wordsList.size(); i++){
-            if(i==wordsList.size()-1) {wordsList.set(i,wordsList.get(i));}
-            else{wordsList.set(i,wordsList.get(i)+", ");}
-        }
-        str="";
-        for (int i=0; i<wordsList.size();i++){
-            str=str+wordsList.get(i);
-        }
-        ticket.setKeyWordsEng(str);
-
-        ticket.setKeyWordsEng(str);
-        //----------------------------------------------------
-        ticket.setPlaceOfPublic(dto.getPlaceOfPublic());
-        ticket.setPlaceOfPublicEng(dto.getPlaceOfPublicEng());
-        ticket.setYearOfPublic(dto.getYearOfPublic());
-        ticket.setHeadOfDepartment(dto.getHeadOfDepartment());
-        ticket.setFullNameCurator(dto.getFullNameCurator());
-        ticket.setFullNameCuratorEng(dto.getFullNameCuratorEng());
-        ticket.setPosOfCurator(dto.getPosOfCurator());
-        ticket.setPosOfCuratorEng(dto.getPosOfCuratorEng());
-        ticket.setDegreeOfCurator(dto.getDegreeOfCurator());
-        ticket.setDegreeOfCuratorEng(dto.getDegreeOfCuratorEng());
-
-        //----------------------------------------------------
         switch (button) {
             case "return":
                 ticket.setStatus(statusService.get(5));
@@ -406,10 +261,10 @@ public class CoordinatorController {
         List<String> preCheckedVals = new ArrayList<>();
         Act act = actService.get(actId);
 
-            for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
-                List<Ticket> ticketList = ticketService.getAllTicketForAct(coordinatorRights.getGroupNum(), 4, actId);
-                tickets.addAll(ticketList);
-            }
+        for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
+            List<Ticket> ticketList = ticketService.getAllTicketForAct(coordinatorRights.getGroupNum(), 4, actId);
+            tickets.addAll(ticketList);
+        }
 
         for (Ticket ticket : act.getTickets()) {
             preCheckedVals.add(ticket.getId());
@@ -431,7 +286,7 @@ public class CoordinatorController {
                               BindingResult bindingResult, ModelMap model,
                               @RequestParam(name = "button") String button) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             logger.info("error");
             return getEditAct(actId, model, dto);
         }
@@ -453,7 +308,7 @@ public class CoordinatorController {
             tickets.add(ticket);
         }
 
-        if(button.equals("send")){
+        if (button.equals("send")) {
             act.setStatus(statusActService.get(2));
             actService.edit(act);
         }

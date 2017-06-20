@@ -70,7 +70,9 @@ public class CoordinatorController {
         List<Ticket> ticketsReady = new ArrayList<>();
         List<LazyStudentsDTO> lazyStudentsDTOList = new ArrayList<>();
         List<Act> actList = actService.getAllActsByUserId(1, user.getId());
-        List<Act> actListReturn = actService.getAllActsByUserIdReturn(5, user.getId());
+
+        List<Act> actListReturn = actService.getAllActsByUserIdReturn(6, user.getId());
+
 
         int countTicketsNew;
         int countTicketsInCheck;
@@ -79,18 +81,22 @@ public class CoordinatorController {
         int countActs;
         int countActsReturn;
 
-        for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
-            List<Ticket> ticketsNewList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 2);
-            List<Ticket> ticketsCheckList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 3);
-            List<Ticket> ticketsReadyList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 4);
-            List<StudentCopy> studentCopyList = studentCopyService.getStudentByEducProgram(coordinatorRights.getGroupNum());
-            for (StudentCopy studentCopy : studentCopyList) {
-                LazyStudentsDTO dto = new LazyStudentsDTO();
-                dto.setStudentCopy(studentCopy);
-                Set<EducProgram> educProgramSet = studentCopy.getEducPrograms();
-                for (EducProgram educProgram : educProgramSet) {
-                    if (educProgram.getGroupNum().equals(coordinatorRights.getGroupNum())) {
-                        dto.setEducProgram(educProgram);
+
+        if (!coordinatorRightsList.isEmpty()) {
+            for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
+                List<Ticket> ticketsNewList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 2);
+                List<Ticket> ticketsCheckList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 3);
+                List<Ticket> ticketsReadyList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 4);
+                List<StudentCopy> studentCopyList = studentCopyService.getStudentByEducProgram(coordinatorRights.getGroupNum());
+                for (StudentCopy studentCopy : studentCopyList) {
+                    LazyStudentsDTO dto = new LazyStudentsDTO();
+                    dto.setStudentCopy(studentCopy);
+                    Set<EducProgram> educProgramSet = studentCopy.getEducPrograms();
+                    for (EducProgram educProgram : educProgramSet) {
+                        if (educProgram.getGroupNum().equals(coordinatorRights.getGroupNum())) {
+                            dto.setEducProgram(educProgram);
+                        }
+
                     }
                 }
                 lazyStudentsDTOList.add(dto);

@@ -3,9 +3,11 @@ package org.barmaley.vkr.controller;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.Act;
+import org.barmaley.vkr.domain.CoordinatorRights;
 import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.dto.ActDTO;
+import org.barmaley.vkr.dto.LazyStudentsDTO;
 import org.barmaley.vkr.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -63,12 +65,31 @@ public class BibliographerController {
     @GetMapping(value = "/bibliographer")
     public String getBibliographerPage(ModelMap model){
 
-        List<Act> actList = actService.getAllActForCoordinator(2);
-        List<Act> actListReadyConvert = actService.getAllActForCoordinator(3);
-        List<Act> actListReadyLibrary = actService.getAllActForCoordinator(4);
-        model.addAttribute("actList", actList);
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //Список актов, присланных от всех координаторов, но не просмотренными библиографами
+        List<Act> actAllCoordinators = actService.getAllCoordinators(2);
+        //Список актов, просмотренные библиографом
+        List<Act> actListGet = actService.getAllActForCoordinator(user.getId(),3);
+        //Список актов, готовые к конвертации
+        List<Act> actListReadyConvert = actService.getAllActForCoordinator(user.getId(),4);
+        //Список актов, готовых к передаче в ИБК
+        List<Act> actListReadyLibrary = actService.getAllActForCoordinator(user.getId(),5);
+
+        int countActsNew=actAllCoordinators.size();
+        int countActsInCheck=actListGet.size();
+        int countActsConvert=actListReadyConvert.size();
+        int countActsLibrary=actListReadyLibrary.size();
+
+        model.addAttribute("countActsNew",countActsNew);
+        model.addAttribute("countActsInCheck",countActsInCheck);
+        model.addAttribute("countActsConvert",countActsConvert);
+        model.addAttribute("countActsLibrary",countActsLibrary);
+        model.addAttribute("actAllCoordinators", actAllCoordinators);
+        model.addAttribute("actListGet",actListGet);
         model.addAttribute("actListReadyConvert", actListReadyConvert);
         model.addAttribute("actListReadyLibrary", actListReadyLibrary);
+
         return "bibliographerPage";
     }
 
@@ -76,6 +97,11 @@ public class BibliographerController {
     public String getCheckAct(@RequestParam(value = "actId") String actId, ModelMap model){
 
         Act act = actService.get(actId);
+        if (act.getBibliographer()==null) {
+            Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            act.setBibliographer(user);
+            actService.edit(act);
+        }
 
         ActDTO dto = new ActDTO();
         List<String> preCheckedVals = new ArrayList<>();
@@ -85,8 +111,12 @@ public class BibliographerController {
             ticket.setStatus(statusService.get(7));
             ticketService.edit(ticket);
         }
+        if(act.getStatus().getId()==4||act.getStatus().getId()==5||act.getStatus().getId()==6) {
 
-        act.setStatus(statusActService.get(3));
+        }else
+        {
+            act.setStatus(statusActService.get(3));
+        }
         act.setBibliographer((Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         actService.edit(act);
 
@@ -103,9 +133,12 @@ public class BibliographerController {
     public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) {
         Act act = actService.get(dto.getId());
         if (button.equals("return")){
-            act.setStatus(statusActService.get(3));
+            act.setStatus(statusActService.get(6));
             actService.edit(act);
 
+        }else if(button.equals("accept")){
+            act.setStatus(statusActService.get(4));
+            actService.edit(act);
         }
 
         return "redirect:/bibliographer";

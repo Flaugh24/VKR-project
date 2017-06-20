@@ -18,14 +18,14 @@
     <jsp:include page="header.jsp"/>
 </header>
 
-Представитель <c:out value="${act.department}"/>, <c:out value="${act.institute}"/><br/>
-<c:out value="${act.coordinator.surname}"/> <c:out value="${act.coordinator.firstName}"/> <c:out value="${act.coordinator.secondName}"/>, <c:out value="${act.position}"/>
+Представитель <c:out value="${dto.act.department}"/>, <c:out value="${dto.act.institute}"/><br/>
+<c:out value="${dto.act.coordinator.surname}"/> <c:out value="${dto.act.coordinator.firstName}"/> <c:out value="${dto.act.coordinator.secondName}"/>, <c:out value="${act.position}"/>
 
 
 
-<form:form commandName="act" method="post" action="${saveUrl}">
+<form:form commandName="dto" method="post" action="${saveUrl}">
 
-    <form:input path="id" cssStyle="display: none"/>
+    <form:input path="act.id" cssStyle="display: none"/>
 <table class="table table-striped table-bordered" style="text-align: center">
     <thead>
     <tr>
@@ -39,9 +39,9 @@
     </thead>
     <tbody>
     <%int i = 0; %>
-    <c:forEach items="${act.tickets}" var="ticket">
+    <c:forEach items="${dto.act.tickets}" var="ticket">
         <% i++; %>
-        <c:url var="checkTicket" value="/ticket/check?ticketId=${ticket.id}"/>
+        <c:url var="checkTicket" value="/ticket/${ticket.id}/check"/>
         <tr>
             <td><form:checkbox path="ticketsId" value="${ticket.id}"/></td>
             <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>
@@ -59,9 +59,11 @@
     </tbody>
 </table>
 
+
     <button type="submit"  name="button" value="return" class="btn btn-default">Вернуть координатору</button>
     <button type="submit"  name="button" value="accept" class="btn btn-default">Принять акт</button>
     <button type="submit"  name="button" value="convert" class="btn btn-default">Конвертировать содержимое</button>
+
 </form:form>
 </body>
 </html>

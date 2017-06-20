@@ -63,7 +63,6 @@ public class MainController {
 
     @GetMapping(value = {"/user", "/"})
     public String user() {
-        logger.debug("MainController./user");
         boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
         boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
         boolean check_acts = permissionTool.checkPermission("PERM_CHECK_ACTS");

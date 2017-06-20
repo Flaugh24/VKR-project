@@ -52,11 +52,13 @@
                 <li role="presentation"><a href="#acts" aria-controls="acts" role="tab"
                                            data-toggle="tab">Акты (<c:out value="${countActs}"/>)</a>
                 </li>
+
                 <c:if test="${not empty actsreturn}">
                     <li role="presentation"><a href="#actsreturn" aria-controls="acts" role="tab"
                                                data-toggle="tab">Возвращенные Акты (<c:out value="${countActsReturn}"/>)</a>
                     </li>
                 </c:if>
+
 
 
             </ul>
@@ -98,7 +100,7 @@
                                 <% Integer i = 0; %>
                                 <c:forEach items="${ticketsNew}" var="ticketNew">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketNew.id}"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketNew.id}/check"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -164,7 +166,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsInCheck}" var="ticketInCheck">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketInCheck.id}"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketInCheck.id}/check"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -236,7 +238,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsReady}" var="ticketReady">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/check?ticketId=${ticketReady.id}"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketReady.id}/check"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -343,10 +345,12 @@
                                 <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
                                         value="${act.status.name}"/></a></td>
                             </tr>
+
                         </c:forEach>
                         </tbody>
                     </table>
                 </div>
+
 
                 <div role="tabpanel" class="tab-pane" id="actsreturn">
                     <c:if test="${not empty ticketsReady}">

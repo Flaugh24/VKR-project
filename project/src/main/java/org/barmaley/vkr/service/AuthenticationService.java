@@ -31,6 +31,18 @@ public class AuthenticationService {
         return session.get(StudentCopy.class, name);
     }
 
+    public EmployeeCopy getEmployeeByFIO(String like) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM EmployeeCopy where concat(surname,' ', firstName,' ', secondName) like :fioLike");
+
+        session.flush();
+        query.setParameter("fioLike", "%" + like + "%");
+
+        return (EmployeeCopy) query.uniqueResult();
+    }
+
     public EmployeeCopy getEmployeeCopy(String name) {
 
         Session session = sessionFactory.getCurrentSession();

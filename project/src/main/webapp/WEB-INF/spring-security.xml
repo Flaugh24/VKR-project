@@ -16,7 +16,7 @@
 
 
         <!-- Standard login page -->
-        <form-login login-page="/login" default-target-url="/coordinator" authentication-failure-url="/login?error"
+        <form-login login-page="/login" default-target-url="/" authentication-failure-url="/login?error"
                     username-parameter="username" password-parameter="password"/>
 
         <session-management>
@@ -30,9 +30,6 @@
         <csrf disabled="true"/>
     </http>
 
-    <beans:import resource="spring-security.cfg.xml"/>
-
-
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="customProvider">
         </authentication-provider>
@@ -40,6 +37,6 @@
         </authentication-provider>
         <authentication-provider ref="customStudentProvider">
         </authentication-provider>
-    </authentication-manager>
 
+        </authentication-manager>
 </beans:beans>

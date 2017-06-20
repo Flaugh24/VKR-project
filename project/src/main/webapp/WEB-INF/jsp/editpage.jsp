@@ -35,7 +35,7 @@
 
 
 <c:choose>
-    <c:when test="${!(ticketAttribute.status.id == 1 || ticketAttribute.status.id == 5)}">
+    <c:when test="${disabledEdit && disabledCheck}">
         <c:set var="varclass" value="disabledEdit"/>
     </c:when>
 </c:choose>
@@ -48,7 +48,7 @@
         <div class="row">
             <div class="col-md-5" style="max-height: 100vh; overflow-y: auto; padding-bottom: 100px">
                 <h2>Номер заявки <c:out value="${ticketAttribute.id}"/></h2>
-                <c:if test="${ticketAttribute.status.id == 1 || ticketAttribute.status.id == 5}">
+                <c:if test="${disabledEdit == false || disabledCheck == false}">
                     <c:if test="${(ticketAttribute.filePdf == null || ticketAttribute.fileZip == null)&&
                                   (ticketAttribute.filePdfSecret == null || ticketAttribute.fileZipSecret == null)&&
                                   (ticketAttribute.filePdf == null || ticketAttribute.fileZipSecret == null)&&
@@ -234,13 +234,33 @@
                         <form:label path="headOfDepartment">ФИО заведующего кафедрой</form:label><br/>
                         <form:input cssClass="form-control ${varclass}" path="headOfDepartment" maxlength="255"/>
                     </div>
-                    <c:if test="${ticketAttribute.status.id == 1 || ticketAttribute.status.id == 5}">
+                    <c:if test="${disabledEdit == false}">
                         <div class="form-group">
                             <button name="button" type="submit" value="save" class="btn btn-default">Сохранить
                                 изменения
                             </button>
                             <button name="button" type="submit" value="send" class="btn btn-default">Отправить на
                                 проверку
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${disabledCheck == false}">
+                        <div class="form-group">
+                            <button type="submit" name="button" value="recordSheet" class="btn btn-default">
+                                Регистрационный лист
+                            </button>
+                            <button type="submit" name="button" value="licenseAgreement" class="btn btn-default">
+                                Лицензионный договор
+                            </button>
+                            <br/>
+                            <button type="submit" name="button" value="save" class="btn btn-default">Сохранить
+                                изменения
+                            </button>
+                            <button type="submit" name="button" value="ready" class="btn btn-default">Готова для
+                                передачи в ИБК
+                            </button>
+                            <button type="submit" name="button" value="return" class="btn btn-default">Вернуть
+                                студенту
                             </button>
                         </div>
                     </c:if>

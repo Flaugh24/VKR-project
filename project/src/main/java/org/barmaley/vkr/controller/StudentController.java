@@ -6,6 +6,7 @@ import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.TypeOfUse;
 import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.service.*;
+import org.barmaley.vkr.tool.PermissionTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +33,9 @@ public class StudentController {
     @Autowired
     @Qualifier("ticketFormValidator")
     private Validator validator;
+
+    @Resource(name = "permissionTool")
+    private PermissionTool permissionTool;
 
     @Resource(name = "ticketService")
     private TicketService ticketService;
@@ -70,30 +74,11 @@ public class StudentController {
                         .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))    // Фильтруем
                         .findAny()                                    // Если 'findAny', то возвращаем найденное
                         .orElse(null);
-                if (tickets.isEmpty()) {
-                    EducProgram dto = new EducProgram();
-                    dto.setId(educProgram.getId());
-                    dto.setInstitute(educProgram.getInstitute());
-                    dto.setDegree(educProgram.getDegree());
-                    dto.setGroupNum(educProgram.getGroupNum());
-                    dto.setDepartment(educProgram.getDepartment());
-                    dto.setDirection(educProgram.getDirection());
-                    dto.setDirectionCode(educProgram.getDirectionCode());
-                    educProgramsDTO.add(dto);
-                } else if (result == null) {
-                    EducProgram dto = new EducProgram();
-                    dto.setId(educProgram.getId());
-                    dto.setInstitute(educProgram.getInstitute());
-                    dto.setDegree(educProgram.getDegree());
-                    dto.setGroupNum(educProgram.getGroupNum());
-                    dto.setDepartment(educProgram.getDepartment());
-                    dto.setDirection(educProgram.getDirection());
-                    dto.setDirectionCode(educProgram.getDirectionCode());
-                    educProgramsDTO.add(dto);
+                if (result == null) {
+                    educProgramsDTO.add(educProgram);
                 }
             }
         }
-
         model.addAttribute("educPrograms", educProgramsDTO);
         model.addAttribute("tickets", tickets);
         return ("studentPage");
@@ -104,109 +89,120 @@ public class StudentController {
                                @RequestParam(value = "educId") Integer educId,
                                Model model) {
         EducProgram educProgram = educProgramService.get(educId);
-        List<Ticket> tickets = ticketService.getAllTicketsByUserId(userId);
-        Ticket result = tickets.stream()// Преобразуем в поток
-                .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))    // Фильтруем
-                .findAny()                                    // Если 'findAny', то возвращаем найденное
-                .orElse(null);
-        if (result == null) {
+        Ticket ticket = new Ticket();
+        String degree = educProgram.getDegree();
 
-            Ticket ticket = new Ticket();
-            String degree = educProgram.getDegree();
-
-            switch (degree) {
-                case "Бакалавр":
-                    ticket.setDocumentType(documentTypeService.get(1));
-                    break;
-                case "Магистр":
-                    ticket.setDocumentType(documentTypeService.get(2));
-                    break;
-                case "Специалист":
-                    ticket.setDocumentType(documentTypeService.get(3));
-                    break;
-            }
-            ticket.setDateCreationStart(new Date());
-            ticket.setUser(usersService.getById(userId));
-            ticket.setStatus(statusService.get(1));
-            ticket.setGroupNum(educProgram.getGroupNum());
-            ticket.setGroupNum(educProgram.getGroupNum());
-            ticket.setInstitute(educProgram.getInstitute());
-            ticket.setDepartment(educProgram.getDepartment());
-            ticket.setDirection(educProgram.getDirection());
-            ticket.setDirectionCode(educProgram.getDirectionCode());
-            ticket.setKeyWords("-,");
-            ticket.setKeyWordsEng("-,");
-            ticket.setLicenseDate(new Date(0));
-            ticketService.add(ticket);
-            model.addAttribute("ticket", ticket);
-
-
-            return "redirect:/ticket/" + ticket.getId() + "/edit";
+        switch (degree) {
+            case "Бакалавр":
+                ticket.setDocumentType(documentTypeService.get(1));
+                break;
+            case "Магистр":
+                ticket.setDocumentType(documentTypeService.get(2));
+                break;
+            case "Специалист":
+                ticket.setDocumentType(documentTypeService.get(3));
+                break;
         }
-        return "redirect:/user";
+        ticket.setDateCreationStart(new Date());
+        ticket.setUser(usersService.getById(userId));
+        ticket.setStatus(statusService.get(1));
+        ticket.setGroupNum(educProgram.getGroupNum());
+        ticket.setInstitute(educProgram.getInstitute());
+        ticket.setDepartment(educProgram.getDepartment());
+        ticket.setDirection(educProgram.getDirection());
+        ticket.setDirectionCode(educProgram.getDirectionCode());
+        ticket.setKeyWords("#,");
+        ticket.setKeyWordsEng("#,");
+        ticket.setLicenseDate(new Date(0));
+        ticketService.add(ticket);
+        model.addAttribute("ticket", ticket);
+        return "redirect:/ticket/" + ticket.getId() + "/edit";
     }
 
-    @GetMapping(value = "/ticket/{ticketId}/edit")
-    public String getEditTicket(@PathVariable(value = "ticketId") String ticketId,
+    @GetMapping(value = "/ticket/{id}/edit")
+    public String getEditTicket(@PathVariable(value = "id") String ticketId,
                                 ModelMap model) {
-        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.get(ticketId);
-
-        if (user.getId().equals(ticket.getUser().getId())) {
-
-            List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
-            List<String> words = new ArrayList<>();
-            List<String> wordsEng = new ArrayList<>();
-            Collections.addAll(words, ticket.getKeyWords().split(","));
-            while (words.size() != 4) {
-                words.add("-;");
+        boolean perm_check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+        boolean perm_check_all_tickets = permissionTool.checkPermission("PERM_CHECK_ALL_TICKETS");
+        boolean disabledEdit = true;
+        boolean disabledCheck = true;
+        if (perm_check_tickets && ticket.getStatus().getId() == 2) {
+            ticket.setStatus(statusService.get(3));
+            if (ticket.getDateCheckCoordinatorStart() != null) {
+                ticket.setDateCheckCoordinatorStart(new Date());
             }
-            ticket.setKeyWords(String.join(",", words).replaceAll(";", ""));
-            Collections.addAll(wordsEng, ticket.getKeyWordsEng().split(","));
-            while (wordsEng.size() != 4) {
-                wordsEng.add("-;");
-            }
-            ticket.setKeyWordsEng(String.join(",", wordsEng).replaceAll(";", ""));
-
-            model.addAttribute("typesOfUse", typesOfUse);
-            model.addAttribute("ticketAttribute", ticket);
-            return "editpage";
-        } else {
-            return "pnh";
+            ticketService.edit(ticket);
         }
+        List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
+        List<String> words = new ArrayList<>();
+        List<String> wordsEng = new ArrayList<>();
+        Collections.addAll(words, ticket.getKeyWords().split(","));
+        while (words.size() != 4) {
+            words.add("#");
+        }
+        ticket.setKeyWords(String.join(",", words));
+        Collections.addAll(wordsEng, ticket.getKeyWordsEng().split(","));
+        while (wordsEng.size() != 4) {
+            wordsEng.add("#");
+        }
+        ticket.setKeyWordsEng(String.join(",", wordsEng));
+
+
+        if ((ticket.getStatus().getId() == 1 || ticket.getStatus().getId() == 5) && !perm_check_tickets) {
+            disabledEdit = false;
+        }
+        if (perm_check_tickets || perm_check_all_tickets) {
+            disabledCheck = false;
+        }
+        model.addAttribute("disabledCheck", disabledCheck);
+        model.addAttribute("disabledEdit", disabledEdit);
+        model.addAttribute("typesOfUse", typesOfUse);
+        model.addAttribute("ticketAttribute", ticket);
+        return "editpage";
     }
 
 
-    @PostMapping(value = "/ticket/{ticketId}/edit")
-    public String saveEdit(@PathVariable("ticketId") String ticketId,
+    @PostMapping(value = "/ticket/{id}/edit")
+    public String saveEdit(@PathVariable("id") String ticketId,
                            @ModelAttribute("ticketAttribute") @Validated Ticket ticket, BindingResult bindingResult,
                            ModelMap model, @RequestParam(value = "button") String button) {
-        if (button.equals("send") && bindingResult.hasErrors()) {
-            logger.info(bindingResult.getAllErrors());
+
+        if (!button.equals("save") && bindingResult.hasErrors()) {
             List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
             model.addAttribute("ticketAttribute", ticket);
             model.addAttribute("typesOfUse", typesOfUse);
             return "editpage";
         }
-        ticket.setKeyWords(ticket.getKeyWords().replaceAll("-,",""));
-        ticket.setKeyWordsEng(ticket.getKeyWordsEng().replaceAll("-,",""));
-        if (button.equals("save")) {
-            ticket.setStatus(statusService.get(1));
-        }
-        if (button.equals("send")) {
-            ticket.setStatus(statusService.get(2));
-            ticket.setDateCreationFinish(new Date());
+        ticket.setKeyWords(ticket.getKeyWords().replace("#,", ""));
+        ticket.setKeyWordsEng(ticket.getKeyWordsEng().replace("#,", ""));
+
+        switch (button) {
+            case "send":
+                ticket.setStatus(statusService.get(2));
+                ticket.setDateCreationFinish(new Date());
+                break;
+            case "ready":
+                ticket.setStatus(statusService.get(4));
+                ticket.setDateCheckCoordinatorFinish(new Date());
+                break;
+            case "return":
+                ticket.setStatus(statusService.get(5));
+                ticket.setDateReturn(new Date());
+                break;
+            default:
+                ticket.setStatus(statusService.get(ticket.getStatus().getId()));
         }
 
         ticketService.edit(ticket);
 
-        return "redirect:/user";
-    }
+        switch (button) {
+            case "recordSheet":
+                return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
+            case "licenseAgreement":
+                return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
+        }
 
-    @ResponseBody
-    @GetMapping("/pdfDocument")
-    public String getPdf(@RequestParam(value = "ticketId") String ticketId) {
-        Ticket ticket = ticketService.get(ticketId);
-        return ticket.getFilePdf();
+        return "redirect:/";
     }
 }

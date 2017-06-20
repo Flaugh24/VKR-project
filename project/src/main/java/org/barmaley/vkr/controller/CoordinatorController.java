@@ -119,75 +119,12 @@ public class CoordinatorController {
         return ("coordinatorPage");
     }
 
-
-    @GetMapping(value = "/ticket/{id}/check")
-    public String getCheckTicket(@PathVariable(value = "id") String ticketId,
-                                 ModelMap model) {
-
-        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<CoordinatorRights> coordinatorRightsSet = user.getCoordinatorRights();
-        Ticket ticket = ticketService.get(ticketId);
-
-        CoordinatorRights coordinatorRights = coordinatorRightsSet.stream()
-                .filter(x -> ticket.getGroupNum().equals(x.getGroupNum()))
-                .findAny()
-                .orElse(null);
-
-        if ((coordinatorRights != null && (ticket.getStatus().getId() != 1)) || ticket.getStatus().getId() == 7) {
-            if (ticket.getStatus().getId() == 2) {
-                ticket.setStatus(statusService.get(3));
-            }
-            ticket.setDateCheckCoordinatorStart(new Date());
-            ticketService.edit(ticket);
-            List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
-
-            model.addAttribute("ticketAttribute", ticket);
-            model.addAttribute("typesOfUse", typesOfUse);
-
-            return "checkPage";
-
-        } else {
-            return "pnh";
-        }
-    }
-
-    @PostMapping(value = "/ticket/{id}/check")
-    public String saveCheck(@PathVariable(value = "id") String ticketId,
-                            @ModelAttribute("ticketAttribute") Ticket ticket,
-                            @RequestParam(value = "button") String button) {
-        switch (button) {
-            case "return":
-                ticket.setStatus(statusService.get(5));
-                ticket.setDateReturn(new Date());
-                break;
-            case "ready":
-                ticket.setStatus(statusService.get(4));
-                ticket.setDateCheckCoordinatorFinish(new Date());
-                break;
-            default:
-                ticket.setStatus(statusService.get(3));
-                break;
-        }
-
-        ticketService.edit(ticket);
-
-        switch (button) {
-            case "recordSheet":
-                return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
-            case "licenseAgreement":
-                return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
-        }
-
-        return "redirect:/coordinator";
-    }
-
-
     @PostMapping(value = "/ticket/addLazy")
-    public String getAddTicket(@RequestParam(value = "lazyStudentId") String username,
+    public String getAddTicket(@RequestParam(value = "lazyStudentId") String extId,
                                @RequestParam(value = "educId") Integer educId,
                                Model model) {
 
-        StudentCopy studentCopy = studentCopyService.get(username);
+        StudentCopy studentCopy = studentCopyService.get(extId);
         EducProgram educProgram = educProgramService.get(educId);
         Users user = new Users();
         Set<Roles> roles = new HashSet<>();
@@ -199,8 +136,7 @@ public class CoordinatorController {
         user.setSecondName(studentCopy.getSecondName());
         user.setEnabled(true);
         user.setRoles(roles);
-        usersService.addUser(user);
-        user = usersService.getByExtId(username);
+        user = usersService.addUser(user);
 
         Ticket ticket = new Ticket();
         String degree = educProgram.getDegree();
@@ -220,14 +156,14 @@ public class CoordinatorController {
         ticket.setStatus(statusService.get(3));
         ticket.setTypeOfUse(typeOfUseService.get(1));
         ticket.setGroupNum(educProgram.getGroupNum());
-
-        //-----------------------------------------------------------------
-        ticket.setGroupNum(educProgram.getGroupNum());
         ticket.setDirection(educProgram.getDirection());
         ticket.setDirectionCode(educProgram.getDirectionCode());
         ticket.setInstitute(educProgram.getInstitute());
         ticket.setDepartment(educProgram.getDepartment());
-        //-----------------------------------------------------------------
+        ticket.setKeyWords("#,");
+        ticket.setKeyWordsEng("#,");
+        ticket.setLicenseDate(new Date(0));
+
         ticketService.add(ticket);
         model.addAttribute("ticket", ticket);
 

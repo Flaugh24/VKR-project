@@ -94,7 +94,7 @@
                                 <% Integer i = 0; %>
                                 <c:forEach items="${ticketsNew}" var="ticketNew">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/${ticketNew.id}/check"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketNew.id}/edit"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -160,7 +160,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsInCheck}" var="ticketInCheck">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/${ticketInCheck.id}/check"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketInCheck.id}/edit"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -232,7 +232,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsReady}" var="ticketReady">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/${ticketReady.id}/check"/>
+                                    <c:url var="checkUrl" value="/ticket/${ticketReady.id}/edit"/>
                                     <tr>
                                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -311,41 +311,40 @@
                         </div>
                     </div>
                 </c:if>
-                    <div role="tabpanel" class="tab-pane" id="acts">
+                <div role="tabpanel" class="tab-pane" id="acts">
                     <c:if test="${not empty ticketsReady}">
                         <a class="btn btn-default" href="${createAct}">Создать акт</a>
                     </c:if>
-                        <table class="table table-striped table-bordered" style="text-align: center">
-                            <thead>
+                    <table class="table table-striped table-bordered" style="text-align: center">
+                        <thead>
+                        <tr>
+                            <th style="vertical-align: middle; text-align: center">№</th>
+                            <th style="vertical-align: middle; text-align: center">№ Акта</th>
+                            <th style="vertical-align: middle; text-align: center">Дата создания</th>
+                            <th style="vertical-align: middle; text-align: center">Статус</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% Integer i = 0; %>
+                        <c:forEach items="${acts}" var="act">
+                            <% i++; %>
+                            <c:url var="checkTicket" value="/act/${act.id}/edit"/>
                             <tr>
-                                <th style="vertical-align: middle; text-align: center">№</th>
-                                <th style="vertical-align: middle; text-align: center">№ Акта</th>
-                                <th style="vertical-align: middle; text-align: center">Дата создания</th>
-                                <th style="vertical-align: middle; text-align: center">Статус</th>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>
+                                </a></td>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
+                                        value="${act.id}"/></a></td>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><fmt:formatDate
+                                        pattern="dd.MM.yyyy" value="${act.dateOfCreate}"/></a></td>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
+                                        value="${act.status.name}"/></a></td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <% Integer i = 0; %>
-                            <c:forEach items="${acts}" var="act">
-                                <% i++; %>
-                                <c:url var="checkTicket" value="/act/${act.id}/edit"/>
-                                <tr>
-                                    <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>
-                                    </a></td>
-                                    <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
-                                            value="${act.id}"/></a></td>
-                                    <td><a href="${checkTicket}" class="editUrl" style="display: block"><fmt:formatDate
-                                            pattern="dd.MM.yyyy" value="${act.dateOfCreate}"/></a></td>
-                                    <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
-                                            value="${act.status.name}"/></a></td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
     </main>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

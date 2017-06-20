@@ -1,7 +1,11 @@
 package org.barmaley.vkr.autentication;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.domain.*;
+
+import org.barmaley.vkr.domain.EmployeeCopy;
+import org.barmaley.vkr.domain.Roles;
+import org.barmaley.vkr.domain.StudentCopy;
+import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.service.AuthenticationService;
 import org.barmaley.vkr.service.EducProgramService;
 import org.barmaley.vkr.service.RolesService;
@@ -21,7 +25,7 @@ import java.util.Set;
 @Repository
 public class UserDAOImpl {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    private static  Logger logger = Logger.getLogger(UserDAOImpl.class.getName());
     @Resource(name = "authenticationService")
     private AuthenticationService authenticationService;
     @Resource(name = "usersService")

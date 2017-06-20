@@ -23,7 +23,7 @@
 
 </head>
 <body>
-<c:url var="saveUrl" value="/coordinator/profile"/>
+
 <c:set value="${coordinator}" var="coordinator"/>
 <div class="container-fluid">
     <header>
@@ -71,7 +71,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${tickets}" var="ticket">
-                    <c:url var="checkUrl" value="/ticket/edit?ticketId=${ticket.id}"/>
+                    <c:url var="checkUrl" value="/ticket/${ticket.id}/edit"/>
                     <tr>
                         <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
                                 value="${ticket.id}"/>

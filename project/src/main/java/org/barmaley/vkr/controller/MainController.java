@@ -26,7 +26,7 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    private static Logger logger = Logger.getLogger(MainController.class.getName());
 
     @Resource(name = "ticketService")
     private TicketService ticketService;
@@ -67,10 +67,13 @@ public class MainController {
         boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
         boolean check_acts = permissionTool.checkPermission("PERM_CHECK_ACTS");
         if (add_ticket_for_educ_program) {
+            logger.info("redirect to student");
             return "redirect:/student";
         } else if (check_tickets) {
+            logger.info("redirect to coordinator");
             return "redirect:/coordinator";
         } else if (check_acts) {
+            logger.info("redirect to bibliographer");
             return "redirect:/bibliographer";
         }
         return "pnh";
@@ -79,7 +82,6 @@ public class MainController {
     @PostMapping(value = "/user/profile")
     public String saveProfile(@ModelAttribute("user") Users user) {
 
-        logger.debug("edit profile");
         usersService.editUser(user);
         return "redirect:/user";
     }
@@ -87,7 +89,6 @@ public class MainController {
     @RequestMapping(value = "/getTags", method = RequestMethod.GET)
     public @ResponseBody
     List<EmployeeCopy> getTags(@RequestParam String tagName) {
-        logger.debug("get tags");
 
         return (List<EmployeeCopy>) employeeCopyService.getEmployeeByFIO(tagName);
 
@@ -100,8 +101,6 @@ public class MainController {
                                    @RequestParam("submit") String submit,
                                    @RequestParam(value = "tradeSecret", required = false) String tradeSecret) {
 
-        logger.debug("tradeSecret= "+tradeSecret);
-        logger.debug("Upload Files");
 
 
         String fullPath,
@@ -116,61 +115,38 @@ public class MainController {
             byte[] bytes = file.getBytes();
 
             //Определяем расширешие файла(будет храниться в expansion)
-            logger.debug("Original file name:" + file.getOriginalFilename());
             String expansion = file.getOriginalFilename().substring(file.getOriginalFilename().length() - 4, file.getOriginalFilename().length());
-            logger.debug(expansion);
             if (submit.equals("Загрузить")) {
-                logger.debug("1");
                 if (expansion.equals(EXPDF)) {
-                    logger.debug("2");
-
                     if (tradeSecret==null) {
-                        logger.debug("3");
 
                         fullPath = ROOT_FOLDERS + ticket.getId() + EXPDF;
-                        logger.debug("Конечный путь файла pdf= " + fullPath);
                         Path path = Paths.get(fullPath);
                         Files.write(path, bytes);
                         ticket.setFilePdf(fullPath);
-                        logger.debug("4");
 
                     }
                     else{
-                        logger.debug("5");
-
                         fullPath = ROOT_FOLDERS_TRADE_SECRET + ticket.getId() + EXPDF;
-                        logger.debug("Конечный путь файла pdf= " + fullPath);
                         Path path = Paths.get(fullPath);
                         Files.write(path, bytes);
                         ticket.setFilePdfSecret(fullPath);
-                        logger.debug("6");
-
                     }
 
 
                     ticketService.editPdf(ticket);
                 } else {
                     if (tradeSecret==null) {
-                        logger.debug("3");
-
                         fullPath = ROOT_FOLDERS + ticket.getId() + EXZIP;
-                        logger.debug("Конечный путь файла pdf= " + fullPath);
                         Path path = Paths.get(fullPath);
                         Files.write(path, bytes);
                         ticket.setFileZip(fullPath);
-                        logger.debug("4");
-
                     }
                     else{
-                        logger.debug("5");
-
                         fullPath = ROOT_FOLDERS_TRADE_SECRET + ticket.getId() + EXZIP;
-                        logger.debug("Конечный путь файла pdf= " + fullPath);
                         Path path = Paths.get(fullPath);
                         Files.write(path, bytes);
                         ticket.setFileZipSecret(fullPath);
-                        logger.debug("6");
-
                     }
                     ticketService.editZip(ticket);
                 }
@@ -192,11 +168,9 @@ public class MainController {
     public String singleFileDelete(/*@RequestParam("uploadFile") MultipartFile file*/
                                    @RequestParam("ticketId") String ticketId,
                                    @RequestParam("submit") String submit) throws MalformedURLException {
-        logger.debug("Upload PDF File");
 
         Ticket ticket = ticketService.get(ticketId);
         if (submit.equals("Удалить PDF")) {
-            logger.debug("УДАЛЕНИЕ PDF");
             File file;
             if(ticket.getFilePdf()!=null){
                 file = new File(ticket.getFilePdf());
@@ -207,7 +181,6 @@ public class MainController {
                 ticket.setFilePdfSecret(null);
             }
             if (file.delete()) {
-                logger.debug(ticket.getFilePdf() + " файл удален");
             } else logger.debug("Файла" + ticket.getFilePdf() + " не обнаружено");
             ticketService.editPdf(ticket);
         }

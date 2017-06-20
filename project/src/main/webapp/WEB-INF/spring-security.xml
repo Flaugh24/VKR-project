@@ -30,9 +30,6 @@
         <csrf disabled="true"/>
     </http>
 
-    <beans:import resource="spring-security.cfg.xml"/>
-
-
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="customProvider">
         </authentication-provider>

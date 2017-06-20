@@ -88,7 +88,7 @@ public class Ticket implements Serializable {
 
     @Column(name = "DATE_RETURN")
     private Date dateReturn;
-    //----------------------------------------------------
+
     @Column(name = "INSTITUTE")
     private String institute;
 
@@ -134,11 +134,6 @@ public class Ticket implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ACT")
     private Act act;
-    //----------------------------------------------------
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public String getId() {
         return id;

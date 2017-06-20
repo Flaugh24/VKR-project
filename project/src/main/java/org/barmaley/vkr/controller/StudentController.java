@@ -6,15 +6,19 @@ import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.TypeOfUse;
 import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -24,6 +28,10 @@ import java.util.List;
 public class StudentController {
 
     protected static Logger logger = Logger.getLogger(StudentController.class.getName());
+
+    @Autowired
+    @Qualifier("ticketFormValidator")
+    private Validator validator;
 
     @Resource(name = "ticketService")
     private TicketService ticketService;
@@ -43,6 +51,10 @@ public class StudentController {
     @Resource(name = "educProgramService")
     private EducProgramService educProgramService;
 
+    @InitBinder("ticketAttribute")
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
+    }
 
     @GetMapping(value = "/student")
     public String getStudentPage(ModelMap model) {
@@ -124,6 +136,7 @@ public class StudentController {
             ticket.setDirectionCode(educProgram.getDirectionCode());
             ticket.setKeyWords("-,");
             ticket.setKeyWordsEng("-,");
+            ticket.setLicenseDate(new Date(0));
             ticketService.add(ticket);
             model.addAttribute("ticket", ticket);
 
@@ -133,8 +146,8 @@ public class StudentController {
         return "redirect:/user";
     }
 
-    @GetMapping(value = "/ticket/{id}/edit")
-    public String getEditTicket(@PathVariable(value = "id") String ticketId,
+    @GetMapping(value = "/ticket/{ticketId}/edit")
+    public String getEditTicket(@PathVariable(value = "ticketId") String ticketId,
                                 ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.get(ticketId);
@@ -164,20 +177,17 @@ public class StudentController {
     }
 
 
-    @PostMapping(value = "/ticket/{id}/edit")
-    public String saveEdit(@PathVariable(value = "id") String ticketId,
-                           @ModelAttribute("ticketAttribute") @Valid Ticket ticket, BindingResult bindingResult,
+    @PostMapping(value = "/ticket/{ticketId}/edit")
+    public String saveEdit(@PathVariable("ticketId") String ticketId,
+                           @ModelAttribute("ticketAttribute") @Validated Ticket ticket, BindingResult bindingResult,
                            ModelMap model, @RequestParam(value = "button") String button) {
-
-        if(bindingResult.hasErrors()){
-
+        if (button.equals("send") && bindingResult.hasErrors()) {
+            logger.info(bindingResult.getAllErrors());
             List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
-
-            model.addAttribute("typesOfUse", typesOfUse);
             model.addAttribute("ticketAttribute", ticket);
+            model.addAttribute("typesOfUse", typesOfUse);
             return "editpage";
         }
-
         ticket.setKeyWords(ticket.getKeyWords().replaceAll("-,",""));
         ticket.setKeyWordsEng(ticket.getKeyWordsEng().replaceAll("-,",""));
         if (button.equals("save")) {

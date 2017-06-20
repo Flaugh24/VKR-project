@@ -33,7 +33,6 @@ public class Ticket implements Serializable {
     private String groupNum;
 
     @Column(name = "TITLE")
-
     private String title;
 
     @Column(name = "TITLE_ENG")

@@ -59,8 +59,8 @@
     </tbody>
 </table>
 
-    <button type="submit" value="return" class="btn btn-default">Вернуть координатору</button>
-    <button type="submit" value="accept" class="btn btn-default">Принять акт</button>
+    <button type="submit" name="button" value="return" class="btn btn-default">Вернуть координатору</button>
+    <button type="submit" value="accept" name="button"  class="btn btn-default">Принять акт</button>
 </form:form>
 </body>
 </html>

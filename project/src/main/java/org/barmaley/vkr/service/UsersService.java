@@ -2,6 +2,7 @@ package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.autentication.UserDAOImpl;
+import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.Users;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -53,18 +54,17 @@ public class UsersService {
 
     }
 
-    public Users getByExtId(String extId) {
+    public Users getByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
         logger.debug("Get user by extId");
-        Query query = session.createQuery("FROM Users WHERE extId='" + extId + "'");
+        Query query = session.createQuery("FROM Users WHERE username='" + username + "'");
         return (Users) query.uniqueResult();
     }
 
     public Users getById(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         logger.debug("Get user by id");
-        Query query = session.createQuery("FROM Users as U WHERE U.id=" + id);
-        return (Users) query.uniqueResult();
+        return session.get(Users.class, id);
     }
 
     //Метод для поиска людей, которые учатся в 1 институте

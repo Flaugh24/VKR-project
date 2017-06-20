@@ -36,11 +36,23 @@ public class ActService {
         return session.get(Act.class, id);
     }
 
-    public List getAllActsByUserId(Integer userId) {
+    public List getAllActsByUserId(Integer statusId,Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
         // Создаем запрос
-        Query query = session.createQuery("FROM Act WHERE coordinator.id = " + userId + " ORDER BY Id");
+        Query query = session.createQuery("FROM Act WHERE coordinator.id = " + userId + " AND status.id = "+statusId+ "ORDER BY Id");
+
+
+        // Retrieve all
+        // получаем всех
+        return query.list();
+    }
+
+    public List getAllActsByUserIdReturn(Integer statusId,Integer userId) {
+        Session session = sessionFactory.getCurrentSession();
+        // Create a Hibernate query (HQL)
+        // Создаем запрос
+        Query query = session.createQuery("FROM Act WHERE coordinator.id = " + userId + " AND status.id = "+statusId+ "ORDER BY Id");
 
 
         // Retrieve all
@@ -77,4 +89,41 @@ public class ActService {
 
         session.flush();
     }
+
+    public List getAllActForCoordinator( Integer statusId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM  Act WHERE status.id = :statusId" +
+                " ORDER BY Id"
+        );
+        query.setParameter("statusId", statusId);
+
+        return query.list();
+    }
+
+    public List getAllActReadyConvert( Integer statusId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM  Act WHERE statusId = :statusId" +
+                " ORDER BY Id"
+        );
+        query.setParameter("status", statusId);
+
+        return query.list();
+    }
+
+    public List getAllActReadyLibrary( Integer statusId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM  Act WHERE statusId = :statusId" +
+                " ORDER BY Id"
+        );
+        query.setParameter("status", statusId);
+
+        return query.list();
+    }
+
 }

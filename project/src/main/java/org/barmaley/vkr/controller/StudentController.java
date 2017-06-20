@@ -122,20 +122,22 @@ public class StudentController {
             ticket.setDepartment(educProgram.getDepartment());
             ticket.setDirection(educProgram.getDirection());
             ticket.setDirectionCode(educProgram.getDirectionCode());
+            ticket.setKeyWords("-,");
+            ticket.setKeyWordsEng("-,");
             ticketService.add(ticket);
             model.addAttribute("ticket", ticket);
 
 
-            return "redirect:/ticket/" + ticket.getId() + "edit";
+            return "redirect:/ticket/" + ticket.getId() + "/edit";
         }
         return "redirect:/user";
     }
 
     @GetMapping(value = "/ticket/{id}/edit")
     public String getEditTicket(@PathVariable(value = "id") String ticketId,
-                                Ticket ticket, ModelMap model) {
+                                ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ticket = ticketService.get(ticketId);
+        Ticket ticket = ticketService.get(ticketId);
 
         if (user.getId().equals(ticket.getUser().getId())) {
 
@@ -143,17 +145,13 @@ public class StudentController {
             List<String> words = new ArrayList<>();
             List<String> wordsEng = new ArrayList<>();
             Collections.addAll(words, ticket.getKeyWords().split(","));
-            if (words.size() < 4) {
-                while (words.size() != 4) {
-                    words.add("-;");
-                }
+            while (words.size() != 4) {
+                words.add("-;");
             }
             ticket.setKeyWords(String.join(",", words).replaceAll(";", ""));
             Collections.addAll(wordsEng, ticket.getKeyWordsEng().split(","));
-            if (wordsEng.size() < 4) {
-                while (wordsEng.size() != 4) {
-                    wordsEng.add("-;");
-                }
+            while (wordsEng.size() != 4) {
+                wordsEng.add("-;");
             }
             ticket.setKeyWordsEng(String.join(",", wordsEng).replaceAll(";", ""));
 

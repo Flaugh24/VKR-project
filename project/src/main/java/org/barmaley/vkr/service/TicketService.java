@@ -195,7 +195,6 @@ public class TicketService {
         if (ticket.getDateReturn() != null) {
             existingTicket.setDateReturn(ticket.getDateReturn());
         }
-        //-------------------------------------------------------------------
         existingTicket.setPlaceOfPublic(ticket.getPlaceOfPublic());
         existingTicket.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
         existingTicket.setYearOfPublic(ticket.getYearOfPublic());
@@ -209,7 +208,6 @@ public class TicketService {
         if (ticket.getAct() != null) {
             existingTicket.setAct(ticket.getAct());
         }
-        //-------------------------------------------------------------------
         session.save(existingTicket);
         session.flush();
     }

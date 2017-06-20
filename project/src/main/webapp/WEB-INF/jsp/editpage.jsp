@@ -96,6 +96,7 @@
                 <form:form commandName="ticketAttribute" method="POST" id="ticketform" action="${saveUrl}">
                     <div>
                         <form:input path="id" cssStyle="display: none"/>
+                        <form:input path="status.id" cssStyle="display: none"/>
                     </div>
                     <div class="form-group">
                         <form:label path="licenseNumber">Номер лицензионного договора</form:label><br/>
@@ -143,11 +144,11 @@
                     </div>
                     <div class="form-group">
                         <div class="form-group">
-                            <form:label path="title">Заглавие работы</form:label>
+                            <form:label path="title">Заглавие работы</form:label> <form:errors path="title"/>
                             <form:input cssClass="form-control ${varclass}" path="title" name="title" maxlength="255"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="titleEng">Заглавие работы на английском языке</form:label>
+                            <form:label path="titleEng">Заглавие работы на английском языке</form:label> <form:errors path="titleEng"/>
                             <form:input cssClass="form-control ${varclass}" path="titleEng" maxlength="255"/>
                         </div>
                         <div class="form-group">
@@ -164,17 +165,18 @@
                                         maxlength="4"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="annotation">Аннотация</form:label>
+                            <form:label path="annotation">Аннотация</form:label> <form:errors path="annotation"/>
                             <form:textarea path="annotation" rows="5" maxlength="1024"
                                            cssClass="form-control ${varclass}" cssStyle="max-width:100%"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="annotationEng">Аннотация на английском языке</form:label>
+                            <form:label path="annotationEng">Аннотация на английском языке</form:label> <form:errors path="annotationEng"/>
                             <form:textarea path="annotationEng" rows="5" maxlength="1024"
                                            cssClass="form-control ${varclass}" cssStyle="max-width:100%"/>
                         </div>
                         <div class="form-group">
                             <form:label path="keyWords">Ключевые слова</form:label>
+                            <form:errors path="keyWords"/>
                             <div class="row">
                                 <c:forEach items="${ticketAttribute.keyWords}" var="word">
                                 <div class="col-xs-6">
@@ -186,6 +188,7 @@
                         </div>
                         <div class="form-group">
                             <form:label path="keyWordsEng">Ключевые слова на английском языке</form:label>
+                            <form:errors path="keyWordsEng"/>
                             <div class="row">
                                 <c:forEach items="${ticketAttribute.keyWordsEng}" var="word">
                                     <div class="col-xs-6">

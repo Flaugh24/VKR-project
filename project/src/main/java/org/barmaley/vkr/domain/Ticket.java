@@ -1,8 +1,12 @@
 package org.barmaley.vkr.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -33,21 +37,27 @@ public class Ticket implements Serializable {
     private String groupNum;
 
     @Column(name = "TITLE")
+    @NotEmpty
     private String title;
 
+    @NotEmpty
     @Column(name = "TITLE_ENG")
     private String titleEng;
 
     @Column(name = "ANNOTATION", length = 1024)
+    @NotEmpty
     private String annotation;
 
     @Column(name = "ANNOTATION_ENG", length = 1024)
+    @NotEmpty
     private String annotationEng;
 
     @Column(name = "KEY_WORDS")
+    @NotEmpty
     private String keyWords;
 
     @Column(name = "KEY_WORDS_ENG")
+    @NotEmpty
     private String keyWordsEng;
 
     @ManyToOne
@@ -60,6 +70,7 @@ public class Ticket implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "TYPE_OF_USE")
+    @NotNull
     private TypeOfUse typeOfUse;
 
     @Column(name = "FILE_PDF_SECRET")
@@ -88,7 +99,7 @@ public class Ticket implements Serializable {
 
     @Column(name = "DATE_RETURN")
     private Date dateReturn;
-    //----------------------------------------------------
+
     @Column(name = "INSTITUTE")
     private String institute;
 
@@ -134,11 +145,6 @@ public class Ticket implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ACT")
     private Act act;
-    //----------------------------------------------------
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public String getId() {
         return id;

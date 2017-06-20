@@ -10,9 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -42,7 +44,6 @@ public class StudentController {
     private EducProgramService educProgramService;
 
 
-    //------------------------------------------------------------------------
     @GetMapping(value = "/student")
     public String getStudentPage(ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -64,10 +65,8 @@ public class StudentController {
                     dto.setDegree(educProgram.getDegree());
                     dto.setGroupNum(educProgram.getGroupNum());
                     dto.setDepartment(educProgram.getDepartment());
-                    //----------------------------------------------------
                     dto.setDirection(educProgram.getDirection());
                     dto.setDirectionCode(educProgram.getDirectionCode());
-                    //-----------------------------------------------------
                     educProgramsDTO.add(dto);
                 } else if (result == null) {
                     EducProgram dto = new EducProgram();
@@ -76,10 +75,8 @@ public class StudentController {
                     dto.setDegree(educProgram.getDegree());
                     dto.setGroupNum(educProgram.getGroupNum());
                     dto.setDepartment(educProgram.getDepartment());
-                    //----------------------------------------------------
                     dto.setDirection(educProgram.getDirection());
                     dto.setDirectionCode(educProgram.getDirectionCode());
-                    //----------------------------------------------------
                     educProgramsDTO.add(dto);
                 }
             }
@@ -120,15 +117,11 @@ public class StudentController {
             ticket.setUser(usersService.getById(userId));
             ticket.setStatus(statusService.get(1));
             ticket.setGroupNum(educProgram.getGroupNum());
-            //-----------------------------------------------------------------
             ticket.setGroupNum(educProgram.getGroupNum());
             ticket.setInstitute(educProgram.getInstitute());
             ticket.setDepartment(educProgram.getDepartment());
             ticket.setDirection(educProgram.getDirection());
             ticket.setDirectionCode(educProgram.getDirectionCode());
-            ticket.setKeyWords("-,-,-,-");
-            ticket.setKeyWordsEng("-,-,-,-");
-            //-----------------------------------------------------------------
             ticketService.add(ticket);
             model.addAttribute("ticket", ticket);
 
@@ -140,10 +133,12 @@ public class StudentController {
 
     @GetMapping(value = "/ticket/{id}/edit")
     public String getEditTicket(@PathVariable(value = "id") String ticketId,
-                                ModelMap model) {
+                                Ticket ticket, ModelMap model) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Ticket ticket = ticketService.get(ticketId);
+        ticket = ticketService.get(ticketId);
+
         if (user.getId().equals(ticket.getUser().getId())) {
+
             List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
             List<String> words = new ArrayList<>();
             List<String> wordsEng = new ArrayList<>();
@@ -153,16 +148,17 @@ public class StudentController {
                     words.add("-;");
                 }
             }
-            ticket.setKeyWords(String.join(",", words).replaceAll(";",""));
+            ticket.setKeyWords(String.join(",", words).replaceAll(";", ""));
             Collections.addAll(wordsEng, ticket.getKeyWordsEng().split(","));
             if (wordsEng.size() < 4) {
                 while (wordsEng.size() != 4) {
                     wordsEng.add("-;");
                 }
             }
-            ticket.setKeyWordsEng(String.join(",", wordsEng).replaceAll(";",""));
-            model.addAttribute("ticketAttribute", ticket);
+            ticket.setKeyWordsEng(String.join(",", wordsEng).replaceAll(";", ""));
+
             model.addAttribute("typesOfUse", typesOfUse);
+            model.addAttribute("ticketAttribute", ticket);
             return "editpage";
         } else {
             return "pnh";
@@ -172,8 +168,17 @@ public class StudentController {
 
     @PostMapping(value = "/ticket/{id}/edit")
     public String saveEdit(@PathVariable(value = "id") String ticketId,
-                           @ModelAttribute("ticketAttribute") Ticket ticket,
-                           @RequestParam(value = "button") String button) {
+                           @ModelAttribute("ticketAttribute") @Valid Ticket ticket, BindingResult bindingResult,
+                           ModelMap model, @RequestParam(value = "button") String button) {
+
+        if(bindingResult.hasErrors()){
+
+            List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
+
+            model.addAttribute("typesOfUse", typesOfUse);
+            model.addAttribute("ticketAttribute", ticket);
+            return "editpage";
+        }
 
         ticket.setKeyWords(ticket.getKeyWords().replaceAll("-,",""));
         ticket.setKeyWordsEng(ticket.getKeyWordsEng().replaceAll("-,",""));

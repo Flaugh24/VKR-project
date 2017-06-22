@@ -1,6 +1,7 @@
 package org.barmaley.vkr.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +27,8 @@ public class Ticket implements Serializable {
     @Column(name = "LICENSE_NUMBER")
     private String licenseNumber;
 
-    @Column(name = "LICENSE_DATE")
+    @Column(name = "LICENSE_DATE", nullable = false)
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date licenseDate;
 
     @Column(name = "GROUP_NUM")

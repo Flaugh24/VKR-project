@@ -27,11 +27,10 @@
 <c:url var="uploadUrl" value="/ticket/fileupload"/>
 <c:url var="deleteUrl" value="/ticket/filedelete"/>
 <c:url var="saveUrl" value="/ticket/${ticketAttribute.id}/edit"/>
-<c:url var="pdfDocument" value="/pdfDocument?ticketId=${ticketAttribute.id}"/>
 
 
 <fmt:formatDate
-        pattern="dd/MM/yyyy" value="${ticketAttribute.licenseDate}" var="licenseDate"/>
+        pattern="dd.MM.yyyy" value="${ticketAttribute.licenseDate}" var="licenseDate"/>
 
 
 <c:choose>
@@ -198,7 +197,7 @@
                                 </c:forEach>
                             </div>
                         </div>
-                        <form:label path="typeOfUse.id">Свободный доступ из сети</form:label>
+                        <form:label path="typeOfUse.id">Свободный доступ из сети интернет</form:label>
                         <form:select path="typeOfUse.id" cssClass="form-control ${varclass}" cssStyle="width: auto">
                             <c:forEach items="${typesOfUse}" var="typeOfUse">
                                 <form:option value="${typeOfUse.id}"><c:out value="${typeOfUse.name}"/></form:option>>

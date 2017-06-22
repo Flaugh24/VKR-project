@@ -20,6 +20,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -113,7 +114,7 @@ public class StudentController {
         ticket.setDirectionCode(educProgram.getDirectionCode());
         ticket.setKeyWords("#,");
         ticket.setKeyWordsEng("#,");
-        ticket.setLicenseDate(new Date(0));
+        ticket.setYearOfPublic(new SimpleDateFormat("y").format(new Date()));
         ticketService.add(ticket);
         model.addAttribute("ticket", ticket);
         return "redirect:/ticket/" + ticket.getId() + "/edit";

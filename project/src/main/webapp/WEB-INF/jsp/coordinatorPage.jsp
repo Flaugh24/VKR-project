@@ -99,29 +99,29 @@
                                 <% Integer i = 0; %>
                                 <c:forEach items="${ticketsNew}" var="ticketNew">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/${ticketNew.id}/edit"/>
+                                    <c:url var="ticketUrl" value="/ticket/${ticketNew.id}/edit"/>
                                     <tr>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketNew.id}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketNew.groupNum}"/> </a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketNew.user.surname}"/> <c:out
                                                 value="${ticketNew.user.firstName}"/> <c:out
                                                 value="${ticketNew.user.secondName}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketNew.title}"/> </a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketNew.documentType.name}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketNew.typeOfUse.name}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block">Data</a>
                                         </td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block">Data</a>
                                         </td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketNew.status.name}"/> </a></td>
                                     </tr>
                                 </c:forEach>
@@ -167,27 +167,27 @@
                                     <% i++; %>
                                     <c:url var="checkUrl" value="/ticket/${ticketInCheck.id}/edit"/>
                                     <tr>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketInCheck.id}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketInCheck.groupNum}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketInCheck.user.surname}"/> <c:out
                                                 value="${ticketInCheck.user.firstName}"/> <c:out
                                                 value="${ticketInCheck.user.secondName}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketInCheck.title}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketInCheck.documentType.name}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketInCheck.typeOfUse.name}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block">Data</a>
                                         </td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Data</a>
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block">Data</a>
                                         </td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketInCheck.status.name}"/></a></td>
                                     </tr>
                                 </c:forEach>
@@ -239,27 +239,27 @@
                                     <% i++; %>
                                     <c:url var="checkUrl" value="/ticket/${ticketReady.id}/edit"/>
                                     <tr>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><%=i%>
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketReady.id}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketReady.groupNum}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketReady.user.surname}"/> <c:out
                                                 value="${ticketReady.user.firstName}"/> <c:out
                                                 value="${ticketReady.user.secondName}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketReady.title}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketReady.documentType.name}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketReady.typeOfUse.name}"/></a></td>
-                                        <td><a href="${checkUrl}" class="editUrl"
+                                        <td><a href="${ticketUrl}" class="editUrl"
                                                style="display: block">Data</a></td>
-                                        <td><a href="${checkUrl}" class="editUrl"
+                                        <td><a href="${ticketUrl}" class="editUrl"
                                                style="display: block">Data</a></td>
-                                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
+                                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><c:out
                                                 value="${ticketReady.status.name}"/></a></td>
                                     </tr>
                                 </c:forEach>

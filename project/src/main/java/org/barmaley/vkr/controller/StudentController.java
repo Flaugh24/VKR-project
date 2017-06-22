@@ -86,9 +86,9 @@ public class StudentController {
     }
 
     @PostMapping(value = "/ticket/add", headers = "Content-Type=application/x-www-form-urlencoded")
-    public String getAddTicket(@RequestParam(value = "userId") Integer userId,
-                               @RequestParam(value = "educId") Integer educId,
+    public String getAddTicket(@RequestParam(value = "educId") Integer educId,
                                Model model) {
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         EducProgram educProgram = educProgramService.get(educId);
         Ticket ticket = new Ticket();
         String degree = educProgram.getDegree();
@@ -105,7 +105,7 @@ public class StudentController {
                 break;
         }
         ticket.setDateCreationStart(new Date());
-        ticket.setUser(usersService.getById(userId));
+        ticket.setUser(user);
         ticket.setStatus(statusService.get(1));
         ticket.setGroupNum(educProgram.getGroupNum());
         ticket.setInstitute(educProgram.getInstitute());
@@ -118,6 +118,15 @@ public class StudentController {
         ticketService.add(ticket);
         model.addAttribute("ticket", ticket);
         return "redirect:/ticket/" + ticket.getId() + "/edit";
+    }
+
+    @GetMapping(value = "/ticket/{id}")
+    public String getTicket(@PathVariable(value = "id") String ticketId, ModelMap model) {
+
+        Ticket ticket = ticketService.get(ticketId);
+
+        model.addAttribute("ticket", ticket);
+        return "ticketPage";
     }
 
     @GetMapping(value = "/ticket/{id}/edit")

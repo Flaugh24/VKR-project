@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class CustomStudentProvider implements AuthenticationProvider {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(CustomStudentProvider.class);
 
 
     private final CustomUserService userService;
@@ -34,9 +34,10 @@ public class CustomStudentProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
         try {
             Ldap ldap = new Ldap(username, password);
+            logger.info("ldap_end");
             Abis abis = new Abis();
             String educIdString =abis.searchRecordXML(false, username);
-            logger.debug("вышло: "+educIdString);
+            logger.debug("вышел: "+educIdString);
             int educId = Integer.parseInt(educIdString);
 
             logger.debug("Прошли try");

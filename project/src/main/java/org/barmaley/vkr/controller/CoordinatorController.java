@@ -98,13 +98,13 @@ public class CoordinatorController {
                         }
 
                     }
-                }
-                lazyStudentsDTOList.add(dto);
 
+                    lazyStudentsDTOList.add(dto);
+                }
+                ticketsNew.addAll(ticketsNewList);
+                ticketsInCheck.addAll(ticketsCheckList);
+                ticketsReady.addAll(ticketsReadyList);
             }
-            ticketsNew.addAll(ticketsNewList);
-            ticketsInCheck.addAll(ticketsCheckList);
-            ticketsReady.addAll(ticketsReadyList);
         }
 
         countTicketsNew = ticketsNew.size();

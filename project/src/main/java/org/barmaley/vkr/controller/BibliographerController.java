@@ -131,7 +131,7 @@ public class BibliographerController {
 
     @PostMapping(value = "/act/check")
     public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) {
-        Act act = actService.get(dto.getId());
+        Act act = actService.get(dto.getAct().getId());
         if (button.equals("return")){
             act.setStatus(statusActService.get(6));
             actService.edit(act);

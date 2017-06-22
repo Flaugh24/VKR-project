@@ -61,16 +61,16 @@ public class ParsingABISXml {
         }
     }
     //Считывание из файла данных о всех сотрудниках.
-    static public List<String> readAllABIS(String path) {
+    static public List<String> readAllABIS(Document doc) {
 
         List<String> list = new ArrayList<>();
-        Document doc = null;
-        try {
-            //Получение документа по его пути
-            doc = getDocument(path);
-        }  catch (Exception exception) {
-            logger.debug(exception.getMessage());
-        }
+//        Document doc = null;
+//        try {
+//            //Получение документа по его пути
+//            doc = getDocument("/home");
+//        }  catch (Exception exception) {
+//            logger.debug(exception.getMessage());
+//        }
         //1
         Node root = doc.getChildNodes().item(0);
         //2

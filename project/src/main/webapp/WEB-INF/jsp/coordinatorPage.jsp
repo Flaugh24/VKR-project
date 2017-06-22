@@ -54,7 +54,12 @@
                 <li role="presentation"><a href="#acts" aria-controls="acts" role="tab"
                                            data-toggle="tab">Акты (<c:out value="${countActs}"/>)</a>
                 </li>
-
+                <c:if test="${not empty actsreturn}">
+                    <li role="presentation"><a href="#actsreturn" aria-controls="acts" role="tab"
+                                               data-toggle="tab">Возвращенные Акты (<c:out
+                            value="${countActsReturn}"/>)</a>
+                    </li>
+                </c:if>
             </ul>
 
             <!-- Tab panes -->
@@ -343,6 +348,37 @@
                         </tbody>
                     </table>
                 </div>
+                <div role="tabpanel" class="tab-pane" id="actsreturn">
+                    <table class="table table-striped table-bordered" style="text-align: center">
+                        <thead>
+                        <tr>
+                            <th style="vertical-align: middle; text-align: center">№</th>
+                            <th style="vertical-align: middle; text-align: center">№ Акта</th>
+                            <th style="vertical-align: middle; text-align: center">Дата создания</th>
+                            <th style="vertical-align: middle; text-align: center">Статус</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% Integer j = 0; %>
+                        <c:forEach items="${actsreturn}" var="act">
+                            <% j++; %>
+                            <c:url var="checkTicket" value="/act/${act.id}/edit"/>
+                            <tr>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>
+                                </a></td>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
+                                        value="${act.id}"/></a></td>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><fmt:formatDate
+                                        pattern="dd.MM.yyyy" value="${act.dateOfCreate}"/></a></td>
+                                <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
+                                        value="${act.status.name}"/></a></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+
+                </div>
+
             </div>
         </div>
     </main>

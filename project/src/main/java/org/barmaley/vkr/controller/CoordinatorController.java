@@ -69,13 +69,15 @@ public class CoordinatorController {
         List<Ticket> ticketsInCheck = new ArrayList<>();
         List<Ticket> ticketsReady = new ArrayList<>();
         List<LazyStudentsDTO> lazyStudentsDTOList = new ArrayList<>();
-        List<Act> actList = actService.getAllActsByUserId(user.getId());
+        List<Act> actList = actService.getAllActsByUserId(1, user.getId());
 
+        List<Act> actListReturn = actService.getAllActsByUserIdReturn(6, user.getId());
         int countTicketsNew;
         int countTicketsInCheck;
         int countTicketsReady;
         int countLazyStudents;
         int countActs;
+        int countActsReturn;
 
         for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
             List<Ticket> ticketsNewList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 2);
@@ -104,6 +106,7 @@ public class CoordinatorController {
         countLazyStudents = lazyStudentsDTOList.size();
         countTicketsReady = ticketsReady.size();
         countActs = actList.size();
+        countActsReturn = actListReturn.size();
 
         model.addAttribute("ticketsNew", ticketsNew);
         model.addAttribute("countTicketsNew", countTicketsNew);
@@ -115,6 +118,7 @@ public class CoordinatorController {
         model.addAttribute("countLazyStudents", countLazyStudents);
         model.addAttribute("acts", actList);
         model.addAttribute("countActs", countActs);
+        model.addAttribute("countActsReturn", countActsReturn);
 
         return ("coordinatorPage");
     }

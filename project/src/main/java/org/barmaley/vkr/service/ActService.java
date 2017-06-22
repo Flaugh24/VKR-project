@@ -20,6 +20,12 @@ public class ActService {
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
+    public List getAllCoordinators(Integer statusId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM Act WHERE status.id = " + statusId + "ORDER BY Id");
+
+        return query.list();
+    }
 
     public List getAll() {
         Session session = sessionFactory.getCurrentSession();
@@ -36,15 +42,25 @@ public class ActService {
         return session.get(Act.class, id);
     }
 
-    public List getAllActsByUserId(Integer userId) {
+    public List getAllActsByUserId(Integer statusId, Integer userId) {
         Session session = sessionFactory.getCurrentSession();
-        // Create a Hibernate query (HQL)
-        // Создаем запрос
-        Query query = session.createQuery("FROM Act WHERE coordinator.id = " + userId + " ORDER BY Id");
+// Create a Hibernate query (HQL)
+// Создаем запрос
+        Query query = session.createQuery("FROM Act WHERE coordinator.id = " + userId + " AND status.id = " + statusId + "ORDER BY Id");
 
+// Retrieve all
+// получаем всех
+        return query.list();
+    }
 
-        // Retrieve all
-        // получаем всех
+    public List getAllActsByUserIdReturn(Integer statusId, Integer userId) {
+        Session session = sessionFactory.getCurrentSession();
+// Create a Hibernate query (HQL)
+// Создаем запрос
+        Query query = session.createQuery("FROM Act WHERE coordinator.id = " + userId + " AND status.id = " + statusId + "ORDER BY Id");
+
+// Retrieve all
+// получаем всех
         return query.list();
     }
 
@@ -65,11 +81,13 @@ public class ActService {
     }
 
     public void edit(Act act) {
+        logger.debug("rededit acts");
 
         Session session = sessionFactory.getCurrentSession();
 
         Act existingAct = session.get(Act.class, act.getId());
 
+        existingAct.setBibliographer(act.getBibliographer());
         existingAct.setTickets(act.getTickets());
         existingAct.setDateOfAccept(act.getDateOfAccept());
         existingAct.setStatus(act.getStatus());
@@ -77,4 +95,61 @@ public class ActService {
 
         session.flush();
     }
+
+    public List getListOther(Integer bibliographerId) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM Act WHERE bibliographer.id != " + bibliographerId + "ORDER BY Id"
+        );
+
+        return query.list();
+
+// List<Act> actsAll = getAll();
+// List<Act> actsOther = new ArrayList<>();
+// logger.debug("actAllSize= " + actsAll.size());
+// for (Act act : actsAll) {
+// if (act.getBibliographer().getId() != null) {
+// if (act.getBibliographer().getId() != bibliographerId) {
+// actsOther.add(act);
+// }
+// }
+// }
+// logger.debug("actOtherSize= " + actsOther.size());
+// return actsOther;
+    }
+
+    public List getAllActForCoordinator(Integer bibliographerId, Integer statusId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM Act WHERE bibliographer.id = " + bibliographerId + " AND status.id = " + statusId + "ORDER BY Id"
+        );
+
+        return query.list();
+    }
+
+    public List getAllActReadyConvert(Integer statusId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM Act WHERE statusId = :statusId" +
+                " ORDER BY Id"
+        );
+        query.setParameter("status", statusId);
+
+        return query.list();
+    }
+
+    public List getAllActReadyLibrary(Integer statusId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("FROM Act WHERE statusId = :statusId" +
+                " ORDER BY Id"
+        );
+        query.setParameter("status", statusId);
+
+        return query.list();
+    }
+
 }

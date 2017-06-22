@@ -196,13 +196,12 @@ public class CoordinatorController {
     @GetMapping(value = "/act/{id}/edit")
     public String getEditAct(@PathVariable(value = "id") String actId, ModelMap model, ActDTO dto) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<CoordinatorRights> coordinatorRightsList = coordinatorRightsService.getCoordinatorRights(user.getId());
-        List<Ticket> tickets = new ArrayList<>();
-        List<String> preCheckedVals = new ArrayList<>();
         Act act = actService.get(actId);
-
+        Set<CoordinatorRights> coordinatorRightsList = user.getCoordinatorRights();
+        List<Ticket> tickets = act.getTickets();
+        List<String> preCheckedVals = new ArrayList<>();
         for (CoordinatorRights coordinatorRights : coordinatorRightsList) {
-            List<Ticket> ticketList = ticketService.getAllTicketForAct(coordinatorRights.getGroupNum(), 4, actId);
+            List<Ticket> ticketList = ticketService.getAllTicketForCoordinator(coordinatorRights.getGroupNum(), 4);
             tickets.addAll(ticketList);
         }
 

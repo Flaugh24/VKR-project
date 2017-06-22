@@ -15,7 +15,7 @@
         <intercept-url pattern="/ticket/{id}/edit" access="@webSecurity.checkTicketId(authentication,#id)"/>
         <intercept-url pattern="/**" access="Authenticated"/>
 
-
+        <access-denied-handler error-page="/403"/>
         <!-- Standard login page -->
         <form-login login-page="/login" default-target-url="/" authentication-failure-url="/login?error"
                     username-parameter="username" password-parameter="password"/>

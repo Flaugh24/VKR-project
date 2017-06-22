@@ -62,20 +62,6 @@ public class TicketService {
         return query.list();
     }
 
-    public List getAllTicketForAct(String groupNum, Integer statusId, String actId) {
-
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery("FROM Ticket WHERE (groupNum = :groupNum AND status.id = :statusId) OR (groupNum = :groupNum AND act.id = :actId)" +
-                " ORDER BY Id"
-        );
-        query.setParameter("groupNum", groupNum);
-        query.setParameter("statusId", statusId);
-        query.setParameter("actId", actId);
-
-        return query.list();
-    }
-
     public List getAllTicketsByUserId(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)

@@ -51,19 +51,19 @@ public class MainController {
     @GetMapping(value = ("/login"))
     public String login(Model model, String error, String logout) {
         if (error != null) {
-            model.addAttribute("error", "Username or password is incorrect.");
+            model.addAttribute("error", "Неправильный логин или пароль");
         }
 
         if (logout != null) {
-            model.addAttribute("message", "Logged out successfully.");
+            model.addAttribute("message", "Вы успешно вышли из системы");
         }
 
         return "login";
     }
 
-    @GetMapping(value = {"/user", "/"})
+    @GetMapping(value = "/")
     public String user() {
-        logger.debug("MainController./user");
+        logger.debug("MainController./");
         boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
         boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
         boolean check_acts = permissionTool.checkPermission("PERM_CHECK_ACTS");
@@ -76,8 +76,9 @@ public class MainController {
         } else if (check_acts) {
             logger.info("redirect to bibliographer");
             return "redirect:/bibliographer";
+        } else {
+            return "accessDenied";
         }
-        return "pnh";
     }
 
     @PostMapping(value = "/user/profile")

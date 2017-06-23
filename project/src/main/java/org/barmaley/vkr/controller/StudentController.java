@@ -183,7 +183,6 @@ public class StudentController {
             boolean perm_check_all_tickets = permissionTool.checkPermission("PERM_CHECK_ALL_TICKETS");
             boolean disabledEdit = true;
             boolean disabledCheck = true;
-
             List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
 
             if ((ticket.getStatus().getId() == 1 || ticket.getStatus().getId() == 5) && !perm_check_tickets) {

@@ -1,3 +1,5 @@
-.disabledEdit {
-
+.error {
+    display: inline-block;
+    float: right;
+    text-decoration-color: red;
 }

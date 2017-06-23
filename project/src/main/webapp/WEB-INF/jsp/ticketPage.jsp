@@ -34,8 +34,10 @@
             </div>
             <div class="panel-footer">
                 <a href="${editUrl}" type="button" class="btn btn-default">Редактирвоать</a>
-                <a href="${recordSheet}" type="button" class="btn btn-default">Регистрационный лист</a>
-                <a href="${licenseAgreement}" type="button" class="btn btn-default">Лицензионный договор</a>
+                <c:if test="${perm_check_tickets == true}">
+                    <a href="${recordSheet}" type="button" class="btn btn-default">Регистрационный лист</a>
+                    <a href="${licenseAgreement}" type="button" class="btn btn-default">Лицензионный договор</a>
+                </c:if>
             </div>
         </div>
     </div>

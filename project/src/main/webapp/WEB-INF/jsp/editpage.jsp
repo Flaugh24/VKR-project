@@ -8,6 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -19,6 +20,8 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css" />"/>
 
     <link rel="stylesheet" href="<c:url value="/resources/css/liveSearch.css"/>"/>
+
+    <link rel="stylesheet" href="<c:url value="/resources/css/editPage.css"/> "/>
 
     <title>Заявка <c:out value="${ticketAttribute.id}"/></title>
 
@@ -143,11 +146,13 @@
                     </div>
                     <div class="form-group">
                         <div class="form-group">
-                            <form:label path="title">Заглавие работы</form:label> <form:errors path="title"/>
+                            <form:label path="title">Заглавие работы</form:label> <form:errors path="title"
+                                                                                               cssClass="error"/>
                             <form:input cssClass="form-control ${varclass}" path="title" name="title" maxlength="255"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="titleEng">Заглавие работы на английском языке</form:label> <form:errors path="titleEng"/>
+                            <form:label path="titleEng">Заглавие работы на английском языке</form:label> <form:errors
+                                path="titleEng" cssClass="error"/>
                             <form:input cssClass="form-control ${varclass}" path="titleEng" maxlength="255"/>
                         </div>
                         <div class="form-group">
@@ -164,18 +169,20 @@
                                         maxlength="4"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="annotation">Аннотация</form:label> <form:errors path="annotation"/>
+                            <form:label path="annotation">Аннотация</form:label> <form:errors path="annotation"
+                                                                                              cssClass="error"/>
                             <form:textarea path="annotation" rows="5" maxlength="1024"
                                            cssClass="form-control ${varclass}" cssStyle="max-width:100%"/>
                         </div>
                         <div class="form-group">
-                            <form:label path="annotationEng">Аннотация на английском языке</form:label> <form:errors path="annotationEng"/>
+                            <form:label path="annotationEng">Аннотация на английском языке</form:label> <form:errors
+                                path="annotationEng" cssClass="error"/>
                             <form:textarea path="annotationEng" rows="5" maxlength="1024"
                                            cssClass="form-control ${varclass}" cssStyle="max-width:100%"/>
                         </div>
                         <div class="form-group">
                             <form:label path="keyWords">Ключевые слова</form:label>
-                            <form:errors path="keyWords"/>
+                            <form:errors path="keyWords" cssClass="error"/>
                             <div class="row">
                                 <c:forEach items="${ticketAttribute.keyWords}" var="word">
                                 <div class="col-xs-6">
@@ -187,7 +194,7 @@
                         </div>
                         <div class="form-group">
                             <form:label path="keyWordsEng">Ключевые слова на английском языке</form:label>
-                            <form:errors path="keyWordsEng"/>
+                            <form:errors path="keyWordsEng" cssClass="err"/>
                             <div class="row">
                                 <c:forEach items="${ticketAttribute.keyWordsEng}" var="word">
                                     <div class="col-xs-6">

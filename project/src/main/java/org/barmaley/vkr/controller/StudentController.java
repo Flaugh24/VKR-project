@@ -123,8 +123,11 @@ public class StudentController {
     @GetMapping(value = "/ticket/{id}")
     public String getTicket(@PathVariable(value = "id") String ticketId, ModelMap model) {
 
+        boolean perm_check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+
         Ticket ticket = ticketService.get(ticketId);
 
+        model.addAttribute("perm_check_tickets", perm_check_tickets);
         model.addAttribute("ticket", ticket);
         return "ticketPage";
     }
@@ -183,7 +186,6 @@ public class StudentController {
             boolean perm_check_all_tickets = permissionTool.checkPermission("PERM_CHECK_ALL_TICKETS");
             boolean disabledEdit = true;
             boolean disabledCheck = true;
-
             List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
 
             if ((ticket.getStatus().getId() == 1 || ticket.getStatus().getId() == 5) && !perm_check_tickets) {

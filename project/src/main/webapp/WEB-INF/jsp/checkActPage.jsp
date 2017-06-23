@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Акт <c:out value="${dto.act.id}"/></title>
 </head>
 <body>
 

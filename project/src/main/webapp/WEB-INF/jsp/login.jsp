@@ -19,7 +19,7 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
 
-    <title>Login Page</title>
+    <title>Вход в систему</title>
 </head>
 <body>
 <div class="container">
@@ -31,12 +31,12 @@
                 <div class="form-group ${error != null ? 'has-error' : ''}">
                     <span>${message}</span>
                     <label class="sr-only" for="username">Имя пользователя</label>
-                    <input name="username" id="username" type="text" class="form-control" placeholder="Username"
+                    <input name="username" id="username" type="text" class="form-control" placeholder="Имя пользователя"
                            autofocus="true" required/>
                 </div>
                 <div class="form-group">
                     <label class="sr-only" for="password">Пароль</label>
-                    <input name="password" id="password" type="password" class="form-control" placeholder="Password"
+                    <input name="password" id="password" type="password" class="form-control" placeholder="Пароль"
                            required/>
                     <span>${error}</span>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="remember-me"> Remember me
+                            <input type="checkbox" name="remember-me"> Запомнить меня
                         </label>
                     </div>
                 </div>

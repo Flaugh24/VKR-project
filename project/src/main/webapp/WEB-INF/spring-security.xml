@@ -37,6 +37,8 @@
         </authentication-provider>
         <authentication-provider ref="customStudentProvider">
         </authentication-provider>
+        <authentication-provider ref="customLocalProvider">
+        </authentication-provider>
 
         </authentication-manager>
 </beans:beans>

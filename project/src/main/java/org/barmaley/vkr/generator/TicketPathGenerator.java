@@ -6,11 +6,21 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by impolun on 23.06.17.
  */
-public class TicketPathGenerator {
+public class TicketPathGenerator extends SimpleFileVisitor {
+    private static final int BUFFER_SIZE = 1024;
 
     public void getGenerator(boolean flag,String ROOT_ACT, Ticket ticket) {
         try {
@@ -21,49 +31,44 @@ public class TicketPathGenerator {
                 f.mkdir();
                 Path pathSource = Paths.get(ticket.getFilePdf());
                 Path pathDestination = Paths.get(ROOT_ACT + "/pdf/" + ticket.getId() + ".pdf");
-                Files.copy(pathSource, pathDestination, StandardCopyOption.REPLACE_EXISTING);
-                Files.deleteIfExists(pathSource);
-                System.out.println("Source file copied pdf successfully");
+                Files.move(pathSource, pathDestination, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("Source file moved pdf successfully");
                 f = new File(ROOT_ACT + "/zip");
                 f.mkdir();
                 pathSource = Paths.get(ticket.getFileZip());
                 pathDestination = Paths.get(ROOT_ACT + "/zip/" + ticket.getId() + ".zip");
-                Files.copy(pathSource, pathDestination, StandardCopyOption.REPLACE_EXISTING);
-                Files.deleteIfExists(pathSource);
-                System.out.println("Source file copied zip successfully");
+                Files.move(pathSource, pathDestination, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("Source file moved zip successfully");
             }    } catch(IOException e){
                 e.printStackTrace();
             }
     }
+    public void copyDirectory(File sourceLocation , File targetLocation)
+            throws IOException {
 
-    private Path source, destination;
+        if (sourceLocation.isDirectory()) {
+            if (!targetLocation.exists()) {
+                targetLocation.mkdir();
+            }
 
-    public TicketPathGenerator(Path s, Path d) {
-        source = s;
-        destination = d;
-    }
-    public TicketPathGenerator(){}
+            String[] children = sourceLocation.list();
+            for (int i=0; i<children.length; i++) {
+                copyDirectory(new File(sourceLocation, children[i]),
+                        new File(targetLocation, children[i]));
+              }
+            } else {
 
-    public FileVisitResult visitFile(Path path,
-                                     BasicFileAttributes fileAttributes) {
-        Path newd = destination.resolve(source.relativize(path));
-        try {
-            Files.copy(path, newd, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
+            InputStream in = new FileInputStream(sourceLocation);
+            OutputStream out = new FileOutputStream(targetLocation);
+
+            // Copy the bits from instream to outstream
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
         }
-        return FileVisitResult.CONTINUE;
-    }
-
-    public FileVisitResult preVisitDirectory(Path path,
-                                             BasicFileAttributes fileAttributes) {
-        Path newd = destination.resolve(source.relativize(path));
-        try {
-            Files.copy(path, newd, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return FileVisitResult.CONTINUE;
-    }
-}
+    }}
 

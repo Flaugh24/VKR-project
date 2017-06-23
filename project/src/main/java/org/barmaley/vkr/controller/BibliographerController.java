@@ -8,6 +8,7 @@ import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
+import org.barmaley.vkr.generator.MyFileCopyVisitor;
 import org.barmaley.vkr.generator.TicketPathGenerator;
 import org.barmaley.vkr.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -151,16 +152,13 @@ public class BibliographerController {
             actService.edit(act);
         }
         else if(button.equals("readyIBK")){
-
+            File file = new File("/home/impolun/finishpath/"+act.getId());
+            file.mkdir();
+            File pathSource = new File("/home/impolun/data/public/"+act.getId());
+            File pathDestination = new File("/home/impolun/finishpath/"+act.getId());
             TicketPathGenerator ticketPathGenerator = new TicketPathGenerator();
-            String COPY_FOLDERS = "/home/impolun/finishpath";
-            List<Ticket> listTickets = act.getTickets();
-                for(Ticket ticket : listTickets){
-                    ticketPathGenerator.getGenerator(true,COPY_FOLDERS,ticket);
-                    File fileSource = new File(ticket.getFilePdfSecret());
-                    File fileDest  = new File(COPY_FOLDERS);
-                    Files.copy(fileSource.toPath(), fileDest.toPath());
-                }
+            ticketPathGenerator.copyDirectory(pathSource,pathDestination);
+            //Files.walkFileTree(pathSource, new MyFileCopyVisitor(pathSource,pathDestination));
             act.setStatus(statusActService.get(7));
             actService.edit(act);
         }

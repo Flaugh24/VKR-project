@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
+import org.barmaley.vkr.generator.TicketPathGenerator;
 import org.barmaley.vkr.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +20,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Controller
@@ -98,13 +105,13 @@ public class CoordinatorController {
                         }
 
                     }
-                }
-                lazyStudentsDTOList.add(dto);
 
+                    lazyStudentsDTOList.add(dto);
+                }
+                ticketsNew.addAll(ticketsNewList);
+                ticketsInCheck.addAll(ticketsCheckList);
+                ticketsReady.addAll(ticketsReadyList);
             }
-            ticketsNew.addAll(ticketsNewList);
-            ticketsInCheck.addAll(ticketsCheckList);
-            ticketsReady.addAll(ticketsReadyList);
         }
 
         countTicketsNew = ticketsNew.size();
@@ -324,12 +331,22 @@ public class CoordinatorController {
         List<String> ticketsId = dto.getTicketsId();
         List<Ticket> tickets = new ArrayList<>();
         List<Ticket> otherTickets = new ArrayList<>();
-
+        String ROOT_ACT= "/home/impolun/data/public/"+act.getId();
+        File f = new File(ROOT_ACT);
+        f.mkdir();
         for (String ticketId : ticketsId) {
             Ticket ticket = ticketService.get(ticketId);
+            TicketPathGenerator ticketPathGenerator = new TicketPathGenerator();
+            logger.info("перед ticketPathGenerator");
+            ticketPathGenerator.getGenerator(false,ROOT_ACT,ticket);
+            logger.info("после ticketPathGenerator");
             ticket.setAct(act);
+            ticket.setFilePdf(ROOT_ACT + "/pdf/" + ticket.getId() + ".pdf");
+            ticket.setFileZip(ROOT_ACT + "/zip/" + ticket.getId() + ".zip");
             ticket.setStatus(statusService.get(6));
             ticketService.editAct(ticket);
+            ticketService.editPdf(ticket);
+            ticketService.editZip(ticket);
             tickets.add(ticket);
         }
 

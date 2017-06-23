@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Акт <c:out value="${dto.act.id}"/></title>
 </head>
 <body>
 
@@ -58,11 +58,21 @@
     </c:forEach>
     </tbody>
 </table>
+    <c:if test="${dto.act.status.id == 2||dto.act.status.id == 3}">
+        <button type="submit"  name="button" value="return" class="btn btn-default">Вернуть координатору</button>
+        <button type="submit"  name="button" value="accept" class="btn btn-default">Принять акт</button>
 
 
-    <button type="submit"  name="button" value="return" class="btn btn-default">Вернуть координатору</button>
-    <button type="submit"  name="button" value="accept" class="btn btn-default">Принять акт</button>
-    <button type="submit"  name="button" value="convert" class="btn btn-default">Конвертировать содержимое</button>
+    </c:if>
+    <c:if test="${dto.act.status.id == 4}">
+        <button type="submit"  name="button" value="convert" class="btn btn-default">Конвертировать содержимое</button>
+
+    </c:if>
+    <c:if test="${dto.act.status.id == 5}">
+        <button type="submit"  name="button" value="readyIBK" class="btn btn-default">Готова к передаче в ИБК</button>
+
+    </c:if>
+
 
 </form:form>
 </body>

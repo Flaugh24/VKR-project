@@ -99,7 +99,7 @@
                     </div>
                     <div class="form-group">
                         <form:label path="licenseDate">Дата лицензионного договора</form:label><br/>
-                        <form:input type="date" cssClass="form-control ${varclass}" path="licenseDateDTO"/>
+                        <form:input type="date" cssClass="form-control ${varclass}" path="licenseDate"/>
                     </div>
                     <div class="form-group">
                         <form:label path="documentType.name">Тип документа</form:label><br/>

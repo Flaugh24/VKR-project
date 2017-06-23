@@ -8,6 +8,7 @@ import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.dto.ActDTO;
 import org.barmaley.vkr.dto.LazyStudentsDTO;
+import org.barmaley.vkr.generator.TicketPathGenerator;
 import org.barmaley.vkr.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,8 +16,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,14 +137,31 @@ public class BibliographerController {
     }
 
     @PostMapping(value = "/act/check")
-    public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) {
-        Act act = actService.get(dto.getId());
+    public String postEditAct(ActDTO dto, @RequestParam(name = "button") String button) throws IOException {
+        Act act = actService.get(dto.getAct().getId());
         if (button.equals("return")){
             act.setStatus(statusActService.get(6));
             actService.edit(act);
 
         }else if(button.equals("accept")){
             act.setStatus(statusActService.get(4));
+            actService.edit(act);
+        }else if(button.equals("convert")){
+            act.setStatus(statusActService.get(5));
+            actService.edit(act);
+        }
+        else if(button.equals("readyIBK")){
+
+            TicketPathGenerator ticketPathGenerator = new TicketPathGenerator();
+            String COPY_FOLDERS = "/home/impolun/finishpath";
+            List<Ticket> listTickets = act.getTickets();
+                for(Ticket ticket : listTickets){
+                    ticketPathGenerator.getGenerator(true,COPY_FOLDERS,ticket);
+                    File fileSource = new File(ticket.getFilePdfSecret());
+                    File fileDest  = new File(COPY_FOLDERS);
+                    Files.copy(fileSource.toPath(), fileDest.toPath());
+                }
+            act.setStatus(statusActService.get(7));
             actService.edit(act);
         }
 

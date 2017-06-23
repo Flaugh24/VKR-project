@@ -22,11 +22,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.*;
 import java.io.*;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -39,6 +41,7 @@ import static org.junit.Assert.assertTrue;
 public class Abis {
 
     private static final Logger log = Logger.getLogger("RESTTest");
+    private static XPath xpath = XPathFactory.newInstance().newXPath();
     private static final HttpHost targetHost = new HttpHost(
             "ruslan.library.spbstu.ru", 443);
     private static final String targetURL = "https://ruslan.library.spbstu.ru:443/rrs-web/";
@@ -67,55 +70,36 @@ public class Abis {
         HttpResponse response = httpClient.execute(httpget, localContext);
         HttpEntity entity = response.getEntity();
         EntityUtils.consumeQuietly(entity);
-        System.out.println("12");
         log.info(String.valueOf((response.getStatusLine().getStatusCode())));
         assertTrue(response.getStatusLine().getStatusCode() >= 200
                 && response.getStatusLine().getStatusCode() < 300);
-        System.out.println("13");
+
     }
 
-
     public String searchRecordXML(boolean flag, String username) throws Exception  {
-        System.out.println("1!!!!!");
         testAuth();
-        System.out.println("2!!!!!");
         HttpGet httpget = new HttpGet   (
                 "https://ruslan.library.spbstu.ru/rrs-web/db/LUSR+IMOPUSER+STDUSER+KIUUSERS%20+KIUUSERS2?startRecord=1&maximumRecords=1&queryType=cql&query=(ruslan.100%20=%20%22"+username+"%22)%20or%20(ruslan.132%20=%20%22"+username+"%22)%20or%20(ruslan.254%20=%20%22"+username+"%22)&resultSetTTL=3600");
-        log.info("3!!!!!");
-        httpget.setHeader("Accept", "application/json"); //Для формата json
+       // httpget.setHeader("Accept", "application/json"); //Для формата json
         HttpResponse response = httpClient.execute(httpget, localContext);
-        log.info("4!!!!!");
         assertTrue(response.getStatusLine().getStatusCode() >= 200
                 && response.getStatusLine().getStatusCode() < 300);
         HttpEntity entity = response.getEntity();
         String x = toString(entity);
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        InputSource is = new InputSource();
-//        is.setCharacterStream(new StringReader(x));
-        ObjectMapper mapper = new ObjectMapper();
-        Pars[] pars = mapper.readValue(x, Pars[].class);
-        for(int i=0;i<pars.length;i++){
-            log.info("sdas= "+pars[i]);
-        }
-        System.out.println("x="+x);
-        //Document doc = builder.parse(is);
-        Document doc =null;
-        ParsingABISXml parsing = new ParsingABISXml();
-        List<String> list =  parsing.readAllABIS(doc);
-//        log.info(String.valueOf(list.size()));
-//        log.info(list.get(30));
-//        log.info(list.get(4)+" "+list.get(5)+" "+list.get(6));
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(x));
+        Document doc = builder.parse(is);
         EntityUtils.consumeQuietly(entity);
         assertEquals("application/sru+xml;charset=UTF-8", entity
                 .getContentType().getValue());
-//        for(int i=0; i<list.size();i++){
-//            System.out.println("list]"+i+"]= "+list.get(i));
-//        }
+        log.info(getTagByTagValue(doc,"101")+" "+getTagByTagValue(doc,"102")+" "+getTagByTagValue(doc,"103"));
+        log.info(getTagByTagValue(doc,"252"));
         if(flag){
-            return list.get(4)+" "+list.get(5)+" "+list.get(6);
+            return getTagByTagValue(doc,"101")+" "+getTagByTagValue(doc,"102")+" "+getTagByTagValue(doc,"103");
         }else
-            return list.get(30);
+            return getTagByTagValue(doc,"252");
     }
 
     public static String toString(HttpEntity entity)
@@ -130,5 +114,21 @@ public class Abis {
             result.append(line);
 
         return result.toString();
+    }
+
+    public static String getTagByTagValue(Document doc, String tagValue) {
+        try {
+            Node n;
+            XPathExpression expr =  xpath.compile("//record/tag[@tagValue='" + tagValue + "']");
+            n = (Node) expr.evaluate(doc.getDocumentElement(),
+                    XPathConstants.NODE);
+            if (n != null) {
+                return n.getTextContent();
+            }
+        } catch (XPathExpressionException e) {
+            log.info("Error in XPath expression: " + e.getMessage());
+        }
+
+        return null;
     }
 }

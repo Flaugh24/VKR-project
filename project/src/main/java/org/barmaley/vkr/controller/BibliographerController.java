@@ -139,6 +139,13 @@ public class BibliographerController {
         }else if(button.equals("accept")){
             act.setStatus(statusActService.get(4));
             actService.edit(act);
+        }else if(button.equals("convert")){
+            act.setStatus(statusActService.get(5));
+            actService.edit(act);
+        }
+        else if(button.equals("readyIBK")){
+            act.setStatus(statusActService.get(7));
+            actService.edit(act);
         }
 
         return "redirect:/bibliographer";

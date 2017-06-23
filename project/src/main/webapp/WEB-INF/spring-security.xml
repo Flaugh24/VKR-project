@@ -12,8 +12,7 @@
         <intercept-url pattern="/login" access="permitAll"/>
         <intercept-url pattern="/student" access="hasAuthority('PERM_ADD_TCIKET_FOR_EDUC_PROGRAM')"/>
         <intercept-url pattern="/coordinator" access="hasAuthority('PERM_CHECK_TICKETS')"/>
-        <intercept-url pattern="/ticket/{id}" access="@webSecurity.checkTicketId(authentication,#id)"/>
-        <intercept-url pattern="/ticket/{id}/edit" access="@webSecurity.checkTicketId(authentication,#id)"/>
+        <intercept-url pattern="/ticket/{id}/**" access="@webSecurity.checkTicketId(authentication,#id)"/>
         <intercept-url pattern="/**" access="Authenticated"/>
 
         <access-denied-handler error-page="/403"/>

@@ -179,7 +179,21 @@ public class StudentController {
                            ModelMap model, @RequestParam(value = "button") String button) {
 
         if (!button.equals("save") && bindingResult.hasErrors()) {
+            boolean perm_check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+            boolean perm_check_all_tickets = permissionTool.checkPermission("PERM_CHECK_ALL_TICKETS");
+            boolean disabledEdit = true;
+            boolean disabledCheck = true;
+
             List<TypeOfUse> typesOfUse = typeOfUseService.getAll();
+
+            if ((ticket.getStatus().getId() == 1 || ticket.getStatus().getId() == 5) && !perm_check_tickets) {
+                disabledEdit = false;
+            }
+            if (perm_check_tickets || perm_check_all_tickets) {
+                disabledCheck = false;
+            }
+            model.addAttribute("disabledCheck", disabledCheck);
+            model.addAttribute("disabledEdit", disabledEdit);
             model.addAttribute("ticketAttribute", ticket);
             model.addAttribute("typesOfUse", typesOfUse);
             return "editpage";
@@ -206,13 +220,6 @@ public class StudentController {
 
         ticketService.edit(ticket);
 
-        switch (button) {
-            case "recordSheet":
-                return "redirect:/downloadPDF1?ticketId=" + ticket.getId();
-            case "licenseAgreement":
-                return "redirect:/downloadPDF2?ticketId=" + ticket.getId();
-        }
-
-        return "redirect:/";
+        return "redirect:/ticket/" + ticket.getId();
     }
 }

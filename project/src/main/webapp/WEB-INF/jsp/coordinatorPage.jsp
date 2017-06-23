@@ -99,7 +99,7 @@
                                 <% Integer i = 0; %>
                                 <c:forEach items="${ticketsNew}" var="ticketNew">
                                     <% i++; %>
-                                    <c:url var="ticketUrl" value="/ticket/${ticketNew.id}/edit"/>
+                                    <c:url var="ticketUrl" value="/ticket/${ticketNew.id}"/>
                                     <tr>
                                         <td><a href="${ticketUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -165,7 +165,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsInCheck}" var="ticketInCheck">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/${ticketInCheck.id}/edit"/>
+                                    <c:url var="ticketUrl" value="/ticket/${ticketInCheck.id}"/>
                                     <tr>
                                         <td><a href="${ticketUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>
@@ -237,7 +237,7 @@
                                 <% int i = 0; %>
                                 <c:forEach items="${ticketsReady}" var="ticketReady">
                                     <% i++; %>
-                                    <c:url var="checkUrl" value="/ticket/${ticketReady.id}/edit"/>
+                                    <c:url var="ticketUrl" value="/ticket/${ticketReady.id}"/>
                                     <tr>
                                         <td><a href="${ticketUrl}" class="editUrl" style="display: block"><%=i%>
                                         </a></td>

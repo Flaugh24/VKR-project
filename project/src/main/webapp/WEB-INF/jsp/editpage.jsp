@@ -245,13 +245,6 @@
                     </c:if>
                     <c:if test="${disabledCheck == false}">
                         <div class="form-group">
-                            <button type="submit" name="button" value="recordSheet" class="btn btn-default">
-                                Регистрационный лист
-                            </button>
-                            <button type="submit" name="button" value="licenseAgreement" class="btn btn-default">
-                                Лицензионный договор
-                            </button>
-                            <br/>
                             <button type="submit" name="button" value="save" class="btn btn-default">Сохранить
                                 изменения
                             </button>

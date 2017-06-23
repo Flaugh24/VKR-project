@@ -47,8 +47,13 @@ public class MainController {
         return (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
+    @GetMapping(value = "/403")
+    public String accessDenied() {
 
-    @GetMapping(value = ("/login"))
+        return "403";
+    }
+
+    @GetMapping(value = "/login")
     public String login(Model model, String error, String logout) {
         if (error != null) {
             model.addAttribute("error", "Неправильный логин или пароль");
@@ -81,11 +86,11 @@ public class MainController {
         }
     }
 
-    @PostMapping(value = "/user/profile")
+    @PostMapping(value = "/profile")
     public String saveProfile(@ModelAttribute("user") Users user) {
 
         usersService.editUser(user);
-        return "redirect:/user";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/getTags", method = RequestMethod.GET)

@@ -16,6 +16,9 @@
 
     <bean id="webSecurity" class="org.barmaley.vkr.security.WebSecurity"/>
 
+    <bean id="permissionTool" class="org.barmaley.vkr.tool.PermissionTool"/>
+    <bean id="fileTool" class="org.barmaley.vkr.tool.FileTool"/>
+
     <bean id="actFormValidator" class="org.barmaley.vkr.validator.ActFormValidator" />
     <bean id="ticketFormValidator" class="org.barmaley.vkr.validator.TicketFormValidator"/>
 

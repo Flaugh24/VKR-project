@@ -7,14 +7,14 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <title>Title</title>
+    <title>Доступ запрещен</title>
 </head>
-<body>
+<body style="height: 100vh">
 <main>
-    <div class="jumbotron">
-        <div class="container" style="height: 100vh">
+    <div class="jumbotron" style="height: 100%">
+        <div class="container">
             <h1>Здравствуйте!</h1>
-            <p>Доступ запрещен. Ваша программа обучения не преполагает подачу ВКР в этом году ;(</p>
+            <p>Доступ запрещен. Ваша программа обучения не преполагает подачу ВКР в этом году</p>
         </div>
     </div>
 </main>

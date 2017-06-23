@@ -7,7 +7,9 @@ import org.barmaley.vkr.domain.Users;
 import org.barmaley.vkr.service.EmployeeCopyService;
 import org.barmaley.vkr.service.TicketService;
 import org.barmaley.vkr.service.UsersService;
+import org.barmaley.vkr.tool.FileTool;
 import org.barmaley.vkr.tool.PermissionTool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,13 +35,14 @@ public class MainController {
     @Resource(name = "usersService")
     private UsersService usersService;
 
-    @Resource(name = "permissionTool")
-    private PermissionTool permissionTool;
-
-
     @Resource(name = "employeeCopyService")
     private EmployeeCopyService employeeCopyService;
 
+    @Autowired
+    private PermissionTool permissionTool;
+
+    @Autowired
+    private FileTool fileTool;
 
     public Users getPrincipal() {
 
@@ -102,17 +104,17 @@ public class MainController {
     }
 
 
-    @PostMapping("/ticket/fileupload")
-    public String singleFileUpload(@RequestParam("uploadFile") MultipartFile file,
-                                   @RequestParam("ticketId") String ticketId,
+    @PostMapping("/ticket/{id}/fileupload")
+    public String singleFileUpload(@PathVariable("id") String ticketId,
+                                   @RequestParam("uploadFile") MultipartFile file,
                                    @RequestParam("submit") String submit,
                                    @RequestParam(value = "tradeSecret", required = false) String tradeSecret) {
 
-
+        fileTool.upload(file, ticketId);
 
         String fullPath,
-                ROOT_FOLDERS = "/home/impolun/data/public/",
-                ROOT_FOLDERS_TRADE_SECRET="/home/impolun/data/secret/",
+                ROOT_FOLDERS = "/home/gagarkin/data/public/",
+                ROOT_FOLDERS_TRADE_SECRET = "/home/gagarkin/data/secret/",
                 EXPDF = ".pdf",
                 EXZIP = ".zip";
         Ticket ticket = ticketService.get(ticketId);
@@ -162,58 +164,39 @@ public class MainController {
             e.printStackTrace();
         }
 
-        Boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
-
-        if (check_tickets) {
-            return "redirect:/ticket/check?ticketId=" + ticket.getId();
-        } else {
-            return "redirect:/ticket/edit?ticketId=" + ticket.getId();
-        }
+        return "redirect:/ticket/" + ticket.getId() + "/edit";
     }
 
-    @PostMapping("/ticket/filedelete")
-    public String singleFileDelete(/*@RequestParam("uploadFile") MultipartFile file*/
-                                   @RequestParam("ticketId") String ticketId,
-                                   @RequestParam("submit") String submit) throws MalformedURLException {
+    @GetMapping("/ticket/{id}/file/delete")
+    public String singleFileDelete(@PathVariable("id") String ticketId,
+                                   @RequestParam("type") String type) throws MalformedURLException {
 
         Ticket ticket = ticketService.get(ticketId);
-        if (submit.equals("Удалить PDF")) {
-            File file;
-            if(ticket.getFilePdf()!=null){
-                file = new File(ticket.getFilePdf());
+        String path = null;
+
+        switch (type) {
+            case "pdf":
+                path = ticket.getFilePdf();
                 ticket.setFilePdf(null);
-            }
-            else{
-                file = new File(ticket.getFilePdfSecret());
-                ticket.setFilePdfSecret(null);
-            }
-            if (file.delete()) {
-            } else logger.debug("Файла" + ticket.getFilePdf() + " не обнаружено");
-            ticketService.editPdf(ticket);
-        }
-        if (submit.equals("Удалить архив")) {
-            logger.debug("УДАЛЕНИЕ АРХИВА");
-            File file;
-            if(ticket.getFileZip()!=null){
-                file = new File(ticket.getFileZip());
-                ticket.setFileZip(null);
-            }
-            else{
-                file = new File(ticket.getFileZipSecret());
-                ticket.setFileZipSecret(null);
-            }
-            if (file.delete()) {
-                logger.debug(ticket.getFileZip() + " файл удален");
-            } else logger.debug("Файла" + ticket.getFileZip() + " не обнаружено");
-            ticketService.editZip(ticket);
+                break;
+            case "pdfSecret":
+                path = ticket.getFilePdfSecret();
+                ticket.setFilePdf(null);
+                break;
+            case "zip":
+                path = ticket.getFileZip();
+                ticket.setFilePdf(null);
+                break;
+            case "zipSecret":
+                path = ticket.getFileZipSecret();
+                ticket.setFilePdf(null);
+                break;
         }
 
-        Boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
+        ticketService.editPdf(ticket);
+        fileTool.delete(path);
 
-        if (check_tickets) {
-            return "redirect:/ticket/check?ticketId=" + ticket.getId();
-        } else {
-            return "redirect:/ticket/edit?ticketId=" + ticket.getId();
-        }
+        return "redirect:/ticket/" + ticket.getId() + "/edit";
+
     }
 }

@@ -239,7 +239,7 @@
                                                 value="${ticketInCheck.typeOfUse.name}"/></td>
                                         <td>
                                             <fmt:formatDate
-                                                    pattern="dd.MM.yyyy" value="${ticketNew.licenseDate}"/>
+                                                    pattern="dd.MM.yyyy" value="${ticketInCheck.licenseDate}"/>
                                         </td>
                                         <td>
                                             <c:out value="${ticketInCheck.licenseNumber}"/>

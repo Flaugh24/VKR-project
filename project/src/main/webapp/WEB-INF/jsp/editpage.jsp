@@ -67,7 +67,7 @@
                                     <input type="checkbox" name="tradeSecret" value="${true}"/>Файл содержит комерческую
                                     тайну<br/>
                                     <input type="submit" name="submit" value="Загрузить"
-                                           class="btn btn-default uploadButton"/>
+                                           class="btn btn-default uploadButton" disabled/>
                                 </div>
                             </form>
                         </div>
@@ -96,6 +96,7 @@
                         <form:input path="id" cssStyle="display: none"/>
                         <form:input path="status.id" cssStyle="display: none"/>
                         <form:input path="filePdf" cssStyle="display: none"/>
+                        <form:input path="curatorId" id="curatorId" cssStyle="display: none"/>
                     </div>
                     <div class="form-group">
                         <form:label path="licenseNumber">Номер лицензионного договора</form:label><br/>
@@ -306,12 +307,11 @@
 
 
     $('#w-input-search').autocomplete({
-        serviceUrl: '${pageContext.request.contextPath}/getTags', // Страница для обработки запросов автозаполнения
-        paramName: "tagName",
+        serviceUrl: '${pageContext.request.contextPath}/getCurator', // Страница для обработки запросов автозаполнения
+        paramName: "fullName",
         minChars: 3, // Минимальная длина запроса для срабатывания автозаполнения
         delimiter: ",", // Разделитель для нескольких запросов, символ или регулярное выражение
         maxHeight: 400, // Максимальная высота списка подсказок, в пикселях
-        width: 300, // Ширина списка
         zIndex: 9999, // z-index списка
         deferRequestBy: 300, // Задержка запроса (мсек), на случай, если мы не хотим слать миллион запросов, пока пользователь печатает. Я обычно ставлю 300.
         transformResult: function (response) {
@@ -320,9 +320,10 @@
                 suggestions: $.map($.parseJSON(response), function (item) {
 
                     return {
-                        value: (item.surname + ' ' + item.firstName + ' ' + item.secondName),
+                        value: (item.surname + ' ' + item.firstName + ' ' + item.secondName + ' ' + item.position + ' ' + item.department),
                         position: item.position,
-                        degree: item.degree
+                        degree: item.degree,
+                        username: item.username
                     };
 
                 })
@@ -332,6 +333,7 @@
         onSelect: function (suggestion) {
             $('#position').val(suggestion.position);
             $('#degree').val(suggestion.degree);
+            $('#curatorId').val(suggestion.username);
         }
     });
 

@@ -185,6 +185,7 @@ public class TicketService {
         existingTicket.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
         existingTicket.setYearOfPublic(ticket.getYearOfPublic());
         existingTicket.setHeadOfDepartment(ticket.getHeadOfDepartment());
+        existingTicket.setCuratorId(ticket.getCuratorId());
         existingTicket.setFullNameCurator(ticket.getFullNameCurator());
         existingTicket.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
         existingTicket.setPosOfCurator(ticket.getPosOfCurator());

@@ -212,6 +212,7 @@ public class StudentController {
         ticket.setKeyWords(ticket.getKeyWords().replace("#,", ""));
         ticket.setKeyWordsEng(ticket.getKeyWordsEng().replace("#,", ""));
 
+        logger.info(ticket.getCuratorId());
         switch (button) {
             case "send":
                 ticket.setStatus(statusService.get(2));

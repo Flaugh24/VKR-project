@@ -95,11 +95,10 @@ public class MainController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/getTags", method = RequestMethod.GET)
+    @RequestMapping(value = "/getCurator", method = RequestMethod.GET)
     public @ResponseBody
-    List<EmployeeCopy> getTags(@RequestParam String tagName) {
-
-        return (List<EmployeeCopy>) employeeCopyService.getEmployeeByFIO(tagName);
+    List<EmployeeCopy> getCurator(@RequestParam String fullName) {
+        return (List<EmployeeCopy>) employeeCopyService.getEmployeeByFullName(fullName);
 
     }
 

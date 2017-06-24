@@ -117,7 +117,7 @@
                     </div>
                     <div class="form-group">
                         <form:label path="fullNameCurator">ФИО научного руководителя</form:label><br/>
-                        <form:input cssClass="form-control ${varclass}" path="fullNameCurator" id="w-input-search"
+                        <form:input cssClass="form-control ${varclass}" path="fullNameCurator" id="fullNameCurator"
                                     maxlength="255"/>
                         <span class="help-block"><form:errors path="fullNameCurator"/></span>
                     </div>
@@ -306,7 +306,7 @@
     });
 
 
-    $('#w-input-search').autocomplete({
+    $('#fullNameCurator').autocomplete({
         serviceUrl: '${pageContext.request.contextPath}/getCurator', // Страница для обработки запросов автозаполнения
         paramName: "fullName",
         minChars: 3, // Минимальная длина запроса для срабатывания автозаполнения
@@ -323,7 +323,10 @@
                         value: (item.surname + ' ' + item.firstName + ' ' + item.secondName + ' ' + item.position + ' ' + item.department),
                         position: item.position,
                         degree: item.degree,
-                        username: item.username
+                        username: item.username,
+                        suraname: item.surname,
+                        firstName: item.firstName,
+                        secondName: item.secondName
                     };
 
                 })
@@ -334,6 +337,7 @@
             $('#position').val(suggestion.position);
             $('#degree').val(suggestion.degree);
             $('#curatorId').val(suggestion.username);
+            $('#fullNameCurator').val(suggestion.suraname + ' ' + suggestion.firstName + ' ' + suggestion.secondName);
         }
     });
 

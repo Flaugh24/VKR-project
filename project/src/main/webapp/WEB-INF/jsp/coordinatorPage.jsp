@@ -451,7 +451,7 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/checkAll.js"/> "></script>
-<script src="<c:url value="/resources/js/coordinator.js"/>"></script>
+<script src="<c:url value="/resources/js/tab.js"/>"></script>
 
 </body>
 </html>

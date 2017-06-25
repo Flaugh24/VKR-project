@@ -43,4 +43,15 @@ public class EducProgramService {
 
         return (EducProgram) query.uniqueResult();
     }
+
+    public List getGroups(String department) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+
+        Query query = session.createQuery(" SELECT DISTINCT groupNum FROM EducProgram WHERE department = :department");
+        query.setParameter("department", department);
+
+        return query.list();
+    }
 }

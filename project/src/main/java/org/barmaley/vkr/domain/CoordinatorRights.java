@@ -7,10 +7,11 @@ import javax.persistence.*;
 public class CoordinatorRights {
 
     @Id
+    @GeneratedValue
     @Column(name = "ID")
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "COORDINATOR_ID", nullable = false)
     private Users coordinator;
 

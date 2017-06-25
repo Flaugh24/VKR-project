@@ -307,7 +307,7 @@
 
 
     $('#fullNameCurator').autocomplete({
-        serviceUrl: '${pageContext.request.contextPath}/getCurator', // Страница для обработки запросов автозаполнения
+        serviceUrl: '${pageContext.request.contextPath}/getEmployee', // Страница для обработки запросов автозаполнения
         paramName: "fullName",
         minChars: 3, // Минимальная длина запроса для срабатывания автозаполнения
         delimiter: ",", // Разделитель для нескольких запросов, символ или регулярное выражение

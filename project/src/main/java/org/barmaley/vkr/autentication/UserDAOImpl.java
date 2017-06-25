@@ -115,7 +115,7 @@ public class UserDAOImpl {
                 user.setSecondName(employeeCopy.getSecondName());
                 user.setEnabled(true);
                 user.setRoles(roles);
-                user.setOrigin("StudentCopy");
+                user.setOrigin("EmployeeCopy");
                 user = usersService.addUser(user);
                 }
             customUser.setId(user.getId());

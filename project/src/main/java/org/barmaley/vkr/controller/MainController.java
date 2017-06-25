@@ -74,6 +74,7 @@ public class MainController {
         boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
         boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
         boolean check_acts = permissionTool.checkPermission("PERM_CHECK_ACTS");
+        boolean change_config = permissionTool.checkPermission("PERM_CHANGE_CONFIG");
         if (add_ticket_for_educ_program) {
             logger.info("redirect to student");
             return "redirect:/student";
@@ -83,6 +84,9 @@ public class MainController {
         } else if (check_acts) {
             logger.info("redirect to bibliographer");
             return "redirect:/bibliographer";
+        } else if (change_config) {
+            logger.info("redirect to admin");
+            return "redirect:/admin";
         } else {
             return "accessDenied";
         }
@@ -95,7 +99,7 @@ public class MainController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/getCurator", method = RequestMethod.GET)
+    @RequestMapping(value = "/getEmployee", method = RequestMethod.GET)
     public @ResponseBody
     List<EmployeeCopy> getCurator(@RequestParam String fullName) {
         return (List<EmployeeCopy>) employeeCopyService.getEmployeeByFullName(fullName);

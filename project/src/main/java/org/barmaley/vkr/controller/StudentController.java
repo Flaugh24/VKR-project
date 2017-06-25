@@ -9,6 +9,7 @@ import org.barmaley.vkr.service.*;
 import org.barmaley.vkr.tool.PermissionTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,10 +25,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,20 +237,20 @@ public class StudentController {
     }
 
     @GetMapping(value = "/ticket/{id}/pdf")
-    public ResponseEntity<byte[]> getPdf(@PathVariable("id") String ticketId) {
+    public ResponseEntity getPdf(@PathVariable("id") String ticketId) {
         Ticket ticket = ticketService.get(ticketId);
-        Path path = Paths.get(ticket.getFilePdf());
-        byte[] contents = new byte[0];
+        InputStream inputStream = null;
         try {
-            contents = Files.readAllBytes(path);
-        } catch (IOException e) {
+            inputStream = new FileInputStream(new File(ticket.getFilePdf()));
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
         headers.add("Content-Disposition", "inline");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
-        return response;
+
+        return new ResponseEntity(inputStreamResource, headers, HttpStatus.OK);
     }
 }

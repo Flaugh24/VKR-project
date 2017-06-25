@@ -150,7 +150,6 @@ public class AdminController {
             if (!dto.getCheckedValsStr().contains(coordinatorRights.getGroupNum())) {
                 coordinatorRightsService.delete(coordinatorRights.getId());
             }
-            ;
         }
         return "redirect:/";
     }

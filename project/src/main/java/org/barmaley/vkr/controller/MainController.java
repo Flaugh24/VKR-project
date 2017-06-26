@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.EmployeeCopy;
 import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.Users;
-import org.barmaley.vkr.generator.XML;
 import org.barmaley.vkr.service.EmployeeCopyService;
 import org.barmaley.vkr.service.TicketService;
 import org.barmaley.vkr.service.UsersService;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -73,16 +70,6 @@ public class MainController {
     @GetMapping(value = "/")
     public String user() {
 
-        XML xml = new XML();
-        try {
-            xml.generate();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         logger.debug("MainController./");
         boolean add_ticket_for_educ_program = permissionTool.checkPermission("PERM_ADD_TCIKET_FOR_EDUC_PROGRAM");
         boolean check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
@@ -108,7 +95,7 @@ public class MainController {
     @PostMapping(value = "/profile")
     public String saveProfile(@ModelAttribute("user") Users user) {
 
-        usersService.editUser(user);
+        usersService.edit(user);
         return "redirect:/";
     }
 
@@ -136,7 +123,7 @@ public class MainController {
         }
         Ticket ticket = ticketService.get(ticketId);
         try {
-            String path = fileTool.upload(file, ticketId, tradeSecret);
+            String path = fileTool.store(file, ticketId, tradeSecret);
             String extension = fileTool.getFileExtension(file);
             boolean secret = false;
             if (extension.equals("pdf")) {

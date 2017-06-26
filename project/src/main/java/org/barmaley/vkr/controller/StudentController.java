@@ -56,9 +56,6 @@ public class StudentController {
     @Resource(name = "statusTicketService")
     private StatusTicketService statusService;
 
-    @Resource(name = "usersService")
-    private UsersService usersService;
-
     @Resource(name = "typeOfUseService")
     private TypeOfUseService typeOfUseService;
 
@@ -75,14 +72,15 @@ public class StudentController {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<EducProgram> educPrograms = educProgramService.getAll(user.getExtId());
         List<EducProgram> educProgramsDTO = new ArrayList<>();
-        List<Ticket> tickets = ticketService.getAllTicketsByUserId(user.getId());
+        List<Ticket> tickets = user.getTickets();
+        //Выбор образовательных прорамм,
         for (EducProgram educProgram : educPrograms) {
             if ((educProgram.getGroupNum().charAt(0) == '4' && educProgram.getDegree().equals("Бакалавр"))
                     || (educProgram.getGroupNum().charAt(0) == '6' && educProgram.getDegree().equals("Магистр"))
                     || (educProgram.getGroupNum().charAt(0) == '5' && educProgram.getDegree().equals("Специалист"))) {
-                Ticket result = tickets.stream()// Преобразуем в поток
-                        .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))    // Фильтруем
-                        .findAny()                                    // Если 'findAny', то возвращаем найденное
+                Ticket result = tickets.stream()
+                        .filter(x -> educProgram.getGroupNum().equals(x.getGroupNum()))
+                        .findAny()
                         .orElse(null);
                 if (result == null) {
                     educProgramsDTO.add(educProgram);

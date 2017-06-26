@@ -21,7 +21,6 @@ public class CustomStudentProvider implements AuthenticationProvider {
 
     protected static Logger logger = Logger.getLogger("controller");
 
-
     private final CustomUserService userService;
 
     @Autowired
@@ -36,18 +35,11 @@ public class CustomStudentProvider implements AuthenticationProvider {
             Ldap ldap = new Ldap(username, password);
             Abis abis = new Abis();
             String educIdString =abis.searchRecordXML(false, username);
-            logger.debug("вышло: "+educIdString);
             int educId = Integer.parseInt(educIdString);
-
-            logger.debug("Прошли try");
             CustomUser user = userService.loadStudentByUsername(username, educId);
-            logger.debug("1");
-            logger.debug("4");
             List<GrantedAuthority> authorityList = user.getAuthorities();
-            logger.debug("5");
             return new UsernamePasswordAuthenticationToken(user, password, authorityList);
         } catch (Exception e) {
-           logger.debug("ExpCustomStudentProvider");
             throw new BadCredentialsException("Wrong password.");
         }
         }

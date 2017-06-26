@@ -2,10 +2,7 @@ package org.barmaley.vkr.autentication;
 
 import org.apache.log4j.Logger;
 
-import org.barmaley.vkr.domain.EmployeeCopy;
-import org.barmaley.vkr.domain.Roles;
-import org.barmaley.vkr.domain.StudentCopy;
-import org.barmaley.vkr.domain.Users;
+import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.service.AuthenticationService;
 import org.barmaley.vkr.service.EducProgramService;
 import org.barmaley.vkr.service.RolesService;
@@ -83,7 +80,7 @@ public class UserDAOImpl {
                 user.setEnabled(true);
                 user.setRoles(roles);
                 user.setOrigin("StudentCopy");
-                user = usersService.addUser(user);
+                user = usersService.add(user);
             }
             customUser.setId(user.getId());
             customUser.setExtId(user.getExtId());
@@ -126,7 +123,7 @@ public class UserDAOImpl {
                 user.setEnabled(true);
                 user.setRoles(roles);
                 user.setOrigin("EmployeeCopy");
-                user = usersService.addUser(user);
+                user = usersService.add(user);
                 }
             customUser.setId(user.getId());
             customUser.setUsername(user.getExtId());
@@ -155,7 +152,7 @@ public class UserDAOImpl {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUser customUser = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Users user = usersService.getById(customUser.getId());
+        Users user = usersService.get(customUser.getId());
         customUser.setId(user.getId());
         customUser.setUsername(user.getExtId());
         customUser.setExtId(user.getExtId());

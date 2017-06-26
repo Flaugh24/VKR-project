@@ -2,7 +2,6 @@ package org.barmaley.vkr.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -62,7 +61,7 @@ public class Users implements Serializable {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "coordinator", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<CoordinatorRights> coordinatorRights = new HashSet<CoordinatorRights>();
+    private Set<CoordinatorRights> coordinatorRights;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

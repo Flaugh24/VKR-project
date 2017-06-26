@@ -3,9 +3,9 @@ package org.barmaley.vkr.pdf;
 import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.service.TicketService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -44,8 +44,8 @@ public class SpringMVCController {
 
     }
 
-    @RequestMapping(value = "/downloadPDF1")
-    public void downloadPDF1(@RequestParam(value = "ticketId") String ticketId, HttpServletRequest request1, HttpServletResponse response1) throws IOException {
+    @RequestMapping(value = "/ticket/{id}/recordSheet")
+    public void downloadPDF1(@PathVariable(value = "id") String ticketId, HttpServletRequest request1, HttpServletResponse response1) throws IOException {
 
         final ServletContext servletContext1 = request1.getSession().getServletContext();
         final File tempDirectory = (File) servletContext1.getAttribute("javax.servlet.context.tempdir");
@@ -73,8 +73,8 @@ public class SpringMVCController {
     }
 
 
-    @RequestMapping(value = "/downloadPDF2")
-    public void downloadPDF2(@RequestParam(value = "ticketId") String ticketId, HttpServletRequest request2, HttpServletResponse response2) throws IOException {
+    @RequestMapping(value = "/ticket/{id}/licenseAgreement")
+    public void downloadPDF2(@PathVariable(value = "id") String ticketId, HttpServletRequest request2, HttpServletResponse response2) throws IOException {
 
         final ServletContext servletContext1 = request2.getSession().getServletContext();
         final File tempDirectory = (File) servletContext1.getAttribute("javax.servlet.context.tempdir");

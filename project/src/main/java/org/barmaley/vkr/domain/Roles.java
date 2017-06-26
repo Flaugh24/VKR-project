@@ -2,6 +2,7 @@ package org.barmaley.vkr.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,10 +20,10 @@ public class Roles implements Serializable {
     @ManyToMany(mappedBy = "roles")
     private Set<Users> users;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ROLE_PERMISSIONS", joinColumns = @JoinColumn(name = "ROLES_ID"),
             inverseJoinColumns = @JoinColumn(name = "PERMISSIONS_ID"))
-    private Set<Permissions> permissions;
+    private List<Permissions> permissions;
 
     public Integer getId() {
         return id;
@@ -48,11 +49,11 @@ public class Roles implements Serializable {
         this.users = users;
     }
 
-    public Set<Permissions> getPermissions() {
+    public List<Permissions> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<Permissions> permissions) {
+    public void setPermissions(List<Permissions> permissions) {
         this.permissions = permissions;
     }
 }

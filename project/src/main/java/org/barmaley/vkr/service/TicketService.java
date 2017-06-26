@@ -62,20 +62,6 @@ public class TicketService {
         return query.list();
     }
 
-    public List getAllTicketForAct(String groupNum, Integer statusId, String actId) {
-
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery("FROM Ticket WHERE (groupNum = :groupNum AND status.id = :statusId) OR (groupNum = :groupNum AND act.id = :actId)" +
-                " ORDER BY Id"
-        );
-        query.setParameter("groupNum", groupNum);
-        query.setParameter("statusId", statusId);
-        query.setParameter("actId", actId);
-
-        return query.list();
-    }
-
     public List getAllTicketsByUserId(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
@@ -199,6 +185,7 @@ public class TicketService {
         existingTicket.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
         existingTicket.setYearOfPublic(ticket.getYearOfPublic());
         existingTicket.setHeadOfDepartment(ticket.getHeadOfDepartment());
+        existingTicket.setCuratorId(ticket.getCuratorId());
         existingTicket.setFullNameCurator(ticket.getFullNameCurator());
         existingTicket.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
         existingTicket.setPosOfCurator(ticket.getPosOfCurator());
@@ -212,26 +199,26 @@ public class TicketService {
         session.flush();
     }
 
-    //---------------------------------------------------------
-    public void editPdf(Ticket ticket) {
+    public void editPdf(Ticket ticket, boolean secret) {
 
         Session session = sessionFactory.getCurrentSession();
-
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-        logger.debug("filepdf "+ticket.getFilePdf());
-        logger.debug("filepdfsecret "+ticket.getFilePdfSecret());
-        existingTicket.setFilePdf(ticket.getFilePdf());
-            logger.debug("фыв");
+        if (!secret) {
+            existingTicket.setFilePdf(ticket.getFilePdf());
+        } else {
             existingTicket.setFilePdfSecret(ticket.getFilePdfSecret());
+        }
         session.save(existingTicket);
     }
 
-    public void editZip(Ticket ticket) {
+    public void editZip(Ticket ticket, boolean secret) {
         Session session = sessionFactory.getCurrentSession();
-
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-        existingTicket.setFileZip(ticket.getFileZip());
-        existingTicket.setFileZipSecret(ticket.getFileZipSecret());
+        if (!secret) {
+            existingTicket.setFileZip(ticket.getFileZip());
+        } else {
+            existingTicket.setFileZipSecret(ticket.getFileZipSecret());
+        }
         session.save(existingTicket);
     }
 

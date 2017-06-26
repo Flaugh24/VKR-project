@@ -1,6 +1,7 @@
 package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
+import org.barmaley.vkr.domain.CoordinatorRights;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,6 +35,22 @@ public class CoordinatorRightsService {
 
         return query.list();
 
+    }
+
+    public CoordinatorRights add(CoordinatorRights coordinatorRights) {
+        Session session = sessionFactory.getCurrentSession();
+        session.save(coordinatorRights);
+        session.flush();
+
+        return coordinatorRights;
+    }
+
+    public void delete(int id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        CoordinatorRights coordinatorRights = session.get(CoordinatorRights.class, id);
+
+        session.delete(coordinatorRights);
     }
 
 }

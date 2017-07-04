@@ -15,20 +15,10 @@ import java.util.List;
 @Transactional
 public class TicketService {
 
-    protected static Logger logger = Logger.getLogger("service");
+    protected static Logger logger = Logger.getLogger(TicketService.class);
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
-
-    public Integer getCountTicketsWithStatus(Integer statusId) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery("COUNT FROM Ticket WHERE status.id=" + statusId);
-
-
-        return (Integer) query.uniqueResult();
-
-    }
 
 
     public List getAll() {
@@ -46,6 +36,7 @@ public class TicketService {
         return query.list();
     }
 
+
     public List getAllTicketForCoordinator(String groupNum, Integer statusId) {
 
         Session session = sessionFactory.getCurrentSession();
@@ -59,96 +50,21 @@ public class TicketService {
         return query.list();
     }
 
-    public List getAllTicketsByUserId(Integer userId) {
-        Session session = sessionFactory.getCurrentSession();
-        // Create a Hibernate query (HQL)
-        // Создаем запрос
-        Query query = session.createQuery("FROM  Ticket WHERE user.id = " + userId + " ORDER BY Id");
-
-
-        // Retrieve all
-        // получаем всех
-        return query.list();
-    }
-
-    /**
-     * Retrieves a single person
-     * Получение одной персоны
-     */
+    //Запрос заявки по id
     public Ticket get(String id) {
-        // Retrieve session from Hibernate
-        // получаем сессию
         Session session = sessionFactory.getCurrentSession();
-
-        // Retrieve existing person first
-        // получаем персону по id
-
         return session.get(Ticket.class, id);
     }
 
-    public Integer getStatusId(String id) {
-/*        logger.debug("Deleting existing credit card");*/
-
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-
-        // Delete reference to foreign key credit card first
-        // We need a SQL query instead of HQL query here to access the third table
-        Query query = session.createSQLQuery("SELECT STATUS FROM TICKET " +
-                "WHERE ID='" + id + "'");
-
-        return (Integer) query.uniqueResult();
-    }
-
-    public Integer getDocumentTypeId(String id) {
-/*        logger.debug("Deleting existing credit card");*/
-
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-
-        // Delete reference to foreign key credit card first
-        // We need a SQL query instead of HQL query here to access the third table
-        Query query = session.createSQLQuery("SELECT DOCUMENT_TYPE FROM TICKET " +
-                "WHERE ID='" + id + "'");
-
-        return (Integer) query.uniqueResult();
-    }
-
-    public Integer getTypeOfUse(String id) {
-/*        logger.debug("Deleting existing credit card");*/
-
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-
-        // Delete reference to foreign key credit card first
-        // We need a SQL query instead of HQL query here to access the third table
-        Query query = session.createSQLQuery("SELECT TYPE_OF_USE FROM TICKET " +
-                "WHERE ID='" + id + "'");
-
-        return (Integer) query.uniqueResult();
-    }
-
-    /**
-     * Adds a new person
-     * Добавление персоны
-     */
-
+    //Добавление новой заявки
     public String add(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
         session.save(ticket);
         session.flush();
-
         return ticket.getId();
     }
 
-    public void delete(String id) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Ticket ticket = session.get(Ticket.class, id);
-
-        session.delete(ticket);
-    }
-
+    //Редактирование заявки
     public void edit(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 
@@ -196,6 +112,7 @@ public class TicketService {
         session.flush();
     }
 
+    //Изменение ссылок на файлы pdf
     public void editPdf(Ticket ticket, boolean secret) {
 
         Session session = sessionFactory.getCurrentSession();
@@ -208,6 +125,8 @@ public class TicketService {
         session.save(existingTicket);
     }
 
+
+    //Изменение ссылок на файлы zip
     public void editZip(Ticket ticket, boolean secret) {
         Session session = sessionFactory.getCurrentSession();
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
@@ -219,6 +138,7 @@ public class TicketService {
         session.save(existingTicket);
     }
 
+    //Изменение акта
     public void editAct(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 

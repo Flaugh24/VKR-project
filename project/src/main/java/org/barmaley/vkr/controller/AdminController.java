@@ -111,7 +111,7 @@ public class AdminController {
             user.setEnabled(true);
             user.setRoles(roles);
             user.setOrigin("EmployeeCopy");
-            user = usersService.addUser(user);
+            user = usersService.add(user);
         }
         List<String> coordinatorRightsList = new ArrayList<>();
         CheckBoxesDTO dto = new CheckBoxesDTO();
@@ -131,7 +131,7 @@ public class AdminController {
     public String postCoordinatorRightsChange(@PathVariable("id") int coordiantorId,
                                               CheckBoxesDTO dto, Model model) {
 
-        Users user = usersService.getById(coordiantorId);
+        Users user = usersService.get(coordiantorId);
         List<String> groupsNum = dto.getCheckedValsStr();
         Set<CoordinatorRights> coordinatorRightsList = user.getCoordinatorRights();
         for (String groupNum : groupsNum) {

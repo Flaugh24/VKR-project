@@ -1,5 +1,6 @@
 package org.barmaley.vkr.tool;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -11,12 +12,15 @@ import java.nio.file.Paths;
 
 public class FileTool {
 
+
+    private final Logger logger = Logger.getLogger(FileTool.class);
     private final String ROOT_FOLDERS = "/home/gagarkin/data/public/";
     private final String ROOT_FOLDERS_TRADE_SECRET = "/home/gagarkin/data/secret/";
     private final String EXPDF = "pdf";
     private final String EXZIP = "zip";
 
 
+    //валидация файла
     public boolean checkFile(MultipartFile file) {
         if (!file.isEmpty()) {
             String ext = getFileExtension(file);
@@ -27,12 +31,11 @@ public class FileTool {
         return false;
     }
 
-    public String upload(MultipartFile file, String ticketId, boolean secret) throws IOException {
-
+    //сохранение файла
+    public String store(MultipartFile file, String ticketId, boolean secret) throws IOException {
         String extension = getFileExtension(file);
         String fileName = ticketId + "." + extension;
         String folders;
-
         if (!secret) {
             Path path = Paths.get(ROOT_FOLDERS + fileName);
             Files.copy(file.getInputStream(), path);
@@ -42,15 +45,14 @@ public class FileTool {
             Files.copy(file.getInputStream(), path);
             folders = path.toString();
         }
-
         return folders;
     }
 
+    //удаление файла
     public void delete(String path) {
         File file = new File(path);
         file.delete();
     }
-
 
     //метод определения расширения файла
     public String getFileExtension(MultipartFile file) {

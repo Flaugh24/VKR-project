@@ -19,23 +19,21 @@ import java.util.List;
 @Transactional
 public class AuthenticationService {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(AuthenticationService.class);
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
-    public StudentCopy getStudentCopy(String name) {
+    public EmployeeCopy getEmployeeByFIO(String like) {
 
         Session session = sessionFactory.getCurrentSession();
 
-        return session.get(StudentCopy.class, name);
-    }
+        Query query = session.createQuery("FROM EmployeeCopy where concat(surname,' ', firstName,' ', secondName) like :fioLike");
 
-    public EmployeeCopy getEmployeeCopy(String name) {
+        session.flush();
+        query.setParameter("fioLike", "%" + like + "%");
 
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.get(EmployeeCopy.class, name);
+        return (EmployeeCopy) query.uniqueResult();
     }
 
     public List<GrantedAuthority> getAuthorities(Integer userId) {
@@ -43,7 +41,6 @@ public class AuthenticationService {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("SELECT P.name FROM Permissions AS P JOIN P.roles AS R " +
-
                 "                                             LEFT OUTER JOIN R.users AS U" +
                 "                                             WHERE U.id=" + userId);
 
@@ -55,6 +52,4 @@ public class AuthenticationService {
 
         return grantedAuthorities;
     }
-
-
 }

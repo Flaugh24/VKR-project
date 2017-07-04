@@ -92,14 +92,14 @@ public class CoordinatorController {
                     if (educProgram.getGroupNum().equals(coordinatorRights.getGroupNum())) {
                         dto.setEducProgram(educProgram);
                     }
+                    lazyStudentsDTOList.add(dto);
                 }
-                lazyStudentsDTOList.add(dto);
 
+                ticketsNew.addAll(ticketsNewList);
+                ticketsInCheck.addAll(ticketsCheckList);
+                ticketsReady.addAll(ticketsReadyList);
             }
-            ticketsNew.addAll(ticketsNewList);
-            ticketsInCheck.addAll(ticketsCheckList);
-            ticketsReady.addAll(ticketsReadyList);
-        }
+         }
 
         countTicketsNew = ticketsNew.size();
         countTicketsInCheck = ticketsInCheck.size();
@@ -140,7 +140,7 @@ public class CoordinatorController {
         user.setSecondName(studentCopy.getSecondName());
         user.setEnabled(true);
         user.setRoles(roles);
-        user = usersService.addUser(user);
+        user = usersService.add(user);
 
         Ticket ticket = new Ticket();
         String degree = educProgram.getDegree();
@@ -156,7 +156,7 @@ public class CoordinatorController {
                 break;
         }
         ticket.setDateCreationStart(new Date());
-        ticket.setUser(usersService.getById(user.getId()));
+        ticket.setUser(usersService.get(user.getId()));
         ticket.setStatus(statusService.get(3));
         ticket.setTypeOfUse(typeOfUseService.get(1));
         ticket.setGroupNum(educProgram.getGroupNum());
@@ -197,7 +197,7 @@ public class CoordinatorController {
     public String getEditAct(@PathVariable(value = "id") String actId, ModelMap model, ActDTO dto) {
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Act act = actService.get(actId);
-        Set<CoordinatorRights> coordinatorRightsList = user.getCoordinatorRights();
+        List<CoordinatorRights> coordinatorRightsList = user.getCoordinatorRights();
         List<Ticket> tickets = act.getTickets();
         List<String> preCheckedVals = new ArrayList<>();
         for (CoordinatorRights coordinatorRights : coordinatorRightsList) {

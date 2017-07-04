@@ -11,10 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * Service for processing Persons
- * Сервис для класса Person
- */
 @Service("ticketService")
 @Transactional
 public class TicketService {
@@ -28,6 +24,7 @@ public class TicketService {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("COUNT FROM Ticket WHERE status.id=" + statusId);
+
 
         return (Integer) query.uniqueResult();
 

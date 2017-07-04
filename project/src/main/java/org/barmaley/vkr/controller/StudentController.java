@@ -191,7 +191,6 @@ public class StudentController {
                            ModelMap model, @RequestParam(value = "button") String button) {
 
         if (!button.equals("save") && bindingResult.hasErrors()) {
-            logger.info(bindingResult.getAllErrors());
             boolean perm_check_tickets = permissionTool.checkPermission("PERM_CHECK_TICKETS");
             boolean perm_check_all_tickets = permissionTool.checkPermission("PERM_CHECK_ALL_TICKETS");
             boolean disabledEdit = true;
@@ -213,7 +212,6 @@ public class StudentController {
         ticket.setKeyWords(ticket.getKeyWords().replace("#,", ""));
         ticket.setKeyWordsEng(ticket.getKeyWordsEng().replace("#,", ""));
 
-        logger.info(ticket.getCuratorId());
         switch (button) {
             case "send":
                 ticket.setStatus(statusService.get(2));

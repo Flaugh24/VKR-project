@@ -1,6 +1,5 @@
 package org.barmaley.vkr.tool;
 
-import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -11,8 +10,6 @@ import java.nio.file.Paths;
 
 
 public class FileTool {
-
-    private final Logger logger = Logger.getLogger(FileTool.class);
 
     private final String ROOT_FOLDERS = "/home/gagarkin/data/public/";
     private final String ROOT_FOLDERS_TRADE_SECRET = "/home/gagarkin/data/secret/";

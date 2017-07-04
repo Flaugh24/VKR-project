@@ -287,7 +287,8 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+++
 <script src="<c:url value="/resources/js/uploadFile.js"/> "></script>
 <script src="<c:url value="/resources/js/libs/jquery.autocomplete.min.js"/> "></script>
 
@@ -315,6 +316,7 @@
         zIndex: 9999, // z-index списка
         deferRequestBy: 300, // Задержка запроса (мсек), на случай, если мы не хотим слать миллион запросов, пока пользователь печатает. Я обычно ставлю 300.
         transformResult: function (response) {
+            console.log("12312312");
             return {
 
                 suggestions: $.map($.parseJSON(response), function (item) {

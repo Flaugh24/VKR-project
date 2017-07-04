@@ -115,6 +115,8 @@ public class MainController {
     @RequestMapping(value = "/getEmployee", method = RequestMethod.GET)
     public @ResponseBody
     List<EmployeeCopy> getCurator(@RequestParam String fullName) {
+
+        logger.info("123123123");
         return (List<EmployeeCopy>) employeeCopyService.getEmployeeByFullName(fullName);
 
     }

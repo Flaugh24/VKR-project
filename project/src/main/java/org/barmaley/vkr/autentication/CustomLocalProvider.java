@@ -1,8 +1,6 @@
 package org.barmaley.vkr.autentication;
 
 import org.apache.log4j.Logger;
-import org.barmaley.vkr.domain.Users;
-import org.barmaley.vkr.service.StudentCopyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 
@@ -30,10 +29,10 @@ public class CustomLocalProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
-        CustomUser user = new CustomUser();
+        CustomUser user;
         try{
             user = userService.loadUserByUsername(username);
-            if(user!=null || user.getUsername().equalsIgnoreCase(username)){
+            if (user != null && user.getUsername().equalsIgnoreCase(username)) {
                 if(password.equals(user.getPassword())){
                     logger.info("User detected!");
                 }
@@ -42,7 +41,7 @@ public class CustomLocalProvider implements AuthenticationProvider {
             try {
                 logger.info("User undetected!");
                 user = userService.loadStudentByUsername(username, 0);
-                if(user!=null || user.getUsername().equalsIgnoreCase(username)){
+                if (user != null && user.getUsername().equalsIgnoreCase(username)) {
                     if(password.equals(user.getPassword())){
                         logger.info("Student detected!");
                     }
@@ -52,7 +51,7 @@ public class CustomLocalProvider implements AuthenticationProvider {
                 try{
                     logger.info("Student undetected!");
                     user = userService.loadEployeeByUsername(username,"ИИИ");
-                    if(user!=null || user.getUsername().equalsIgnoreCase(username)){
+                    if (user != null && user.getUsername().equalsIgnoreCase(username)) {
                         if(password.equals(user.getPassword())){
                             logger.info("Employee detected!");
                         }
@@ -60,32 +59,7 @@ public class CustomLocalProvider implements AuthenticationProvider {
                 }catch (Exception e2){throw new BadCredentialsException("User,Student or Employee not found.");}
             }
         }
-
-
-//        if(user!=null || user.getUsername().equalsIgnoreCase(username)){
-//            if(password.equals(user.getPassword())){
-//                logger.info("Student detected!");
-//            }
-//        }else{
-//            user = userService.loadStudentByUsername(username, 0);
-//
-//            if(user!=null || user.getUsername().equalsIgnoreCase(username)){
-//                if(password.equals(user.getPassword())){
-//                    logger.info("Employee detected!");
-//                }
-//            }else{
-//
-//                if(user!=null || user.getUsername().equalsIgnoreCase(username)){
-//                    if(password.equals(user.getPassword())){
-//                        logger.info("User detected!");
-//                    }
-//                    user = userService.loadEployeeByUsername(username,"ИИИ");
-//                }else{
-//                    throw new BadCredentialsException("User,Student or Employee not found.");
-//                }
-//            }
-//        }
-        List<GrantedAuthority> authorityList = user.getAuthorities();
+        List<GrantedAuthority> authorityList = user != null ? user.getAuthorities() : null;
         return new UsernamePasswordAuthenticationToken(user, password, authorityList);
     }
 

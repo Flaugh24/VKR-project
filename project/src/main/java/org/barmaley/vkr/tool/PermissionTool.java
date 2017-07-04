@@ -3,11 +3,9 @@ package org.barmaley.vkr.tool;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("permissionTool")
 public class PermissionTool {
 
     protected static Logger logger = Logger.getLogger("controller");

@@ -14,26 +14,27 @@ import java.util.List;
 @Service("studentCopyService")
 @Transactional
 public class StudentCopyService {
-    protected static Logger logger = Logger.getLogger("service");
+    protected static Logger logger = Logger.getLogger(StudentCopyService.class);
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
+    //Запрос студента
     public StudentCopy get(String username) {
-        logger.debug("Editing existing studentCopy");
 
         Session session = sessionFactory.getCurrentSession();
 
         return session.get(StudentCopy.class, username);
     }
 
+    //Запрос студентов ни разу не входиших в систему
     public List getStudentByEducProgram(String groupNum) {
 
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("FROM StudentCopy as SC LEFT JOIN FETCH SC.educPrograms as EP where EP.groupNum = '" + groupNum +
-                "' AND SC.username NOT IN( SELECT extId FROM Users) ORDER BY surname");
-
+        Query query = session.createQuery("FROM StudentCopy as SC LEFT JOIN FETCH SC.educPrograms as EP where EP.groupNum = :groupNum" +
+                " AND SC.username NOT IN( SELECT extId FROM Users) ORDER BY surname");
+        query.setParameter("groupNum", groupNum);
         return query.list();
     }
 

@@ -11,27 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * Service for processing Persons
- * Сервис для класса Person
- */
 @Service("ticketService")
 @Transactional
 public class TicketService {
 
-    protected static Logger logger = Logger.getLogger("service");
+    protected static Logger logger = Logger.getLogger(TicketService.class);
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
-
-    public Integer getCountTicketsWithStatus(Integer statusId) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery("COUNT FROM Ticket WHERE status.id=" + statusId);
-
-        return (Integer) query.uniqueResult();
-
-    }
 
 
     public List getAll() {
@@ -49,6 +36,7 @@ public class TicketService {
         return query.list();
     }
 
+
     public List getAllTicketForCoordinator(String groupNum, Integer statusId) {
 
         Session session = sessionFactory.getCurrentSession();
@@ -62,110 +50,21 @@ public class TicketService {
         return query.list();
     }
 
-    public List getAllTicketForAct(String groupNum, Integer statusId, String actId) {
-
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery("FROM Ticket WHERE (groupNum = :groupNum AND status.id = :statusId) OR (groupNum = :groupNum AND act.id = :actId)" +
-                " ORDER BY Id"
-        );
-        query.setParameter("groupNum", groupNum);
-        query.setParameter("statusId", statusId);
-        query.setParameter("actId", actId);
-
-        return query.list();
-    }
-
-    public List getAllTicketsByUserId(Integer userId) {
-        Session session = sessionFactory.getCurrentSession();
-        // Create a Hibernate query (HQL)
-        // Создаем запрос
-        Query query = session.createQuery("FROM  Ticket WHERE user.id = " + userId + " ORDER BY Id");
-
-
-        // Retrieve all
-        // получаем всех
-        return query.list();
-    }
-
-    /**
-     * Retrieves a single person
-     * Получение одной персоны
-     */
+    //Запрос заявки по id
     public Ticket get(String id) {
-        // Retrieve session from Hibernate
-        // получаем сессию
         Session session = sessionFactory.getCurrentSession();
-
-        // Retrieve existing person first
-        // получаем персону по id
-
         return session.get(Ticket.class, id);
     }
 
-    public Integer getStatusId(String id) {
-/*        logger.debug("Deleting existing credit card");*/
-
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-
-        // Delete reference to foreign key credit card first
-        // We need a SQL query instead of HQL query here to access the third table
-        Query query = session.createSQLQuery("SELECT STATUS FROM TICKET " +
-                "WHERE ID='" + id + "'");
-
-        return (Integer) query.uniqueResult();
-    }
-
-    public Integer getDocumentTypeId(String id) {
-/*        logger.debug("Deleting existing credit card");*/
-
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-
-        // Delete reference to foreign key credit card first
-        // We need a SQL query instead of HQL query here to access the third table
-        Query query = session.createSQLQuery("SELECT DOCUMENT_TYPE FROM TICKET " +
-                "WHERE ID='" + id + "'");
-
-        return (Integer) query.uniqueResult();
-    }
-
-    public Integer getTypeOfUse(String id) {
-/*        logger.debug("Deleting existing credit card");*/
-
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-
-        // Delete reference to foreign key credit card first
-        // We need a SQL query instead of HQL query here to access the third table
-        Query query = session.createSQLQuery("SELECT TYPE_OF_USE FROM TICKET " +
-                "WHERE ID='" + id + "'");
-
-        return (Integer) query.uniqueResult();
-    }
-
-    /**
-     * Adds a new person
-     * Добавление персоны
-     */
-
+    //Добавление новой заявки
     public String add(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
         session.save(ticket);
         session.flush();
-
         return ticket.getId();
     }
 
-    public void delete(String id) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Ticket ticket = session.get(Ticket.class, id);
-
-        session.delete(ticket);
-    }
-
+    //Редактирование заявки
     public void edit(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 
@@ -195,11 +94,11 @@ public class TicketService {
         if (ticket.getDateReturn() != null) {
             existingTicket.setDateReturn(ticket.getDateReturn());
         }
-        //-------------------------------------------------------------------
         existingTicket.setPlaceOfPublic(ticket.getPlaceOfPublic());
         existingTicket.setPlaceOfPublicEng(ticket.getPlaceOfPublicEng());
         existingTicket.setYearOfPublic(ticket.getYearOfPublic());
         existingTicket.setHeadOfDepartment(ticket.getHeadOfDepartment());
+        existingTicket.setCuratorId(ticket.getCuratorId());
         existingTicket.setFullNameCurator(ticket.getFullNameCurator());
         existingTicket.setFullNameCuratorEng(ticket.getFullNameCuratorEng());
         existingTicket.setPosOfCurator(ticket.getPosOfCurator());
@@ -209,34 +108,37 @@ public class TicketService {
         if (ticket.getAct() != null) {
             existingTicket.setAct(ticket.getAct());
         }
-        //-------------------------------------------------------------------
         session.save(existingTicket);
         session.flush();
     }
 
-    //---------------------------------------------------------
-    public void editPdf(Ticket ticket) {
+    //Изменение ссылок на файлы pdf
+    public void editPdf(Ticket ticket, boolean secret) {
 
         Session session = sessionFactory.getCurrentSession();
-
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-        logger.debug("filepdf "+ticket.getFilePdf());
-        logger.debug("filepdfsecret "+ticket.getFilePdfSecret());
-        existingTicket.setFilePdf(ticket.getFilePdf());
-            logger.debug("фыв");
+        if (!secret) {
+            existingTicket.setFilePdf(ticket.getFilePdf());
+        } else {
             existingTicket.setFilePdfSecret(ticket.getFilePdfSecret());
+        }
         session.save(existingTicket);
     }
 
-    public void editZip(Ticket ticket) {
+
+    //Изменение ссылок на файлы zip
+    public void editZip(Ticket ticket, boolean secret) {
         Session session = sessionFactory.getCurrentSession();
-
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-        existingTicket.setFileZip(ticket.getFileZip());
-        existingTicket.setFileZipSecret(ticket.getFileZipSecret());
+        if (!secret) {
+            existingTicket.setFileZip(ticket.getFileZip());
+        } else {
+            existingTicket.setFileZipSecret(ticket.getFileZipSecret());
+        }
         session.save(existingTicket);
     }
 
+    //Изменение акта
     public void editAct(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 

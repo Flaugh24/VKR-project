@@ -6,11 +6,11 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/b.."
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    <!— Optional theme —>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/b.."
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css" />"/>
@@ -32,16 +32,21 @@
                 </c:if>
                 <c:if test="${not empty actListGet}">
                     <li role="presentation"><a href="#actListGet" aria-controls="actListGet" role="tab"
-                                               data-toggle="tab">Просмотренные(<c:out value="${countActsInCheck}"/>)</a></li>
+                                               data-toggle="tab">Просмотренные(<c:out value="${countActsInCheck}"/>)</a>
+                    </li>
                 </c:if>
 
                 <c:if test="${not empty actListReadyConvert}">
-                    <li role="presentation"><a href="#actListReadyConvert" aria-controls="actListReadyConvert" role="tab"
-                                               data-toggle="tab">Конвертация(<c:out value="${countActsConvert}"/>)</a></li>
+                    <li role="presentation"><a href="#actListReadyConvert" aria-controls="actListReadyConvert"
+                                               role="tab"
+                                               data-toggle="tab">Конвертация(<c:out value="${countActsConvert}"/>)</a>
+                    </li>
                 </c:if>
                 <c:if test="${not empty actListReadyLibrary}">
-                    <li role="presentation"><a href="#actListReadyLibrary" aria-controls="actListReadyLibrary" role="tab"
-                                               data-toggle="tab">Готовы к передаче(<c:out value="${countActsLibrary}"/>)</a></li>
+                    <li role="presentation"><a href="#actListReadyLibrary" aria-controls="actListReadyLibrary"
+                                               role="tab"
+                                               data-toggle="tab">Готовы к передаче(<c:out
+                            value="${countActsLibrary}"/>)</a></li>
                 </c:if>
             </ul>
             <div class="tab-content">
@@ -86,16 +91,15 @@
 
                 </c:if>
 
-
-
-
                 <c:if test="${not empty actListGet}">
                     <div role="tabpanel" class="tab-pane" id="actListGet">
                         <table class="table table-striped table-bordered" style="text-align: center">
                             <thead>
                             <tr>
                                 <th style="vertical-align: middle; text-align: center">№</th>
-                                <th style="vertical-align: middle; text-align: center">№ Акта</th>
+                                <th
+                                        style="vertical-align: middle; text-align: center">№ Акта
+                                </th>
                                 <th style="vertical-align: middle; text-align: center">Дата создания</th>
                                 <th style="vertical-align: middle; text-align: center">Институт</th>
                                 <th style="vertical-align: middle; text-align: center">Кафедра</th>
@@ -128,7 +132,6 @@
                         </table>
                     </div>
                 </c:if>
-
 
                 <c:if test="${not empty actListReadyConvert}">
                     <div role="tabpanel" class="tab-pane" id="actListReadyConvert">
@@ -190,7 +193,8 @@
                                 <tr>
                                     <td><a href="${checkTicket}" class="editUrl" style="display: block"><%=i%>
                                     </a></td>
-                                    <td><a href="${checkTicket}" class="editUrl" style="display: block"><c:out
+                                    <td><a href="${checkTicket}" class="editUrl" style="display:
+block"><c:out
                                             value="${act.id}"/></a></td>
                                     <td><a href="${checkTicket}" class="editUrl" style="display: block"><fmt:formatDate
                                             pattern="dd.MM.yyyy" value="${act.dateOfCreate}"/></a></td>
@@ -208,8 +212,6 @@
                         </table>
                     </div>
                 </c:if>
-
-
 
             </div>
 

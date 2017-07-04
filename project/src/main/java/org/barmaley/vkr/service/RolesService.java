@@ -51,7 +51,6 @@ public class RolesService {
     }
 
     public void edit(Roles role) {
-        logger.debug("edit Role");
         Session session = sessionFactory.getCurrentSession();
 
         Roles existingRole = session.get(Roles.class, role.getId());

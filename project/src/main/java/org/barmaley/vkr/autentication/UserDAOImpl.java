@@ -1,9 +1,11 @@
 package org.barmaley.vkr.autentication;
 
 import org.apache.log4j.Logger;
-
 import org.barmaley.vkr.domain.*;
-import org.barmaley.vkr.service.*;
+import org.barmaley.vkr.service.AuthenticationService;
+import org.barmaley.vkr.service.EducProgramService;
+import org.barmaley.vkr.service.RolesService;
+import org.barmaley.vkr.service.UsersService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,12 +31,6 @@ public class UserDAOImpl {
 
     @Resource(name = "educProgramService")
     private EducProgramService educProgramService;
-
-    @Resource(name = "studentCopyService")
-    private StudentCopyService studentCopyService;
-
-    @Resource(name = "employeeCopyService")
-    private EmployeeCopyService employeeCopyService;
 
 
     public CustomUser loadUserByUsername(final String username) {
@@ -65,16 +61,10 @@ public class UserDAOImpl {
 
 
     public CustomUser loadStudentByUsername(final String username, final int educId) {
-       StudentCopy studentCopy = new StudentCopy();
-        if(educId==0){
-           studentCopy =studentCopyService.get(username);
-       }else{
-           EducProgram educProgram=  educProgramService.get(educId);
-           studentCopy = educProgram.getStudent();
-       }
+        EducProgram educProgram = educProgramService.get(educId);
 
         CustomUser customUser = new CustomUser();
-
+        StudentCopy studentCopy = educProgram.getStudent();
         if (studentCopy != null) {
             Users user = new Users();
             Set<Roles> roles = new HashSet<>();
@@ -89,7 +79,7 @@ public class UserDAOImpl {
                 user.setEnabled(true);
                 user.setRoles(roles);
                 user.setOrigin("StudentCopy");
-                user = usersService.addUser(user);
+                user = usersService.add(user);
             }
             customUser.setId(user.getId());
             customUser.setExtId(user.getExtId());
@@ -116,14 +106,8 @@ public class UserDAOImpl {
 
     public CustomUser loadEmployeeByUsername(final String username, final String fullname) {
 
-        EmployeeCopy employeeCopy = new EmployeeCopy();
-        if (fullname.equals("ИИИ")){
-            employeeCopy = employeeCopyService.get(username);
-        }else{
-            employeeCopy = authenticationService.getEmployeeByFIO(fullname);
-        }
         CustomUser customUser = new CustomUser();
-
+        EmployeeCopy employeeCopy = authenticationService.getEmployeeByFIO(fullname);
         if (employeeCopy != null) {
             Users user = new Users();
             Set<Roles> roles = new HashSet<>();
@@ -138,7 +122,7 @@ public class UserDAOImpl {
                 user.setEnabled(true);
                 user.setRoles(roles);
                 user.setOrigin("EmployeeCopy");
-                user = usersService.addUser(user);
+                user = usersService.add(user);
                 }
             customUser.setId(user.getId());
             customUser.setUsername(user.getExtId());
@@ -167,7 +151,7 @@ public class UserDAOImpl {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUser customUser = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Users user = usersService.getById(customUser.getId());
+        Users user = usersService.get(customUser.getId());
         customUser.setId(user.getId());
         customUser.setUsername(user.getExtId());
         customUser.setExtId(user.getExtId());

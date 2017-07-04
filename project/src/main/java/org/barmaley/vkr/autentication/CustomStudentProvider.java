@@ -13,14 +13,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.naming.NamingException;
 import java.util.List;
 
 @Component
 public class CustomStudentProvider implements AuthenticationProvider {
 
-    protected static Logger logger = Logger.getLogger(CustomStudentProvider.class);
-
+    protected static Logger logger = Logger.getLogger("controller");
 
     private final CustomUserService userService;
 
@@ -34,24 +32,16 @@ public class CustomStudentProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
         try {
             Ldap ldap = new Ldap(username, password);
-            logger.info("ldap_end");
             Abis abis = new Abis();
-            String educIdString =abis.searchRecordXML(false, username);
-            logger.debug("вышел: "+educIdString);
+            String educIdString = abis.searchRecordXML(false, username);
             int educId = Integer.parseInt(educIdString);
-
-            logger.debug("Прошли try");
             CustomUser user = userService.loadStudentByUsername(username, educId);
-            logger.debug("1");
-            logger.debug("4");
             List<GrantedAuthority> authorityList = user.getAuthorities();
-            logger.debug("5");
             return new UsernamePasswordAuthenticationToken(user, password, authorityList);
         } catch (Exception e) {
-           logger.debug("ExpCustomStudentProvider");
             throw new BadCredentialsException("Wrong password.");
         }
-        }
+    }
 
     public boolean supports(Class<?> arg0) {
         return true;

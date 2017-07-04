@@ -2,7 +2,6 @@ package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.autentication.UserDAOImpl;
-import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.Users;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,16 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
-
-//import javax.transaction.Transaction;
 
 @Service("usersService")
 @Transactional
 public class UsersService {
 
-    protected static Logger logger = Logger.getLogger("service");
+    private final Logger logger = Logger.getLogger(UsersService.class);
+
     private final UserDAOImpl userDAO;
+
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
@@ -30,16 +28,38 @@ public class UsersService {
         this.userDAO = userDAO;
     }
 
-    public Users addUser(Users user) {
+    //Запрос пользователя по id
+    public Users get(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Users.class, id);
+    }
 
+    //Запрос пользователя по ExtId
+    public Users getByExtId(String extId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM Users WHERE extId= :extId ");
+        query.setParameter("extId", extId);
+        return (Users) query.uniqueResult();
+    }
+
+    //Запрос пользователя по Username
+    public Users getByUsername(String username) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM Users WHERE username= :username ");
+        query.setParameter("username", username);
+        return (Users) query.uniqueResult();
+    }
+
+    //Добавление нового пользователя
+    public Users add(Users user) {
         Session session = sessionFactory.getCurrentSession();
         session.save(user);
         session.flush();
-
         return user;
     }
 
-    public void editUser(Users user) {
+    //Редактирование пользователя
+    public void edit(Users user) {
 
         Session session = sessionFactory.getCurrentSession();
         Users existingUser = session.get(Users.class, user.getId());
@@ -50,43 +70,8 @@ public class UsersService {
         existingUser.setSecondNameEng(user.getSecondNameEng());
         session.save(existingUser);
 
+        //Обновление Authentication
         userDAO.newAuthentication();
 
     }
-
-    public Users getByUsername(String username) {
-        Session session = sessionFactory.getCurrentSession();
-        logger.debug("Get user by extId");
-        Query query = session.createQuery("FROM Users WHERE username='" + username + "'");
-        return (Users) query.uniqueResult();
-    }
-
-    public Users getById(Integer id) {
-        Session session = sessionFactory.getCurrentSession();
-        logger.debug("Get user by id");
-        return session.get(Users.class, id);
-    }
-
-    //Метод для поиска людей, которые учатся в 1 институте
-    public List getInstitute(String institute) {
-        Session session = sessionFactory.getCurrentSession();
-        logger.debug("Get users by institute");
-        Query query = session.createQuery("FROM StudentCopy WHERE institute = :paramName");
-        query.setParameter("paramName", institute);
-
-        return query.list();
-    }
-
-
-    //Метод для поиска людей, которые учатся в 1 институте, в 1 кафедре, в 1 группе
-    public List getInstituteAndDirection(String institute, String direction) {
-        Session session = sessionFactory.getCurrentSession();
-        logger.debug("Get users by institute");
-        Query query = session.createQuery("FROM StudentCopy WHERE institute = :paramInstitute AND direction = :paramDirection");
-        query.setParameter("paramInstitute", institute);
-        query.setParameter("paramDirection", direction);
-
-        return query.list();
-    }
-
 }

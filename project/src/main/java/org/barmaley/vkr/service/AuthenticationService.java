@@ -2,7 +2,6 @@ package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.EmployeeCopy;
-import org.barmaley.vkr.domain.StudentCopy;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -19,17 +18,10 @@ import java.util.List;
 @Transactional
 public class AuthenticationService {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(AuthenticationService.class);
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
-
-    public StudentCopy getStudentCopy(String name) {
-
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.get(StudentCopy.class, name);
-    }
 
     public EmployeeCopy getEmployeeByFIO(String like) {
 
@@ -43,19 +35,11 @@ public class AuthenticationService {
         return (EmployeeCopy) query.uniqueResult();
     }
 
-    public EmployeeCopy getEmployeeCopy(String name) {
-
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.get(EmployeeCopy.class, name);
-    }
-
     public List<GrantedAuthority> getAuthorities(Integer userId) {
 
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("SELECT P.name FROM Permissions AS P JOIN P.roles AS R " +
-
                 "                                             LEFT OUTER JOIN R.users AS U" +
                 "                                             WHERE U.id=" + userId);
 
@@ -67,6 +51,4 @@ public class AuthenticationService {
 
         return grantedAuthorities;
     }
-
-
 }

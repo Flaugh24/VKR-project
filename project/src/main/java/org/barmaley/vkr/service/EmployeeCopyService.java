@@ -29,14 +29,14 @@ public class EmployeeCopyService {
     }
 
 
-    public List getEmployeeByFIO(String like) {
+    public List getEmployeeByFullName(String fullName) {
 
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("FROM EmployeeCopy where concat(surname,' ', firstName,' ', secondName) like :fioLike");
+        Query query = session.createQuery("FROM EmployeeCopy where concat(surname,' ', firstName,' ', secondName) like :fullName");
 
         session.flush();
-        query.setParameter("fioLike", "%" + like + "%");
+        query.setParameter("fullName", "%" + fullName + "%");
 
         return query.list();
     }

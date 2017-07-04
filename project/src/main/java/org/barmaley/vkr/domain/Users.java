@@ -2,15 +2,13 @@ package org.barmaley.vkr.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 @Entity
 @Table(name = "USERS")
 public class Users implements Serializable {
-
-    private static final long serialVersionUID = -5527566248002296042L;
 
     @Id
     @Column(name = "ID")
@@ -62,11 +60,10 @@ public class Users implements Serializable {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "coordinator", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<CoordinatorRights> coordinatorRights = new HashSet<CoordinatorRights>();
+    private List<CoordinatorRights> coordinatorRights;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Ticket> tickets;
 
     public Integer getId() {
         return id;
@@ -188,11 +185,19 @@ public class Users implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Set<CoordinatorRights> getCoordinatorRights() {
+    public List<CoordinatorRights> getCoordinatorRights() {
         return coordinatorRights;
     }
 
-    public void setCoordinatorRights(Set<CoordinatorRights> coordinatorRights) {
+    public void setCoordinatorRights(List<CoordinatorRights> coordinatorRights) {
         this.coordinatorRights = coordinatorRights;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 }

@@ -13,13 +13,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.naming.NamingException;
 import java.util.List;
 
 @Component
 public class CustomEmployeeProvider implements AuthenticationProvider {
 
-    protected static Logger logger = Logger.getLogger(CustomProvider.class);
+    protected final Logger logger = Logger.getLogger(CustomProvider.class);
 
     private final CustomUserService userService;
 
@@ -36,27 +35,17 @@ public class CustomEmployeeProvider implements AuthenticationProvider {
         try {
             Ldap ldap = new Ldap(username, password);
             Abis abis = new Abis();
-            String fullname =abis.searchRecordXML(true,username);
-            logger.debug("вышло: "+fullname);
+            String fullname = abis.searchRecordXML(true, username);
 
-        CustomUser user = userService.loadEployeeByUsername(username,fullname);
+            CustomUser user = userService.loadEployeeByUsername(username, fullname);
 
-        List<GrantedAuthority> authorityList = user.getAuthorities();
-        return new UsernamePasswordAuthenticationToken(user, password, authorityList);
-        } catch (NamingException e) {
-            logger.debug("ExpCustomEmployeeProvider");
+            List<GrantedAuthority> authorityList = user.getAuthorities();
+            return new UsernamePasswordAuthenticationToken(user, password, authorityList);
+        } catch (Exception e) {
             throw new BadCredentialsException("Wrong password.");
         }
-        catch (Exception e) {
-            logger.debug("ExpCustomEmployeeProvider");
-            throw new BadCredentialsException("Wrong password.");
-        }
-
-
     }
-
     public boolean supports(Class<?> arg0) {
         return true;
     }
-
 }

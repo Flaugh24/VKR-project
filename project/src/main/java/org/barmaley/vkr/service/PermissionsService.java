@@ -33,7 +33,7 @@ public class PermissionsService {
         Session session = sessionFactory.getCurrentSession();
 
         // Create a Hibernate query (HQL)
-        Query query = session.createQuery("FROM  Permissions");
+        Query query = session.createQuery("FROM Permissions ORDER BY name");
 
         // Retrieve all
         return query.list();

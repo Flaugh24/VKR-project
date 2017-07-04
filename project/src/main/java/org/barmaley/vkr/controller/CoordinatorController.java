@@ -99,7 +99,7 @@ public class CoordinatorController {
                 ticketsInCheck.addAll(ticketsCheckList);
                 ticketsReady.addAll(ticketsReadyList);
             }
-         }
+        }
 
         countTicketsNew = ticketsNew.size();
         countTicketsInCheck = ticketsInCheck.size();

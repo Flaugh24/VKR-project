@@ -1,7 +1,6 @@
 package org.barmaley.vkr.autentication;
 
 import org.apache.log4j.Logger;
-
 import org.barmaley.vkr.domain.*;
 import org.barmaley.vkr.service.AuthenticationService;
 import org.barmaley.vkr.service.EducProgramService;
@@ -62,7 +61,7 @@ public class UserDAOImpl {
 
 
     public CustomUser loadStudentByUsername(final String username, final int educId) {
-        EducProgram educProgram=  educProgramService.get(educId);
+        EducProgram educProgram = educProgramService.get(educId);
 
         CustomUser customUser = new CustomUser();
         StudentCopy studentCopy = educProgram.getStudent();

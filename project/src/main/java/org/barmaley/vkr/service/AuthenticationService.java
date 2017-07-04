@@ -2,7 +2,6 @@ package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.domain.EmployeeCopy;
-import org.barmaley.vkr.domain.StudentCopy;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

@@ -241,6 +241,7 @@ public class StudentController {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        assert inputStream != null;
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));

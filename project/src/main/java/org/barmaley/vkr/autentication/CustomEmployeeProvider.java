@@ -13,7 +13,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.naming.NamingException;
 import java.util.List;
 
 @Component
@@ -36,16 +35,13 @@ public class CustomEmployeeProvider implements AuthenticationProvider {
         try {
             Ldap ldap = new Ldap(username, password);
             Abis abis = new Abis();
-            String fullname =abis.searchRecordXML(true,username);
+            String fullname = abis.searchRecordXML(true, username);
 
-        CustomUser user = userService.loadEployeeByUsername(username,fullname);
+            CustomUser user = userService.loadEployeeByUsername(username, fullname);
 
-        List<GrantedAuthority> authorityList = user.getAuthorities();
-        return new UsernamePasswordAuthenticationToken(user, password, authorityList);
-        } catch (NamingException e) {
-            throw new BadCredentialsException("Wrong password.");
-        }
-        catch (Exception e) {
+            List<GrantedAuthority> authorityList = user.getAuthorities();
+            return new UsernamePasswordAuthenticationToken(user, password, authorityList);
+        } catch (Exception e) {
             throw new BadCredentialsException("Wrong password.");
         }
     }

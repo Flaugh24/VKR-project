@@ -56,7 +56,7 @@ public class AdminController {
         Roles role = rolesService.getRole(roleId);
 
         dto.setName(role.getName());
-        List<Permissions> permissionsSet = permissionsService.getAll();
+        List<Permissions> permissionsList = permissionsService.getAll();
         List<Permissions> permissions = role.getPermissions();
         List<Integer> preCheckedVals = new ArrayList<>();
         for (Permissions permission : permissions) {
@@ -66,7 +66,7 @@ public class AdminController {
         dto.setCheckedValsInt(preCheckedVals);
         dto.setPathVariable(roleId);
 
-        model.addAttribute("permissionsAll", permissionsSet);
+        model.addAttribute("permissionsAll", permissionsList);
         model.addAttribute("dto", dto);
 
         return "permissionsEditPage";
@@ -133,7 +133,7 @@ public class AdminController {
 
         Users user = usersService.get(coordiantorId);
         List<String> groupsNum = dto.getCheckedValsStr();
-        Set<CoordinatorRights> coordinatorRightsList = user.getCoordinatorRights();
+        List<CoordinatorRights> coordinatorRightsList = user.getCoordinatorRights();
         for (String groupNum : groupsNum) {
             CoordinatorRights rights = coordinatorRightsList.stream()// Преобразуем в поток
                     .filter(x -> groupNum.equals(x.getGroupNum()))    // Фильтруем

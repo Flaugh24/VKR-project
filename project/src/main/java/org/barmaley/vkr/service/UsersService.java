@@ -2,7 +2,6 @@ package org.barmaley.vkr.service;
 
 import org.apache.log4j.Logger;
 import org.barmaley.vkr.autentication.UserDAOImpl;
-import org.barmaley.vkr.domain.Ticket;
 import org.barmaley.vkr.domain.Users;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Service("usersService")
 @Transactional
@@ -34,6 +32,14 @@ public class UsersService {
     public Users get(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Users.class, id);
+    }
+
+    //Запрос пользователя по ExtId
+    public Users getByExtId(String extId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM Users WHERE extId= :extId ");
+        query.setParameter("extId", extId);
+        return (Users) query.uniqueResult();
     }
 
     //Запрос пользователя по Username

@@ -1,31 +1,24 @@
 package org.barmaley.vkr.ldapAuth;
 
-/**
- * Created by impolun on 17.06.17.
- */
-import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Hashtable;
 
-public class Ldap
-{
-    public Ldap(String username, String password) throws AuthenticationException, NamingException{
-        ldapConnector(username+"@FLIB", password);
+public class Ldap {
+    private static DirContext ldapContext;
+
+    public Ldap(String username, String password) throws NamingException {
+        ldapConnector(username + "@FLIB", password);
     }
 
-    static DirContext ldapContext;
-    public static void ldapConnector (String username, String password) throws AuthenticationException, NamingException{
+    private static void ldapConnector(String username, String password) throws NamingException {
 
 
         System.out.println("Début du test Active Directory");
 
-        Hashtable<String, String> ldapEnv = new Hashtable<String, String>(11);
+        Hashtable<String, String> ldapEnv = new Hashtable<>(11);
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 //ldapEnv.put(Context.PROVIDER_URL, "ldap://societe.fr:389");
         ldapEnv.put(Context.PROVIDER_URL, "ldap://194.85.183.70:389");
@@ -41,7 +34,7 @@ public class Ldap
         SearchControls searchCtls = new SearchControls();
 
 //Specify the attributes to return
-        String returnedAtts[]={"sn","givenName", "samAccountName"};
+        String returnedAtts[] = {"sn", "givenName", "samAccountName"};
         searchCtls.setReturningAttributes(returnedAtts);
 
 //Specify the search scope
@@ -59,9 +52,8 @@ public class Ldap
         NamingEnumeration<SearchResult> answer = ldapContext.search(searchBase, searchFilter, searchCtls);
 
 //Loop through the search results
-        while (answer.hasMoreElements())
-        {
-            SearchResult sr = (SearchResult)answer.next();
+        while (answer.hasMoreElements()) {
+            SearchResult sr = answer.next();
 
             totalResults++;
 

@@ -13,7 +13,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.naming.NamingException;
 import java.util.List;
 
 @Component
@@ -34,7 +33,7 @@ public class CustomStudentProvider implements AuthenticationProvider {
         try {
             Ldap ldap = new Ldap(username, password);
             Abis abis = new Abis();
-            String educIdString =abis.searchRecordXML(false, username);
+            String educIdString = abis.searchRecordXML(false, username);
             int educId = Integer.parseInt(educIdString);
             CustomUser user = userService.loadStudentByUsername(username, educId);
             List<GrantedAuthority> authorityList = user.getAuthorities();
@@ -42,7 +41,7 @@ public class CustomStudentProvider implements AuthenticationProvider {
         } catch (Exception e) {
             throw new BadCredentialsException("Wrong password.");
         }
-        }
+    }
 
     public boolean supports(Class<?> arg0) {
         return true;

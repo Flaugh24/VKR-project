@@ -104,7 +104,7 @@ public class MainController {
     public @ResponseBody
     List<EmployeeCopy> getCurator(@RequestParam String fullName) {
 
-        return (List<EmployeeCopy>) employeeCopyService.getEmployeeByFIO(tagName);
+        return (List<EmployeeCopy>) employeeCopyService.getEmployeeByFullName(fullName);
 
     }
 

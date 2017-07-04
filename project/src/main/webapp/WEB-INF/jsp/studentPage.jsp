@@ -23,8 +23,7 @@
 
 </head>
 <body>
-
-<c:set value="${coordinator}" var="coordinator"/>
+<c:url var="addTicket" value="/ticket/add"/>
 <div class="container-fluid">
     <header>
         <jsp:include page="header.jsp"/>
@@ -34,7 +33,6 @@
             <h2>Создать заявку по направлению</h2><br>
             <div class="row">
                 <c:forEach items="${educPrograms}" var="educProgram">
-                    <c:url var="addTicket" value="/ticket/add"/>
                     <div class="col-md-3" style="height: 150px">
                         <a href="#" onclick="document.getElementById('addticket${educProgram.id}').submit()">
                             <div class="addTicket">
@@ -47,7 +45,6 @@
                         </a>
                         <form method="post" id="addticket${educProgram.id}" action="${addTicket}"
                               enctype="application/x-www-form-urlencoded">
-                            <input name="userId" value="${coordinator.id}" style="display: none"/>
                             <input name="educId" value="${educProgram.id}" style="display: none"/>
                         </form>
                     </div>
@@ -59,6 +56,7 @@
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
                 <tr>
+                    <td></td>
                     <td>№</td>
                     <td>Создана</td>
                     <td>Отправлена на проверку</td>
@@ -71,35 +69,32 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${tickets}" var="ticket">
-                    <c:url var="checkUrl" value="/ticket/${ticket.id}/edit"/>
+                    <c:url var="ticketUrl" value="/ticket/${ticket.id}"/>
                     <tr>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><c:out
-                                value="${ticket.id}"/>
-                        </a>
+                        <td><a href="${ticketUrl}" class="editUrl" style="display: block"><span
+                                class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                        </a></td>
+                        <td><c:out value="${ticket.id}"/>
+                            </a>
                         </td>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                        <td><fmt:formatDate
                                 pattern="dd.MM.yyyy" value="${ticket.dateCreationStart}"/>
-                        </a>
                         </td>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block">
+                        <td>
                             <fmt:formatDate
                                     pattern="dd.MM.yyyy" value="${ticket.dateCreationFinish}"/>
-                        </a>
                         </td>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                        <td><fmt:formatDate
                                 pattern="dd.MM.yyyy" value="${ticket.dateCheckCoordinatorStart}"/>
-                        </a>
                         </td>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                        <td><fmt:formatDate
                                 pattern="dd.MM.yyyy" value="${ticket.dateReturn}"/>
-                        </a>
                         </td>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block"><fmt:formatDate
+                        <td><fmt:formatDate
                                 pattern="dd.MM.yyyy" value="${ticket.dateCheckCoordinatorFinish}"/>
-                        </a>
                         </td>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
-                        <td><a href="${checkUrl}" class="editUrl" style="display: block">Date</a></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     </a>
                 </c:forEach>

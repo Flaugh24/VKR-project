@@ -215,28 +215,28 @@ public class TicketService {
     }
 
     //---------------------------------------------------------
-    public void editPdf(Ticket ticket) {
+    public void editPdf(Ticket ticket, boolean secret) {
 
         Session session = sessionFactory.getCurrentSession();
-
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-        logger.debug("filepdf "+ticket.getFilePdf());
-        logger.debug("filepdfsecret "+ticket.getFilePdfSecret());
-        existingTicket.setFilePdf(ticket.getFilePdf());
-            logger.debug("фыв");
+        if (!secret) {
+            existingTicket.setFilePdf(ticket.getFilePdf());
+        } else {
             existingTicket.setFilePdfSecret(ticket.getFilePdfSecret());
+        }
         session.save(existingTicket);
     }
 
-    public void editZip(Ticket ticket) {
+    public void editZip(Ticket ticket, boolean secret) {
         Session session = sessionFactory.getCurrentSession();
-
         Ticket existingTicket = session.get(Ticket.class, ticket.getId());
-        existingTicket.setFileZip(ticket.getFileZip());
-        existingTicket.setFileZipSecret(ticket.getFileZipSecret());
+        if (!secret) {
+            existingTicket.setFileZip(ticket.getFileZip());
+        } else {
+            existingTicket.setFileZipSecret(ticket.getFileZipSecret());
+        }
         session.save(existingTicket);
     }
-
     public void editAct(Ticket ticket) {
         Session session = sessionFactory.getCurrentSession();
 

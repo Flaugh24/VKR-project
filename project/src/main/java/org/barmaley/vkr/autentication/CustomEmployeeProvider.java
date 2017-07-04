@@ -37,7 +37,6 @@ public class CustomEmployeeProvider implements AuthenticationProvider {
             Ldap ldap = new Ldap(username, password);
             Abis abis = new Abis();
             String fullname =abis.searchRecordXML(true,username);
-            logger.debug("вышло: "+fullname);
 
         CustomUser user = userService.loadEployeeByUsername(username,fullname);
 

@@ -345,8 +345,6 @@ public class CoordinatorController {
             ticket.setFileZip(ROOT_ACT + "/zip/" + ticket.getId() + ".zip");
             ticket.setStatus(statusService.get(6));
             ticketService.editAct(ticket);
-            ticketService.editPdf(ticket);
-            ticketService.editZip(ticket);
             tickets.add(ticket);
         }
 

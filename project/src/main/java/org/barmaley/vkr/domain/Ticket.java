@@ -1,6 +1,7 @@
 package org.barmaley.vkr.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +27,8 @@ public class Ticket implements Serializable {
     @Column(name = "LICENSE_NUMBER")
     private String licenseNumber;
 
-    @Column(name = "LICENSE_DATE")
+    @Column(name = "LICENSE_DATE", nullable = false)
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date licenseDate;
 
     @Column(name = "GROUP_NUM")
@@ -113,6 +115,9 @@ public class Ticket implements Serializable {
     @Column(name = "HEAD_OF_DEPARTMENT")
     private String headOfDepartment;
 
+    @Column(name = "CURATOR_ID")
+    private String curatorId;
+
     @Column(name = "FULL_NAME_CURATOR")
     private String fullNameCurator;
 
@@ -134,6 +139,10 @@ public class Ticket implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ACT")
     private Act act;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public String getId() {
         return id;
@@ -373,6 +382,14 @@ public class Ticket implements Serializable {
 
     public void setHeadOfDepartment(String headOfDepartment) {
         this.headOfDepartment = headOfDepartment;
+    }
+
+    public String getCuratorId() {
+        return curatorId;
+    }
+
+    public void setCuratorId(String curatorId) {
+        this.curatorId = curatorId;
     }
 
     public String getFullNameCurator() {

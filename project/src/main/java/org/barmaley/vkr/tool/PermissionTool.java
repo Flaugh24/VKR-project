@@ -1,5 +1,5 @@
 package org.barmaley.vkr.tool;
-
+//
 import org.apache.log4j.Logger;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

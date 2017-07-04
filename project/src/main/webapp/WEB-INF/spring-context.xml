@@ -16,7 +16,8 @@
 
     <bean id="actFormValidator" class="org.barmaley.vkr.validator.ActFormValidator" />
     <bean id="ticketFormValidator" class="org.barmaley.vkr.validator.TicketFormValidator"/>
-
+    <bean id="fileTool" class="org.barmaley.vkr.tool.FileTool"/>
+    <bean id="permissionTool" class="org.barmaley.vkr.tool.PermissionTool"/>
     <bean id="messageSource"
                 class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="classpath:message" />

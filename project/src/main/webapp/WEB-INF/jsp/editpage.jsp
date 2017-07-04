@@ -73,7 +73,7 @@
                         </div>
                     </c:if>
                     <div>
-                        <c:if test="${ticketAttribute.filePdf != null }">
+                        <c:if test="${ticketAttribute.filePdf != null && ticketAttribute.filePdf != ''}">
                             <a href="/vkr/ticket/${ticketAttribute.id}/file/delete?type=pdf" type="button"
                                class="btn btn-default">Удалить PDF</a>
                         </c:if>
@@ -279,7 +279,7 @@
                 </form:form>
             </div>
             <div class="col-md-7" style="padding-top: 10px">
-                <c:if test="${ticketAttribute.filePdf != null}">
+                <c:if test="${ticketAttribute.filePdf != null && ticketAttribute.filePdf != ''}">
                     <iframe src="${pdfUrl}" style="width: 100%; height: 100vh"/>
                 </c:if>
             </div>

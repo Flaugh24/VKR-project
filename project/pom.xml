@@ -283,14 +283,6 @@
             <version>5.1.0.Final</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>

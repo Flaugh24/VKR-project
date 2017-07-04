@@ -35,6 +35,8 @@ public class EducProgramService {
     }
 
 
+
+
     public EducProgram getByGroupNum(String groupNum) {
         Session session = sessionFactory.getCurrentSession();
 

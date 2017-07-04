@@ -19,7 +19,7 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
 
-    <title>Login Page</title>
+    <title>Вход в систему</title>
 </head>
 <body>
 <div class="container">
@@ -44,14 +44,13 @@
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="remember-me"> Запомнить
+                            <input type="checkbox" name="remember-me"> Запомнить меня
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit" style="width: 100px">Войти</button>
                 </div>
-                -
             </form>
         </div>
     </div>
